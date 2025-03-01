@@ -55,11 +55,7 @@
 
             <div class="bill-mode-container">
                 <div class="equal-bill-container">
-                    <select class="input-bill-person">
-                        <option value="0">Who paid this?</option>
-                        <option value="1">Name 1</option>  <!--write function to generate this and add to Done button-->
-                        <option value="2">Name 2</option>
-                    </select>
+                    <select class="input-bill-person" data-mode = "equal"></select>
         
                     <div class="input-bill-amount-container">
                         <input type="number" class="input-bill-amount" placeholder="How much?" data-value="equal">
@@ -70,7 +66,7 @@
             
                     <div class="share-group-container">
                         <p class="share-group">
-                            Share between: (result)
+                            Share between: All
                         </p>
                         <button class="edit-share-button">
                             <img src = "icon/group_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
@@ -79,27 +75,9 @@
                 </div>
 
                 <div class="unequal-bill-container">
-                    <select class="input-bill-person">
-                        <option value="0">Who paid this?</option>
-                        <option value="1">Name 1</option>  <!--write function to generate this and add to Done button-->
-                        <option value="2">Name 2</option>
-                    </select>
+                    <select class="input-bill-person" data-mode = "unequal"></select>
             
                     <div class="input-per-person-container">
-                        <div class="input-per-person-amount">
-                            <div class="per-person-name">Name 1</div>
-                            <input type="number" class="per-person-amount" placeholder="How much?" data-value="unequalName 1">
-                            <button class="calculator-button" data-value = "unequalName 1">
-                                <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
-                            </button>
-                        </div>
-                        <div class="input-per-person-amount">
-                            <div class="per-person-name">Name 2</div>
-                            <input type="number" class="per-person-amount" placeholder="How much?" data-value="unequalName 2">
-                            <button class="calculator-button" data-value = "unequalName 2">
-                                <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>  
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -148,22 +126,27 @@
             <div class = "receiver-card"> Name 3 </div>
         </div>
     </div>
-
-    <p> --------------------------------------- </p>
-    <p> Check list demo </p>
-    <button class="add-checklist-button"> Add </button>
-    <div class = "check-list-container">
-        <div class = "check-name-card">
-            <input type = "checkbox" class = "checkbox-name">
-            <div class = "name-checklist"> Name 1 </div>
+    
+    <!--Checklist popup--> 
+    <div class = checklist-container>
+        <button class = "close-checklist-button">
+            <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+        <div class = "checklist-item-container">
+            <div class = "check-name-card">
+                <input type = "checkbox" class = "checkbox-name">
+                <div class = "name-checklist"> Name 1 </div>
+            </div>
+            <div class = "check-name-card">
+                <input type = "checkbox" class = "checkbox-name">
+                <div class = "name-checklist"> Name 1 </div>
+            </div>
         </div>
-        <div class = "check-name-card">
-            <input type = "checkbox" class = "checkbox-name">
-            <div class = "name-checklist"> Name 1 </div>
-        </div>
+        <button class = "save-checklist-button"> Save </button>
     </div>
-    <p> --------------------------------------- </p>
-    <p> Calculator demo </p>
+
+
+    <!--Calculator popup-->
     <div class = "calculator-container">
 
         <button class = "close-calculator-button">
@@ -201,13 +184,15 @@
         <button class = "save-calculator-button"> Save </button>
     </div>
 
+
+    <!--Overlay for popup-->
     <div class="overlay"></div>
 
     <p> --------------------------------------- </p>
 </body>
 
-<script src = "scripts/person.js"></script>
 <script src = "scripts/check-list.js"></script>
 <script src = "scripts/calculator.js"></script>
+<script src = "scripts/person.js"></script>
 <script src = "scripts/payment.js"></script>
 <script src = "scripts/result.js"></script>

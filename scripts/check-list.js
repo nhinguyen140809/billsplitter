@@ -1,7 +1,8 @@
 var selected_list = [];
+let temp_list = [];
 
 function renderCheckList() {
-    var list = document.querySelector('.check-list-container');
+    var list = document.querySelector('.checklist-item-container');
     list.innerHTML = '';
     item = document.createElement('div');
     item.className = 'check-name-card';
@@ -29,9 +30,7 @@ function renderCheckList() {
     });
 }
 
-document.querySelector('.add-checklist-button').addEventListener('click', () => {
-    renderCheckList();
-});
+
 
 
 function checkAll() {
@@ -44,13 +43,8 @@ function checkAll() {
         document.querySelectorAll('.checkbox-name').forEach((checkbox) => {
             checkbox.checked = true;
         });
-    } else {
-        selected_list = [];
-        document.querySelectorAll('.checkbox-name').forEach((checkbox) => {
-            checkbox.checked = false;
-        });
     }
-    console.log(selected_list);
+    // console.log(selected_list);
 }
 
 function checkName(checkbox) {
@@ -62,5 +56,45 @@ function checkName(checkbox) {
         selected_list = selected_list.filter((name) => name != person);
         document.querySelector('.checkbox-all').checked = false;
     }
-    console.log(selected_list);
+    // console.log(selected_list);
+}
+
+function checkNameList (list) {
+    document.querySelectorAll('.checkbox-name').forEach((checkbox) => {
+        if (list.includes(checkbox.getAttribute('data-name'))) {
+            checkbox.checked = true;
+        } else {
+            checkbox.checked = false;
+        }
+    });
+
+    if (list.length === person_list.length) {
+        document.querySelector('.checkbox-all').checked = true;
+    } else {
+        document.querySelector('.checkbox-all').checked = false;
+    }
+}
+
+function openChecklist() {
+    document.querySelector('.overlay').classList.add('active');
+    document.querySelector('.checklist-container').classList.add('active');
+    checkAll();
+
+    // Save data to temp_list
+    temp_list = selected_list;
+    console.log(temp_list);
+}
+
+function closeChecklist() {
+    document.querySelector('.checklist-container').classList.remove('active');
+    document.querySelector('.overlay').classList.remove('active');
+    // Reset selected_list
+    selected_list = temp_list;
+    checkNameList(selected_list);
+}
+
+function saveChecklist() {
+    document.querySelector('.checklist-container').classList.remove('active');
+    document.querySelector('.overlay').classList.remove('active');
+    return selected_list;
 }

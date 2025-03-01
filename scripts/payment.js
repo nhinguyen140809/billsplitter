@@ -1,15 +1,18 @@
-var payment_list = [];
-var person_list = [];
+var equal_payment_list = [];
+var unequal_payment_list = [];
 
 let open_calculator_from = undefined;
 let bill_mode = 'equal';
+let shareGroup = undefined;
+let billIndex = 1;
 
 class EqualPayment {
     name = '';
     paid_by = '';
     paid_for = [];
     amount = 0;
-    constructor(paid_by, paid_for, amount) {
+    constructor(name, paid_by, paid_for, amount) {
+        this.name = name;
         this.paid_by = paid_by;
         this.paid_for = paid_for;
         this.amount = amount;
@@ -37,7 +40,8 @@ class UnequalPayment {
     paid_by = '';
     paid_for = [];
     amount = [];
-    constructor(paid_by, paid_for, amount) {
+    constructor(name, paid_by, paid_for, amount) {
+        this.name = name;
         this.paid_by = paid_by;
         this.paid_for = paid_for;
         this.amount = amount;
@@ -59,18 +63,79 @@ class UnequalPayment {
     }
 }
 
-function addNewPayment(){
-    var paid_by = document.querySelector('.input-bill-person').value;
-    var paid_for = [];
-    document.querySelectorAll('.checkbox-name').forEach((checkbox) => {
-        if (checkbox.checked) {
-            paid_for.push(checkbox.getAttribute('data-name'));
+function saveNewPayment(){
+    if (bill_mode === 'equal') {
+        const paid_by = parseInt(document.querySelector('.input-bill-person[data-mode="equal"]').value);
+        const paid_for = shareGroup || selected_list; //save value of edited checklist or selected list (which is All if checklist not edited)
+        const amount = parseFloat(document.querySelector('.input-bill-amount').value);
+        // check for valid input
+        if (paid_by === 0) {
+            addBillAlert('Please add paid person!');
+            return -1;
         }
+        
+        if (isNaN(amount) || amount == 0) {
+            addBillAlert('Please add paid amount!');
+            return -1;
+        }
+        
+        if (paid_for.length === 0) {
+            addBillAlert('Please add shared person!');
+            return -1;
+        }
+        // create new payment object as data are valid
+        const bill_name = document.querySelector('.input-bill-name').value || `Bill ${billIndex++}`;
+        const new_payment = new EqualPayment(bill_name, person_list[paid_by].name, paid_for, amount);
+        console.log(new_payment);
+        equal_payment_list.push(new_payment);
+        addBillAlert(''); //Clear the alert
+    }
+    else {
+        const paid_by = parseInt(document.querySelector('.input-bill-person[data-mode="unequal"]').value);
+        const paid_for = person_list.map((person) => person.name); 
+        const amount = [];
+        for (let i = 0; i<paid_for.length; i++) {
+            amount.push(parseFloat(document.querySelector(`.per-person-amount[data-value="unequal${paid_for[i]}"]`).value));
+        }
+        // delete invalid amount
+        for (let i = 0; i < amount.length; i++) {
+            if (isNaN(amount[i]) || amount[i] === 0) {
+                paid_for.splice(i, 1);
+                amount.splice(i, 1);
+                i--;
+            }
+        }
+        
+        // check for valid input
+        if (paid_by === 0) {
+            addBillAlert('Please add paid person!');
+            return -1;
+        }
+        
+        if (amount.length === 0) {
+            addBillAlert('Please add paid amount!');
+            return -1;
+        }
+        
+        // create new payment object as data are valid
+        const bill_name = document.querySelector('.input-bill-name').value || `Bill ${billIndex++}`;
+        const new_payment = new UnequalPayment(bill_name, person_list[paid_by].name, paid_for, amount);
+        console.log(new_payment);
+        unequal_payment_list.push(new_payment);
+        addBillAlert(''); //Clear the alert
+    }
+    clearBillForm();
+}
+
+
+function clearBillForm() {
+    document.querySelector('.input-bill-name').value = '';
+    document.querySelector('.input-bill-amount').value = '';
+    document.querySelectorAll('.input-bill-person').forEach((select) => {
+        select.value = 0;
     });
-    var amount = document.querySelector('.input-bill-amount').value;
-    var payment = new Payment(paid_by, paid_for, amount);
-    payment_list.push(payment);
-    console.log(payment_list);
+    shareGroup = undefined;
+    renderSelectList();
 }
 
 function setEqualMode () {
@@ -89,8 +154,50 @@ function setUnequalMode () {
     bill_mode = 'unequal';
 }
 
+function addBillAlert(message) {
+    document.querySelector('.bill-alert').innerHTML = message;
+}
+
+function renderSelectList() {
+    document.querySelectorAll('.input-bill-person').forEach((select) => {
+        select.innerHTML = `<option value="0"> Who paid this? </option>`;
+        for (let i = 0; i < person_list.length; i++) {
+            select.innerHTML += `<option value="${i+1}">${person_list[i].name}</option>`;
+        }
+    });
+}
+
+function renderPerPersonList() {
+    const per_person_list = document.querySelector('.input-per-person-container');
+    per_person_list.innerHTML = '';
+    for (let i = 0; i < person_list.length; i++) {
+        per_person_list.innerHTML += `
+            <div class="input-per-person-amount">
+                <div class="per-person-name">${person_list[i].name}</div>
+                <input type="number" class="per-person-amount" placeholder="How much?" data-value="unequal${person_list[i].name}"/>
+                <button class="calculator-button" data-value = "unequal${person_list[i].name}">
+                    <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+            </div>
+        `;
+    }
+    // add event listener to new calculator button
+    document.querySelectorAll('.calculator-button').forEach((button) => {
+        button.addEventListener('click', () => {
+            openCalculator();
+            open_calculator_from = button.getAttribute('data-value');
+        });
+    });
+}
+
 //add popup bill form and set equal mode
 document.querySelector('.add-bill-button').addEventListener('click', () => {
+    if (person_list.length === 0) {
+        addBillAlert('Please add person first!');
+        document.querySelector('.popup-bill-form').style.display = 'none';
+        return;
+    }
+    addBillAlert(''); //Clear the alert
     document.querySelector('.popup-bill-form').style.display = 'flex';
     setEqualMode();
 });
@@ -98,6 +205,7 @@ document.querySelector('.add-bill-button').addEventListener('click', () => {
 // close popup bill form
 document.querySelector('.close-popup-bill-button').addEventListener('click', () => {
     document.querySelector('.popup-bill-form').style.display = 'none';
+    clearBillForm();
 });
 
 // turn on equal mode
@@ -124,3 +232,34 @@ document.querySelector('.save-calculator-button').addEventListener('click', () =
                         || document.querySelector(`.per-person-amount[data-value="${open_calculator_from}"]`));
     amountField.value = saveCalculator();
 });
+
+// open checklist
+document.querySelector('.edit-share-button').addEventListener('click', () => {
+    openChecklist();
+});
+
+// close checklist
+document.querySelector('.close-checklist-button').addEventListener('click', () => {
+    closeChecklist();
+});
+
+// save checklist
+document.querySelector('.save-checklist-button').addEventListener('click', () => {
+    shareGroup = saveChecklist();
+    // console.log(shareGroup);
+    if (shareGroup.length === person_list.length) {
+        document.querySelector('.share-group').innerHTML = ' Share between: All';
+    }
+    else {
+        document.querySelector('.share-group').innerHTML = ` Share between: ${shareGroup}`;
+    }
+});
+
+// add new payment
+document.querySelector('.save-bill-button').addEventListener('click', () => {
+    if (saveNewPayment() === -1) { //Error in input
+        return;
+    }
+    document.querySelector('.popup-bill-form').style.display = 'none';
+});
+

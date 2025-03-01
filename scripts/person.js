@@ -83,3 +83,17 @@ document.querySelector('.input-name').addEventListener('keydown', (event) =>{
 document.querySelector('.input-name-button').addEventListener('click', ()=>{
     addPerson();
 });
+
+// Add name button is clicked
+document.querySelector('.done-name-button').addEventListener('click', () => {
+    if (person_list.length < 2) {
+        showAddNameAlert('Please add at least two names!');
+        return;
+    }
+    renderCheckList();
+    renderSelectList();
+    renderPerPersonList();
+    document.querySelector('.checkbox-all').checked = true;
+    selected_list = person_list.map((person) => person.name);
+    // console.log(selected_list);
+});
