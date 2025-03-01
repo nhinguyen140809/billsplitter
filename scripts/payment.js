@@ -42,4 +42,35 @@ function addNewPayment(){
     console.log(payment_list);
 }
 
+function setEqualMode () {
+    document.querySelector('.equal-bill-mode-button').style.backgroundColor = 'rgb(139, 139, 139)';
+    document.querySelector('.unequal-bill-mode-button').style.backgroundColor = 'transparent';
+    document.querySelector('.equal-bill-container').style.display = 'block';
+    document.querySelector('.unequal-bill-container').style.display = 'none';
+}
+
+function setUnequalMode () {
+    document.querySelector('.unequal-bill-mode-button').style.backgroundColor = 'rgb(139, 139, 139)';
+    document.querySelector('.equal-bill-mode-button').style.backgroundColor = 'transparent';
+    document.querySelector('.unequal-bill-container').style.display = 'block';
+    document.querySelector('.equal-bill-container').style.display = 'none';
+}
+
 //add popup for group selection
+
+document.querySelector('.add-bill-button').addEventListener('click', () => {
+    document.querySelector('.popup-bill-form').style.display = 'flex';
+    setEqualMode();
+});
+
+document.querySelector('.close-popup-bill-button').addEventListener('click', () => {
+    document.querySelector('.popup-bill-form').style.display = 'none';
+});
+
+document.querySelector('.equal-bill-mode-button').addEventListener('click', () => {
+    setEqualMode();
+});
+
+document.querySelector('.unequal-bill-mode-button').addEventListener('click', () => {
+    setUnequalMode();
+});
