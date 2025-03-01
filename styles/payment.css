@@ -165,22 +165,6 @@
     border-bottom: 1px solid rgb(139, 139, 139);
 }
 
-.per-person-calculator {
-    display: inline-flex;
-    width: 34px;
-    height: 34px;
-    margin-left: 5px;
-    border: none;
-    border-radius: 17px;
-    background-color: transparent;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.per-person-calculator:hover {
-    background-color: rgb(236, 236, 236);
-}
 
 
 .calculator-button, .edit-share-button {

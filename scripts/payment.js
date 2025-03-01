@@ -1,9 +1,10 @@
 var payment_list = [];
+var person_list = [];
 
 let open_calculator_from = undefined;
+let bill_mode = 'equal';
 
-
-class Payment {
+class EqualPayment {
     name = '';
     paid_by = '';
     paid_for = [];
@@ -31,6 +32,33 @@ class Payment {
     }
 }
 
+class UnequalPayment {
+    name = '';
+    paid_by = '';
+    paid_for = [];
+    amount = [];
+    constructor(paid_by, paid_for, amount) {
+        this.paid_by = paid_by;
+        this.paid_for = paid_for;
+        this.amount = amount;
+    }
+
+    share() {
+        for (var i = 0; i < person_list.length; i++) {
+            if (person_list[i].name === this.paid_by) {
+                person_list[i].paid += this.amount.sum();
+            }
+        }
+        for (var i = 0; i < this.paid_for.length; i++) {
+            for (var j = 0; j < person_list.length; j++) {
+                if (person_list[j].name === this.paid_for[i]) {
+                    person_list[j].spent += this.amount[i];
+                }
+            }
+        }
+    }
+}
+
 function addNewPayment(){
     var paid_by = document.querySelector('.input-bill-person').value;
     var paid_for = [];
@@ -50,6 +78,7 @@ function setEqualMode () {
     document.querySelector('.unequal-bill-mode-button').style.backgroundColor = 'transparent';
     document.querySelector('.equal-bill-container').style.display = 'block';
     document.querySelector('.unequal-bill-container').style.display = 'none';
+    bill_mode = 'equal';
 }
 
 function setUnequalMode () {
@@ -57,40 +86,41 @@ function setUnequalMode () {
     document.querySelector('.equal-bill-mode-button').style.backgroundColor = 'transparent';
     document.querySelector('.unequal-bill-container').style.display = 'block';
     document.querySelector('.equal-bill-container').style.display = 'none';
+    bill_mode = 'unequal';
 }
 
-//add popup for group selection
-
+//add popup bill form and set equal mode
 document.querySelector('.add-bill-button').addEventListener('click', () => {
     document.querySelector('.popup-bill-form').style.display = 'flex';
     setEqualMode();
 });
 
+// close popup bill form
 document.querySelector('.close-popup-bill-button').addEventListener('click', () => {
     document.querySelector('.popup-bill-form').style.display = 'none';
 });
 
+// turn on equal mode
 document.querySelector('.equal-bill-mode-button').addEventListener('click', () => {
     setEqualMode();
 });
 
+// turn on unequal mode
 document.querySelector('.unequal-bill-mode-button').addEventListener('click', () => {
     setUnequalMode();
 });
 
-function openCalculator() {
-    document.querySelector('.overlay').classList.add('active');
-    document.querySelector('.calculator-container').classList.add('active');
-}
-
-
+// open calculator
 document.querySelectorAll('.calculator-button').forEach((button) => {
     button.addEventListener('click', () => {
         openCalculator();
+        open_calculator_from = button.getAttribute('data-value');
     });
 });
 
-function saveCalculator() {
-    document.querySelector('.calculator-container').classList.remove('active');
-    document.querySelector('.overlay').classList.remove('active');
-}
+// save calculator
+document.querySelector('.save-calculator-button').addEventListener('click', () => {
+    const amountField = (document.querySelector(`.input-bill-amount[data-value="${open_calculator_from}"]`)
+                        || document.querySelector(`.per-person-amount[data-value="${open_calculator_from}"]`));
+    amountField.value = saveCalculator();
+});

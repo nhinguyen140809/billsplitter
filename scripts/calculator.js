@@ -6,7 +6,6 @@ const specials_chars = ["+", "-", "*", "/", ")", "="]; // +, -, *, /, ), =
 let output = '';
 
 const calculate = (buttonValue) => {
-    console.log(buttonValue);
     if (buttonValue === '=') {
         if (output !== '') {
             output = eval(output);
@@ -39,7 +38,23 @@ operators.forEach((button) => {
     });
 });
 
-document.querySelector('.close-calculator-button').addEventListener('click', () => {
+function openCalculator() {
+    output = '';
+    display.value = output;
+    document.querySelector('.overlay').classList.add('active');
+    document.querySelector('.calculator-container').classList.add('active');
+}
+
+function closeCalculator() {
     document.querySelector('.calculator-container').classList.remove('active');
     document.querySelector('.overlay').classList.remove('active');
+}
+
+function saveCalculator() {
+    closeCalculator();
+    return eval(output);
+}
+
+document.querySelector('.close-calculator-button').addEventListener('click', () => {
+    closeCalculator();
 });
