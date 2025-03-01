@@ -33,6 +33,87 @@
     
     <!--Section Bill-->
     <p class="section"> What are the bills? </p>
+    <button class="add-bill-button">  
+        <div class="add-icon-container">
+            <img src="icon/add_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </div>
+        <div class="add-bill-text"> Add new bill </div>
+    </button>
+
+    <div class = "popup-bill-form">
+        <button class = "close-popup-bill-button">
+            <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+        <div class = "input-bill-container">
+            <input type="text" class="input-bill-name" placeholder="Paid for what?">
+            
+            <div class="bill-mode-button-container">
+                <button class="bill-mode-button"> Equal </button>
+                <button class="bill-mode-button"> Unequal </button>
+            </div>
+            
+
+            <div class="bill-mode-container">
+                <div class="equal-bill-container">
+                    <select class="input-bill-person">
+                        <option value="0">Who paid this?</option>
+                        <option value="1">Name 1</option>  <!--write function to generate this and add to Done button-->
+                        <option value="2">Name 2</option>
+                    </select>
+        
+                    <div class="input-bill-amount-container">
+                        <input type="number" class="input-bill-amount" placeholder="How much?">
+                        <button class="calculator-button">
+                            <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                        </button>
+                    </div>
+            
+                    <div class="share-group-container">
+                        <p class="share-group">
+                            Share between: (result)
+                        </p>
+                        <button class="edit-share-button">
+                            <img src = "icon/group_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                        </button>
+                    </div>
+                </div>
+                <p>---------------------------------------</p>
+                <div class="unequal-bill-container">
+                    <select class="input-bill-person">
+                        <option value="0">Who paid this?</option>
+                        <option value="1">Name 1</option>  <!--write function to generate this and add to Done button-->
+                        <option value="2">Name 2</option>
+                    </select>
+            
+                    <div class="input-per-person-container">
+                        <div class="input-per-person-amount">
+                            <div class="per-person-name">Name 1</div>
+                            <input type="number" class="per-person-amount" placeholder="How much?">
+                            <button class="per-person-calculator">
+                                <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                            </button>
+                        </div>
+                        <div class="input-per-person-amount">
+                            <div class="per-person-name">Name 2</div>
+                            <input type="number" class="per-person-amount" placeholder="How much?">
+                            <button class="per-person-calculator">
+                                <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>  
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class = "save-bill-button"> Save </button>
+    </div>
+
+
+
+
+
+
+    <!-- Old input type ------------------------------------------->
+    <p class="section"> What are the bills? </p>
     <div class="add-bill-container">
         <div class = "input-bill-container">
             <input type="text" class="input-bill-name" placeholder="Paid for what?">
@@ -66,6 +147,8 @@
 
     <div class="bill-alert"></div>
 
+
+    <!--Added bill-->
     <div class="bill-card-container">
         <div class="bill-card">
             <div class = "bill-info">

@@ -6,14 +6,80 @@
     padding: 10px;
 }
 
+.add-bill-button { /* Same as done-bill-button */
+    display: inline-flex;
+    align-self: flex-start;
+    flex-direction: row;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 10px;
+    font-weight: 550;
+    border: none;
+    border-radius: 17px;
+    background-color: rgb(173, 173, 173);
+    color: black;
+    cursor: pointer;
+    font-size: 1em;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.popup-bill-form {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    padding-top: 5px;
+    padding-right: 0px;
+    border-radius: 19px;
+    border: 1px solid rgb(139, 139, 139);
+}
+
+.close-popup-bill-button {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 17px;
+    align-self: flex-end;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.close-popup-bill-button:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+.bill-mode-button {
+    display: inline-flex;
+    margin-right: 10px;
+    padding:8px;
+    border: none;
+    border-radius: 17px;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.bill-mode-button:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+.bill-mode-button:active {
+    background-color: rgb(139, 139, 139);
+}
 
 .input-bill-container {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
-    border: 1.5px solid #ccc;
-    border-radius: 20px;
-    padding: 15px;
-    width: 70%;
+    margin-top: -10px;
+    padding-right: 15px;
+    margin-bottom: 10px;
 }
 
 .input-bill-name {
@@ -53,6 +119,61 @@
     align-items: center;
 }
 
+.input-per-person-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: left;
+    margin: 7px;
+    margin-right: 0px;
+}
+
+.input-per-person-amount {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.per-person-name {
+    display: inline;
+    margin-right: 5px;
+    width: 30%;
+}
+
+.per-person-amount {
+    font-size: 1em;
+    display: inline;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 2px;
+    margin: 5px;
+    margin-right: 0px;
+    width: 50%;
+}
+
+.per-person-amount:focus {
+    outline: none;
+    border-bottom: 1px solid rgb(139, 139, 139);
+}
+
+.per-person-calculator {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 17px;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.per-person-calculator:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+
 .calculator-button, .edit-share-button {
     display: flex;
     width: 34px;
@@ -78,22 +199,31 @@
     width: 80%;
 }
 
-
-.add-bill-button { /* Same as input-name-button */
+.add-icon-container {
     display: inline-flex;
-    width: 34px;
-    height: 34px;
-    margin-left: 2px;
-    border: none;
-    border-radius: 17px;
-    background-color: transparent;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    margin-right: 5px;
+    margin-bottom: 0px;
 }
 
 .add-bill-button:hover {
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(217, 217, 217);
+}
+
+.save-bill-button {
+    display: inline;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-right: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 17px;
+    background-color: rgb(0, 135, 68);
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
 }
 
 .bill-card-container {
@@ -191,4 +321,8 @@
     color: white;
     cursor: pointer;
     font-size: 1em;
+}
+
+.done-bill-button:hover {
+    background-color: rgb(0, 115, 58);
 }
