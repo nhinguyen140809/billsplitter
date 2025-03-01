@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<head>
+    <title>Bill Splitting</title>
+    <link rel="stylesheet" href="styles/person.css">
+    <link rel="stylesheet" href="styles/check-list.css">
+    <link rel="stylesheet" href="styles/calculator.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/payment.css">
+    <link rel="stylesheet" href="styles/result.css">
+    <!-- Fonts and icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+    <h1>Bill Splitting</h1>
+
+    <!--Section Person-->
+    <p class="section"> Who will share the bill? </p>
+
+    <div class = "input-name-container">
+        <input type="text" class="input-name" placeholder="Enter new name">
+        <button class="input-name-button">
+            <img src="icon/add_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+    </div>
+
+    <div class="add-name-alert"></div>
+    <div class="name-card-container"></div>
+
+    <button class="done-name-button"> Done </button>
+    
+    <!--Section Bill-->
+    <p class="section"> What are the bills? </p>
+    <div class="add-bill-container">
+        <div class = "input-bill-container">
+            <input type="text" class="input-bill-name" placeholder="Paid for what?">
+    
+            <select class="input-bill-person">
+                <option value="0">Who paid this?</option>
+                <option value="1">Name 1</option>  <!--write function to generate this and add to Done button-->
+                <option value="2">Name 2</option>
+            </select>
+            <div class="input-bill-amount-container">
+                <input type="number" class="input-bill-amount" placeholder="How much?">
+                <button class="calculator-button">
+                    <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+            </div>
+    
+            <div class="share-group-container">
+                <p class="share-group">
+                    Share between: (result)
+                </p>
+                <button class="edit-share-button">
+                    <img src = "icon/group_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+            </div>
+        </div>
+
+        <button class="add-bill-button">
+            <img src="icon/add_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+    </div>
+
+    <div class="bill-alert"></div>
+
+    <div class="bill-card-container">
+        <div class="bill-card">
+            <div class = "bill-info">
+                <div class="bill-name">Bill 1</div>
+                <div class="bill-amount-person-container">
+                    <div class="bill-amount">Amount: 100</div>
+                    <div class="bill-person">Paid by: Name 1</div>
+                </div>
+                <div class="bill-share">Share between: Name 1, Name 2, Name 3, Name 4, Name 5, Name 6</div>
+            </div>
+            <div class = "bill-button-container">
+                <button class="delete-bill-button">
+                    <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+                <button class="edit-bill-button">
+                    <img src="icon/edit_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="done-bill-button"> Done </button>
+    
+    <!--Section Result-->
+    <p class="section"> Result </p>
+    <div class = "result-container">
+        <div class = "sender-container">
+            <p style="font-weight: 550; margin-top: 0;"> Senders </p>
+            <div class = "sender-card"> Name 1 </div>
+        </div>
+        <div class = "receiver-container">
+            <p style="font-weight: 550; margin-top: 0;"> Receivers </p>
+            <div class = "receiver-card"> Name 2 </div>
+            <div class = "receiver-card"> Name 3 </div>
+        </div>
+    </div>
+
+    <p> --------------------------------------- </p>
+    <p> Check list demo </p>
+    <button class="add-checklist-button"> Add </button>
+    <div class = "check-list-container">
+        <div class = "check-name-card">
+            <input type = "checkbox" class = "checkbox-name">
+            <div class = "name-checklist"> Name 1 </div>
+        </div>
+        <div class = "check-name-card">
+            <input type = "checkbox" class = "checkbox-name">
+            <div class = "name-checklist"> Name 1 </div>
+        </div>
+    </div>
+    <p> --------------------------------------- </p>
+    <p> Calculator demo </p>
+    <div class = "calculator-container">
+        <input type = "text" class = "calculator-display" />
+        <div class = "buttons">
+            <button class = "operator" data-value="AC">AC</button>
+            <button class = "operator" data-value="(">&#40;</button> <!-- ( -->
+            <button class = "operator" data-value=")">&#41;</button> <!-- ) -->
+            <button class = "operator" data-value="/">&#247;</button> <!-- / -->
+
+            <button class = "number" data-value="7">7</button>
+            <button class = "number" data-value="8">8</button>
+            <button class = "number" data-value="9">9</button> 
+            <button class = "operator" data-value="*">&#215;</button> <!-- * -->
+
+            <button class = "number" data-value="4">4</button>
+            <button class = "number" data-value="5">5</button> 
+            <button class = "number" data-value="6">6</button>
+            <button class = "operator" data-value="-">&#8722;</button> <!-- - -->
+
+            <button class = "number" data-value="1">1</button>
+            <button class = "number" data-value="2">2</button>
+            <button class = "number" data-value="3">3</button>
+            <button class = "operator" data-value="+">&#43;</button> <!-- + -->
+
+            <button class = "number" data-value=".">.</button>
+            <button class = "number" data-value="0">0</button>
+            <button class = "operator" data-value="DEL">DEL</button>
+            <button class = "operator" data-value="=">=</button>
+        </div>
+    </div>
+
+    <p> --------------------------------------- </p>
+</body>
+
+<script src = "scripts/person.js"></script>
+<script src = "scripts/check-list.js"></script>
+<script src = "scripts/calculator.js"></script>
+<script src = "scripts/payment.js"></script>
+<script src = "scripts/result.js"></script>

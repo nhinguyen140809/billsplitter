@@ -1,0 +1,112 @@
+.input-name-container {
+    display: flex;
+    /* padding: 10px; */
+    /* margin: 10px; */
+    border: none;
+    background-color: rgb(255, 255, 255);
+    justify-content: left;
+    align-items: center;
+}
+
+.input-name {
+    display: inline-block;
+    font-size: 1em;
+    padding: 10px;
+    padding-left: 15px;
+    margin: 2px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 17px;
+    background-color: rgb(255, 255, 255);
+}
+
+.input-name-button {
+    display: flex;
+    width: 34px;
+    height: 34px;
+    margin-left: 2px;
+    border: none;
+    border-radius: 17px;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.input-name-button:hover {
+    background-color: rgb(236, 236, 236);
+}
+
+.add-name-alert {
+    margin-left: 10px;
+    display: flex;
+    font-size: small;
+    color: rgb(214,45,32);
+    align-items: center;
+}
+
+
+.name-card-container {
+    display: flex;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    flex-wrap: wrap;
+    grid-gap: 5px;
+    padding: 10px;
+}
+
+.name-card {
+    display: flex;
+    padding: 4px;
+    /* border: 1px solid #ccc; */
+    border-radius: 18px;
+    background-color: rgb(200, 200, 200);
+    align-items: center;
+    justify-content: space-between;
+}
+
+.name {
+    display: inline-block;
+    margin: 5px;
+    padding-left: 5px;
+    padding-bottom: 1px;
+    color: rgb(0, 0, 0);
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.delete-name-button {
+    display: flex;
+    margin-left: 10px;
+    padding-right: 7px;
+    width: 22px;
+    height: 22px;
+    border: none;
+    border-radius: 11px;
+    background-color: transparent;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-name-button:hover {
+    background-color: rgb(150, 150, 150);
+}
+
+.done-name-button {
+    display: inline-block;
+    align-self: flex-end;
+    padding: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 17px;
+    background-color: rgb(0, 135, 68);
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.done-name-button:hover {
+    background-color: rgb(0, 115, 58);
+}
