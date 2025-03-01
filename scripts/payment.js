@@ -1,5 +1,8 @@
 var payment_list = [];
 
+let open_calculator_from = undefined;
+
+
 class Payment {
     name = '';
     paid_by = '';
@@ -74,3 +77,20 @@ document.querySelector('.equal-bill-mode-button').addEventListener('click', () =
 document.querySelector('.unequal-bill-mode-button').addEventListener('click', () => {
     setUnequalMode();
 });
+
+function openCalculator() {
+    document.querySelector('.overlay').classList.add('active');
+    document.querySelector('.calculator-container').classList.add('active');
+}
+
+
+document.querySelectorAll('.calculator-button').forEach((button) => {
+    button.addEventListener('click', () => {
+        openCalculator();
+    });
+});
+
+function saveCalculator() {
+    document.querySelector('.calculator-container').classList.remove('active');
+    document.querySelector('.overlay').classList.remove('active');
+}

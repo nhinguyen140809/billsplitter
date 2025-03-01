@@ -38,3 +38,8 @@ operators.forEach((button) => {
         calculate(button.getAttribute('data-value'));
     });
 });
+
+document.querySelector('.close-calculator-button').addEventListener('click', () => {
+    document.querySelector('.calculator-container').classList.remove('active');
+    document.querySelector('.overlay').classList.remove('active');
+});
