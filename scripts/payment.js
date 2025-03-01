@@ -129,13 +129,24 @@ function saveNewPayment(){
 
 
 function clearBillForm() {
+    // Reset name field
     document.querySelector('.input-bill-name').value = '';
+    // Reset amount field
     document.querySelector('.input-bill-amount').value = '';
+    document.querySelectorAll('.per-person-amount').forEach((input) => {
+        input.value = '';
+    });
+    // Reset person field
     document.querySelectorAll('.input-bill-person').forEach((select) => {
         select.value = 0;
     });
+    // Reset checklist
+    selected_list = person_list.map((person) => person.name);
+    checkNameList(selected_list);
+    // Reset share group
     shareGroup = undefined;
-    renderSelectList();
+    // Reset ouput share group
+    document.querySelector('.share-group').innerHTML = ' Share between: All';
 }
 
 function setEqualMode () {

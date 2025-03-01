@@ -82,7 +82,7 @@ function openChecklist() {
 
     // Save data to temp_list
     temp_list = selected_list;
-    console.log(temp_list);
+    // console.log(temp_list);
 }
 
 function closeChecklist() {
