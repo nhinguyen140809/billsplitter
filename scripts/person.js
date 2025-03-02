@@ -93,7 +93,10 @@ document.querySelector('.done-name-button').addEventListener('click', () => {
     renderCheckList();
     renderSelectList();
     renderPerPersonList();
+    clearBillForm();
+    deleteAllBill();
     document.querySelector('.checkbox-all').checked = true;
+    checkAll();
     selected_list = person_list.map((person) => person.name);
     // console.log(selected_list);
 });

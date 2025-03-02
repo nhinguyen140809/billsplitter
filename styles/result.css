@@ -2,18 +2,21 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  flex-direction: column;
   padding: 10px
 }
 
 .sender-container, .receiver-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 5px;
-    width: 50%;
+    width: 95%;
+    padding-right: 10px;
+    margin-bottom: 10px;
 }
 
 .sender-container + .receiver-container {
-    border-left: 1px solid rgb(139, 139, 139);
+    border-top: 1px solid rgb(139, 139, 139);
 }

@@ -5,13 +5,16 @@ let open_calculator_from = undefined;
 let bill_mode = 'equal';
 let shareGroup = undefined;
 let billIndex = 1;
+let billId = 1;
 
 class EqualPayment {
+    id = '';
     name = '';
     paid_by = '';
     paid_for = [];
     amount = 0;
-    constructor(name, paid_by, paid_for, amount) {
+    constructor(id, name, paid_by, paid_for, amount) {
+        this.id = id;
         this.name = name;
         this.paid_by = paid_by;
         this.paid_for = paid_for;
@@ -24,7 +27,7 @@ class EqualPayment {
                 person_list[i].paid += this.amount;
             }
         }
-        n = this.paid_for.length;
+        let n = this.paid_for.length;
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < person_list.length; j++) {
                 if (person_list[j].name === this.paid_for[i]) {
@@ -40,7 +43,8 @@ class UnequalPayment {
     paid_by = '';
     paid_for = [];
     amount = [];
-    constructor(name, paid_by, paid_for, amount) {
+    constructor(id, name, paid_by, paid_for, amount) {
+        this.id = id;
         this.name = name;
         this.paid_by = paid_by;
         this.paid_for = paid_for;
@@ -85,7 +89,7 @@ function saveNewPayment(){
         }
         // create new payment object as data are valid
         const bill_name = document.querySelector('.input-bill-name').value || `Bill ${billIndex++}`;
-        const new_payment = new EqualPayment(bill_name, person_list[paid_by].name, paid_for, amount);
+        const new_payment = new EqualPayment(billId++, bill_name, person_list[paid_by-1].name, paid_for, amount);
         console.log(new_payment);
         equal_payment_list.push(new_payment);
         addBillAlert(''); //Clear the alert
@@ -119,12 +123,13 @@ function saveNewPayment(){
         
         // create new payment object as data are valid
         const bill_name = document.querySelector('.input-bill-name').value || `Bill ${billIndex++}`;
-        const new_payment = new UnequalPayment(bill_name, person_list[paid_by].name, paid_for, amount);
+        const new_payment = new UnequalPayment(billId++, bill_name, person_list[paid_by-1].name, paid_for, amount);
         console.log(new_payment);
         unequal_payment_list.push(new_payment);
         addBillAlert(''); //Clear the alert
     }
     clearBillForm();
+    renderBillList();
 }
 
 
@@ -146,7 +151,7 @@ function clearBillForm() {
     // Reset share group
     shareGroup = undefined;
     // Reset ouput share group
-    document.querySelector('.share-group').innerHTML = ' Share between: All';
+    displayShareBetweenField(selected_list);
 }
 
 function setEqualMode () {
@@ -258,12 +263,7 @@ document.querySelector('.close-checklist-button').addEventListener('click', () =
 document.querySelector('.save-checklist-button').addEventListener('click', () => {
     shareGroup = saveChecklist();
     // console.log(shareGroup);
-    if (shareGroup.length === person_list.length) {
-        document.querySelector('.share-group').innerHTML = ' Share between: All';
-    }
-    else {
-        document.querySelector('.share-group').innerHTML = ` Share between: ${shareGroup}`;
-    }
+    displayShareBetweenField(shareGroup);
 });
 
 // add new payment
@@ -272,5 +272,218 @@ document.querySelector('.save-bill-button').addEventListener('click', () => {
         return;
     }
     document.querySelector('.popup-bill-form').style.display = 'none';
+});
+
+// render bill list
+function renderBillList() {
+    const bill_list = document.querySelector('.bill-card-container');
+    bill_list.innerHTML = '';
+    for (let i = 0; i < equal_payment_list.length; i++) {
+        shareBetweenField = '';
+        if (equal_payment_list[i].paid_for.length === person_list.length) {
+            shareBetweenField = 'All';
+        }
+        else {
+            for (let j = 0; j < equal_payment_list[i].paid_for.length; j++) {
+                shareBetweenField += equal_payment_list[i].paid_for[j];
+                if (j !== equal_payment_list[i].paid_for.length - 1) {
+                    shareBetweenField += ', ';
+                }
+            }
+        }
+        bill_list.innerHTML += `
+            <div class="bill-card" data-name="equal${equal_payment_list[i].id}">
+            <div class = "bill-info">
+                <div class="bill-name">${equal_payment_list[i].name}</div>
+                <div class="bill-amount-person-container">
+                    <div class="bill-amount">Amount: ${equal_payment_list[i].amount}</div>
+                    <div class="bill-person">Paid by: ${equal_payment_list[i].paid_by}</div>
+                </div>
+                <div class="bill-share">Share between: ${shareBetweenField} </div>
+            </div>
+            <div class = "bill-button-container">
+                <button class="delete-bill-button" data-name="equal${equal_payment_list[i].id}">
+                    <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+                <button class="edit-bill-button" data-name="equal${equal_payment_list[i].id}">
+                    <img src="icon/edit_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                </button>
+            </div>
+        </div>
+        `;
+    }
+    for (let i = 0; i < unequal_payment_list.length; i++) {
+        shareBetweenField = '';
+        for (let j = 0; j < unequal_payment_list[i].paid_for.length; j++) {
+            shareBetweenField += unequal_payment_list[i].paid_for[j];
+            shareBetweenField += ` (${unequal_payment_list[i].amount[j]})`;
+            if (j !== unequal_payment_list[i].paid_for.length - 1) {
+                shareBetweenField += ', ';
+            }
+        }
+        bill_list.innerHTML += `
+            <div class="bill-card" data-name="unequal${unequal_payment_list[i].id}">
+                <div class = "bill-info">
+                    <div class="bill-name">${unequal_payment_list[i].name}</div>
+                    <div class="bill-amount-person-container">
+                        <div class="bill-person">Paid by: ${unequal_payment_list[i].paid_by}</div>
+                    </div>
+                    <div class="bill-share">Share between: ${shareBetweenField} </div>
+                </div>
+                <div class = "bill-button-container">
+                    <button class="delete-bill-button" data-name="unequal${unequal_payment_list[i].id}">
+                        <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                    </button>
+                    <button class="edit-bill-button" data-name="unequal${unequal_payment_list[i].id}">
+                        <img src="icon/edit_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // add event listener to delete bill button
+    document.querySelectorAll('.delete-bill-button').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            deleteBill(event.currentTarget.getAttribute('data-name'));
+        });
+    });
+
+    // add event listener to edit bill button
+    document.querySelectorAll('.edit-bill-button').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            console.log(event.currentTarget);
+            console.log(event.currentTarget.getAttribute('data-name'));
+            editBill(event.currentTarget.getAttribute('data-name'));
+        });
+    });
+}
+
+// delete bill with data-name field of button
+function deleteBill (id) { 
+    if (id.startsWith('equal')) {
+        for (let i = 0; i < equal_payment_list.length; i++) {
+            if (equal_payment_list[i].id == id.slice(5)) {
+                equal_payment_list.splice(i, 1);
+                break;
+            }
+        }
+    }
+    else {
+        for (let i = 0; i < unequal_payment_list.length; i++) {
+            if (unequal_payment_list[i].id == id.slice(7)) {
+                unequal_payment_list.splice(i, 1);
+                break;
+            }
+        }
+    }
+    renderBillList();
+}
+
+// edit bill with data-name field of button
+function editBill (id) {
+    if (id.startsWith('equal')) {
+        for (let i = 0; i < equal_payment_list.length; i++) {
+            if (equal_payment_list[i].id == id.slice(5)) {
+                // show popup bill form
+                document.querySelector('.popup-bill-form').style.display = 'flex';
+                setEqualMode();
+                // fill in the bill name
+                document.querySelector('.input-bill-name').value = equal_payment_list[i].name;
+                // fill in the bill amount
+                document.querySelector('.input-bill-amount').value = equal_payment_list[i].amount;
+                // fill in the paid person
+                document.querySelector('.input-bill-person[data-mode="equal"]').value = person_list.findIndex((person) => person.name === equal_payment_list[i].paid_by) + 1;
+
+                // fill in the current check list
+                selected_list = equal_payment_list[i].paid_for;
+                checkNameList(selected_list);
+                shareGroup = equal_payment_list[i].paid_for; //what for?
+
+                // edit the output display of share group
+                displayShareBetweenField(shareGroup);
+
+                // remove the bill from the list
+                equal_payment_list.splice(i, 1);
+                // render the bill list
+                renderBillList();
+                return;
+            }
+        }
+    }
+    else {
+        for (let i = 0; i < unequal_payment_list.length; i++) {
+            if (unequal_payment_list[i].id == id.slice(7)) {
+                // show popup bill form
+                document.querySelector('.popup-bill-form').style.display = 'flex';
+                setUnequalMode();
+                // fill in the bill name
+                document.querySelector('.input-bill-name').value = unequal_payment_list[i].name;
+                // fill in the paid person
+                document.querySelector('.input-bill-person[data-mode="unequal"]').value = person_list.findIndex((person) => person.name === unequal_payment_list[i].paid_by) + 1;
+                // fill in the paid amount for each person
+                for (let j = 0; j < unequal_payment_list[i].paid_for.length; j++) {
+                    document.querySelector(`.per-person-amount[data-value="unequal${unequal_payment_list[i].paid_for[j]}"]`).value = unequal_payment_list[i].amount[j];
+                }
+                // remove the bill from the list
+                unequal_payment_list.splice(i, 1);
+                // render the bill list
+                renderBillList();
+                return;
+            }
+        }
+    }
+}
+
+// delete all bill
+function deleteAllBill() {
+    equal_payment_list = [];
+    unequal_payment_list = [];
+    renderBillList();
+}
+
+function displayShareBetweenField (list) {
+    if (list.length === person_list.length) {
+        document.querySelector('.share-group').innerHTML = ' Share between: All';
+        return;
+    }
+    else {
+        shareBetweenField = '';
+        for (let i = 0; i < list.length; i++) {
+            shareBetweenField += list[i];
+            if (i !== list.length - 1) {
+                shareBetweenField += ', ';
+            }
+        }
+        document.querySelector('.share-group').innerHTML = ` Share between: ${shareBetweenField}`;
+        return;
+    }
+}
+
+function resetSharing () {
+    for (let i = 0; i < person_list.length; i++) {
+        person_list[i].paid = 0;
+        person_list[i].spent = 0;
+    }
+}
+
+document.querySelector('.done-bill-button').addEventListener('click', () => {
+    if (equal_payment_list.length === 0 && unequal_payment_list.length === 0) {
+        addBillAlert('Please add bill first!');
+        return;
+    }
+    document.querySelector('.popup-bill-form').style.display = 'none';
+    clearBillForm();
+    resetSharing(); //make sure spent and paid are 0
+    for (let i = 0; i < equal_payment_list.length; i++) {
+        equal_payment_list[i].share();
+    }
+    for (let i = 0; i < unequal_payment_list.length; i++) {
+        unequal_payment_list[i].share();
+    }
+    createSenderList(person_list);
+    createReceiverList(person_list);
+    // Add evaluation function here
+    renderResult();
 });
 
