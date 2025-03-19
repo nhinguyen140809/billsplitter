@@ -1,21 +1,24 @@
 var sender_list = [];
 var receiver_list = [];
 
-let model = {
+var model = {
     optimize: "total_transactions",
     opType: "min",
     constraints: {},
     variables: {
-        "max_number_of_transactions": {}
+        "max_number_of_transactions": {
+            "total_transactions": 1000 //For minimizing the max number of transactions per person
+        }
     },
     ints: {}
 };
 
-//format currency
+//format currency to 2 decimal places
 function formatCurrency(num) {
-    return num.toFixed(2).toString();
+    return parseFloat(num.toFixed(2));
 }
 
+//Create sender list and receiver list from person list
 function createSenderList (person_list) {
     for (let i = 0; i < person_list.length; i++) {
         if (person_list[i].spent > person_list[i].paid) {
@@ -41,7 +44,7 @@ function createReceiverList (person_list) {
         }
     }
 }
-
+//Get the maximum amount from the sender list
 function getMaxAmount (sender_list) {
     let max = 0;
     for (let i = 0; i < sender_list.length; i++) {
@@ -52,17 +55,18 @@ function getMaxAmount (sender_list) {
     return max;
 }
 
+//Create the model for the solver
 function createModel () {
     // senders and receivers lists are already created
     let max_send = getMaxAmount(sender_list);
     for (let i = 0; i < sender_list.length; i++) {
-        sender_name = sender_list[i].name;
+        let sender_name = sender_list[i].name;
         //Sender sends all the amount to the receivers
         model.constraints[`${sender_name}`] = { "equal": sender_list[i].amount };
         //Total number of transactions per sender is less than the max number of transactions
         model.constraints[`${sender_name}_total`] = { "max": 0 };
         for (let j = 0; j < receiver_list.length; j++) {
-            receiver_name = receiver_list[j].name;
+            let receiver_name = receiver_list[j].name;
             //Receivers constraint
             model.constraints[`${receiver_name}`] = { "equal": receiver_list[j].amount };
             //x_ij >= 0 constraint
@@ -97,40 +101,66 @@ function solveModel() {
     // For debugging purposes
     if (results.feasible) {
         console.log("Minimum maximum transactions (W):", results.max_number_of_transactions);
-        console.log("Total transactions:", results.result);
+        console.log("Total transactions:", results.result - results.max_number_of_transactions*1000);
     } else {
         console.log("No feasible solution found.");
     }
     return results;
 }
 
+// Create model, solve and render the results
 function getTransactionResults() {
-    //Sender list and receiver list are already created
+    createSenderList(person_list);
+    createReceiverList(person_list);
     createModel();
     let result = solveModel();
-    renderResult();
+    let send = {};
+    let receive = {};
+    for (let i = 0; i < sender_list.length; i++) {
+        send[sender_list[i].name] = {};
+    }
+    for (let i = 0; i < receiver_list.length; i++) {
+        receive[receiver_list[i].name] = {};
+    }
+    for (let i = 0; i < sender_list.length; i++) {
+        for (let j = 0; j < receiver_list.length; j++) {
+            let sender_name = sender_list[i].name;
+            let receiver_name = receiver_list[j].name;
+            let amount = result[`${sender_name}_send_${receiver_name}`];
+            if (amount > 0) {
+                send[sender_name][receiver_name] = formatCurrency(amount);
+                receive[receiver_name][sender_name] = formatCurrency(amount);
+            }
+        }
+    }
+    renderResult(send, receive);
 }
 
 
-
-function renderResult () {
+function renderResult (send, receive) {
     const sender_container = document.querySelector('.sender-container');
     const receiver_container = document.querySelector('.receiver-container');
     sender_container.innerHTML = '<p style="font-weight: 550; margin-top: 0;"> Senders </p>';
     receiver_container.innerHTML = '<p style="font-weight: 550; margin-top: 0;"> Receivers </p>';
-    for (let i = 0; i < sender_list.length; i++) {
-        sender_container.innerHTML += `
-            <div class = "sender-card"> 
-                ${sender_list[i].name} must send ${sender_list[i].amount} 
-            </div>
-        `;
-    }
-    for (let i = 0; i < receiver_list.length; i++) {
-        receiver_container.innerHTML += `
-            <div class = "receiver-card"> 
-                ${receiver_list[i].name} must receive ${receiver_list[i].amount} 
-            </div>
-        `;
-    }
+
+    Object.keys(send).forEach(sender => {
+        Object.entries(send[sender]).forEach(([receiver, amount]) => {
+            sender_container.innerHTML += ` 
+                <div class = "sender-card"> 
+                    ${sender} sends ${amount} to ${receiver} 
+                </div>
+            `;
+        });
+    });
+
+    Object.keys(receive).forEach(receiver => {
+        Object.entries(receive[receiver]).forEach(([sender, amount]) => {
+            receiver_container.innerHTML += ` 
+                <div class = "receiver-card">
+                    ${receiver} receives ${amount} from ${sender}
+                </div>
+            `;
+        });
+    });
 }
 

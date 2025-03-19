@@ -54,7 +54,7 @@ class UnequalPayment {
     share() {
         for (var i = 0; i < person_list.length; i++) {
             if (person_list[i].name === this.paid_by) {
-                person_list[i].paid += this.amount.sum();
+                person_list[i].paid += this.amount.reduce((a, b) => a + b, 0);
             }
         }
         for (var i = 0; i < this.paid_for.length; i++) {
@@ -352,8 +352,6 @@ function renderBillList() {
     // add event listener to edit bill button
     document.querySelectorAll('.edit-bill-button').forEach((button) => {
         button.addEventListener('click', (event) => {
-            console.log(event.currentTarget);
-            console.log(event.currentTarget.getAttribute('data-name'));
             editBill(event.currentTarget.getAttribute('data-name'));
         });
     });
@@ -481,9 +479,6 @@ document.querySelector('.done-bill-button').addEventListener('click', () => {
     for (let i = 0; i < unequal_payment_list.length; i++) {
         unequal_payment_list[i].share();
     }
-    createSenderList(person_list);
-    createReceiverList(person_list);
-    // Add evaluation function here
-    renderResult();
+    getTransactionResults();
 });
 
