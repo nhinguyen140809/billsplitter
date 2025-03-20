@@ -2,8 +2,8 @@ html {
     height: 100%;
 }
 body {
-    background-color: white;
-    font-family: 'Segoe UI', open-sans;
+    background-color: var(--md-sys-color-background);
+    letter-spacing: 0.1pt;
     margin: auto;
     padding: 0;
     display: flex;
@@ -11,6 +11,12 @@ body {
     flex-direction: column;
     padding-top: 1em;
     border: none;
+    transition: ease-in-out 10s;
+}
+
+select option {
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
 }
 
 p {
@@ -21,13 +27,17 @@ p {
 h1 {
     font-size: 2em;
     padding: 0;
-    color: black;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    color: var(--md-sys-color-primary);
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+button:active {
+    opacity: 0.95;
 }
 
 .section {
-    color: rgb(0, 135, 68);
+    color: var(--md-sys-color-secondary);
     font-size: 1.3em;
     font-weight: bold;
     padding: 0;
@@ -49,4 +59,9 @@ h1 {
 .overlay.active {
 	opacity: 1;
 	pointer-events: all;
+}
+
+* {
+    font-family: 'Roboto', sans-serif;  /* Change to your desired font */
+    letter-spacing: 0.1pt;
 }

@@ -3,8 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    padding-top: 10px;
+    padding: 24px;
     padding-bottom: 10px;
     width: 100%;
     max-width: 250px;
@@ -12,8 +11,8 @@
     visibility: hidden;
     position: absolute;
     /* transition: 50ms ease-in-out; */
-    background-color: white;
-    border-radius: 19px;
+    background-color: var(--md-sys-color-surface-container-low);
+    border-radius: 28px;
     align-self: center;
     top: 70%;
     z-index: 1;
@@ -25,12 +24,12 @@
 
 .close-checklist-button {
     display: inline-flex;
-    width: 34px;
-    height: 34px;
-    margin-right: -15px;
-    margin-top: -5px;
+    width: 24px;
+    height: 24px;
+    margin-right: -5px;
+    margin-top: -9px;
     border: none;
-    border-radius: 17px;
+    border-radius: 12px;
     align-self: flex-end;
     background-color: transparent;
     align-items: center;
@@ -39,7 +38,7 @@
 }
 
 .close-checklist-button:hover {
-    background-color: rgb(236, 236, 236);
+    background-color: var(--md-sys-color-secondary-container);
 }
 
 .checklist-item-container {
@@ -47,17 +46,23 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: left;
-    margin-bottom: 15px;
-    padding: 5px;
+    margin-bottom: 10px;
     width: 100%;
     max-width: 600px;
     grid-gap: 15px;
 }
 
+.checklist-title {
+    display: inline-block;
+    margin-bottom: 5px;
+    color: var(--md-sys-color-on-surface);
+    font-size: 18px;
+    font-weight: 550;
+}
+
 
 .check-name-card {
     display: flex;
-    border-radius: 4px;
     align-items: center;
     align-content: flex-start;
 }
@@ -72,17 +77,18 @@
 .name-checklist {
     display: inline-block;
     margin-left: 10px;
-    color: rgb(0, 0, 0);
+    color: var(--md-sys-color-on-surface);
+    font-size: 14px;
 }
 
 input[type="checkbox"] {
     /* appearance: none; */
-    background-color: gray;
+    background-color: var(--md-sys-color-primary);
     margin: 0;
     display: grid;
     place-content: center;
     font: inherit;
-    color: gray;
+    color: var(--md-sys-color-primary);
     width: 1.15em;
     height: 1.15em;
     border: 0.1em solid currentColor;
@@ -94,19 +100,20 @@ input[type="checkbox"] {
 
 .save-checklist-button {
     display: inline;
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
-    margin-right: 15px;
+    height: 40px;
+    padding-left: 24px;
+    padding-right: 24px;
     font-weight: 550;
     border: none;
-    border-radius: 17px;
-    background-color: rgb(0, 135, 68);
+    border-radius: 20px;
+    background-color: transparent;
     color: white;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 16px;
+    color: var(--md-sys-color-primary);
+    align-self: flex-end;
 }
 
 .save-checklist-button:hover {
-    background-color: rgb(0, 115, 58);
+    background-color: var(--md-sys-color-primary-container);
 }

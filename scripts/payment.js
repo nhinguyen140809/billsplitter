@@ -155,7 +155,7 @@ function clearBillForm() {
 }
 
 function setEqualMode () {
-    document.querySelector('.equal-bill-mode-button').style.backgroundColor = 'rgb(139, 139, 139)';
+    document.querySelector('.equal-bill-mode-button').style.backgroundColor = 'var(--md-sys-color-secondary-container)';
     document.querySelector('.unequal-bill-mode-button').style.backgroundColor = 'transparent';
     document.querySelector('.equal-bill-container').style.display = 'block';
     document.querySelector('.unequal-bill-container').style.display = 'none';
@@ -163,7 +163,7 @@ function setEqualMode () {
 }
 
 function setUnequalMode () {
-    document.querySelector('.unequal-bill-mode-button').style.backgroundColor = 'rgb(139, 139, 139)';
+    document.querySelector('.unequal-bill-mode-button').style.backgroundColor = 'var(--md-sys-color-secondary-container)';
     document.querySelector('.equal-bill-mode-button').style.backgroundColor = 'transparent';
     document.querySelector('.unequal-bill-container').style.display = 'block';
     document.querySelector('.equal-bill-container').style.display = 'none';

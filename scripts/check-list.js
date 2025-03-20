@@ -3,7 +3,7 @@ let temp_list = [];
 
 function renderCheckList() {
     var list = document.querySelector('.checklist-item-container');
-    list.innerHTML = '';
+    list.innerHTML = '<div class = "checklist-title"> Select share group </div>';
     item = document.createElement('div');
     item.className = 'check-name-card';
     item.innerHTML = `

@@ -7,16 +7,17 @@
 }
 
 .sender-container, .receiver-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 5px;
-    width: 95%;
-    padding-right: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 5px;
+  width: 95%;
+  padding-right: 10px;
+  margin-bottom: 10px;
+  color: var(--md-sys-color-on-surface);
 }
 
 .sender-container + .receiver-container {
-    border-top: 1px solid rgb(139, 139, 139);
+    border-top: none;
 }

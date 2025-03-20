@@ -98,5 +98,7 @@ document.querySelector('.done-name-button').addEventListener('click', () => {
     document.querySelector('.checkbox-all').checked = true;
     checkAll();
     selected_list = person_list.map((person) => person.name);
+    document.querySelector('.add-bill-button').style.display = 'inline-flex';
+    document.querySelector('.done-bill-button').style.display = 'inline-block';
     // console.log(selected_list);
 });

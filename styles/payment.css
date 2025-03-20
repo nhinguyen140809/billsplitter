@@ -1,131 +1,135 @@
-.add-bill-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 10px;
-}
-
 .add-bill-button { /* Same as done-bill-button */
-    display: inline-flex;
+    display: none;
     align-self: flex-start;
     flex-direction: row;
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
+    height: 40px;
+    padding-left: 16px;
+    padding-right: 24px;
     margin-left: 10px;
     font-weight: 550;
     border: none;
-    border-radius: 17px;
-    background-color: rgb(173, 173, 173);
-    color: black;
+    border-radius: 20px;
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
     cursor: pointer;
-    font-size: 1em;
+    font-size: 16px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 
 .popup-bill-form {
     display: none;
     flex-direction: column;
-    padding: 15px;
-    padding-top: 5px;
-    padding-right: 0px;
-    border-radius: 19px;
+    padding: 24px;
+    padding-top: 42px;
+    padding-bottom: 10px;
+    border-radius: 28px;
     margin-top: 15px;
     margin-bottom: 10px;
-    border: 1px solid rgb(139, 139, 139);
+    background-color: var(--md-sys-color-surface-container-low);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
 .close-popup-bill-button {
     display: inline-flex;
-    width: 34px;
-    height: 34px;
-    margin-right: 5px;
+    width: 24px;
+    height: 24px;
     border: none;
-    border-radius: 17px;
+    border-radius: 12px;
     align-self: flex-end;
     background-color: transparent;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
 }
 
 .close-popup-bill-button:hover {
-    background-color: rgb(236, 236, 236);
+    background-color: var(--md-sys-color-secondary-container);
 }
 
 .equal-bill-mode-button, .unequal-bill-mode-button {
     display: inline-flex;
-    margin-left: 5px;
-    margin: 5px;
-    padding-top:8px;
-    padding-bottom: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    height: 36px;
+    padding-left: 8px;
+    padding-right: 8px;
     border: none;
-    border-radius: 17px;
+    border-radius: 8px;
     background-color: transparent;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 0.95em;
+    font-size: 16px;
     font-weight: 550;
+    letter-spacing: 0.1pt;
+    color: var(--md-sys-color-on-surface);
 }
 
-.bill-mode-button:hover {
-    background-color: rgb(236, 236, 236);
+.equal-bill-mode-button:hover, .unequal-bill-mode-button:hover {
+    background-color: var(--md-sys-color-surface-container-high);
 }
 
-.bill-mode-button:active {
-    background-color: rgb(139, 139, 139);
+.equal-bill-mode-button:active, .unequal-bill-mode-button:active {
+    background-color: var(--md-sys-color-primary-container);
 }
 
 .input-bill-container {
     display: flex;
     flex-direction: column;
-    margin-top: -10px;
-    padding-right: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .input-bill-name {
     border: none;
-    border-bottom: 1px solid #ccc;
-    padding: 2px;
-    margin: 5px;
-    margin-bottom: 5px;
-    font-size: 1.1em;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    padding-bottom: 3px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    letter-spacing: 0.2pt;
     font-weight: 550;
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface);
 }
 
 .input-bill-name:focus {
     outline: none;
-    border-bottom: 1px solid rgb(139, 139, 139);
+    border-bottom: 2px solid var(--md-sys-color-primary);
 }
 
 .input-bill-amount, .input-bill-person {
-    font-size: 1em;
+    font-size: 16px;
     display: inline;
-    width: 80%;
+    width: 230px;
     border: none;
-    border-bottom: 1px solid #ccc;
-    padding: 2px;
-    margin: 5px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    padding-bottom: 2px;
+    margin-top: 10px;
     margin-bottom: 5px;
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface);
 }
 
 .input-bill-amount:focus, .input-bill-person:focus {
     outline: none;
-    border-bottom: 1px solid rgb(139, 139, 139);
+    border-bottom: 2px solid var(--md-sys-color-primary);
 }
 
 .input-bill-amount-container, .share-group-container {
-    margin-top: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.share-group-container {
+    margin-top: 2px;
 }
 
 .input-per-person-container {
@@ -133,8 +137,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: left;
-    margin: 7px;
-    margin-right: 0px;
 }
 
 .input-per-person-amount {
@@ -142,27 +144,35 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    color: var(--md-sys-color-on-surface);
 }
+
 .per-person-name {
     display: inline;
     margin-right: 5px;
     width: 30%;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .per-person-amount {
-    font-size: 1em;
+    font-size: 16px;
     display: inline;
     border: none;
-    border-bottom: 1px solid #ccc;
-    padding: 2px;
-    margin: 5px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    padding-bottom: 2px;
     margin-right: 0px;
     width: 50%;
+    background-color: transparent;
+    color: var(--md-sys-color-on-surface);
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .per-person-amount:focus {
     outline: none;
-    border-bottom: 1px solid rgb(139, 139, 139);
+    border-bottom: 2px solid var(--md-sys-color-primary);
 }
 
 
@@ -181,15 +191,15 @@
 }
 
 .calculator-button:hover, .edit-share-button:hover {
-    background-color: rgb(236, 236, 236);
+    background-color: var(--md-sys-color-secondary-container);
 }
 
 
 .share-group {
-    padding: 2px;
-    margin: 5px;
+    margin-top: 8px;
     margin-bottom: 5px;
-    width: 80%;
+    width: 230px;
+    color: var(--md-sys-color-on-surface);
 }
 
 .add-icon-container {
@@ -201,27 +211,26 @@
 }
 
 .add-bill-button:hover {
-    background-color: rgb(217, 217, 217);
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .save-bill-button {
     display: inline;
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
-    margin-right: 15px;
-    margin-top: 10px;
-    font-weight: 600;
+    height: 40px;
+    padding-left: 24px;
+    padding-right: 24px;
+    align-self: flex-end;
+    font-weight: 550;
     border: none;
-    border-radius: 17px;
-    background-color: rgb(0, 135, 68);
-    color: white;
+    border-radius: 20px;
+    background-color: transparent;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 16px;
+    color: var(--md-sys-color-primary);
 }
 
 .save-bill-button:hover {
-    background-color: rgb(0, 115, 58);
+    background-color: var(--md-sys-color-primary-container);
 }
 
 .bill-card-container {
@@ -235,12 +244,13 @@
 
 .bill-card {
     display: flex;
-    padding: 6px;
-    border-radius: 18px;
-    background-color: rgb(200, 200, 200);
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 12px;
+    background-color: var(--md-sys-color-surface-container-highest);
     align-items: left;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .bill-info {
@@ -252,11 +262,11 @@
 }
 
 .bill-name {
-    font-size: 1em;
+    font-size: 16px;
     font-weight: 550;
-    margin: 3px;
-    padding-left: 5px;
-    padding-bottom: 1px;
+    margin-bottom: 10px;
+    color: var(--md-sys-color-on-surface);
+    margin-top: 16px;
 }
 
 
@@ -268,18 +278,16 @@
 
 .bill-amount, .bill-person {
     display: inline-block;
-    font-size: 0.9em;
-    margin: 3px;
-    margin-right: 5px;
-    padding-left: 5px;
-    padding-bottom: 1px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-right: 15px;
+    color: var(--md-sys-color-on-surface);
 }
 
 .bill-share {
-    margin: 3px;
-    padding-left: 5px;
-    padding-bottom: 1px;
-    font-size: 0.9em;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--md-sys-color-on-surface);
 }
 
 .bill-button-container {
@@ -287,14 +295,15 @@
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    margin-top: 8px;
 }
 
 .delete-bill-button, .edit-bill-button {
     display: inline-flex;
     width: 34px;
     height: 34px;
-    margin-left: 5px;
     border: none;
+    margin-bottom: 4px;
     border-radius: 17px;
     background-color: transparent;
     align-items: center;
@@ -303,32 +312,33 @@
 }
 
 .delete-bill-button:hover, .edit-bill-button:hover {
-    background-color: rgb(217, 217, 217);
+    background-color: var(--md-sys-color-surface-container);
 }
 
 .done-bill-button {
-    display: inline-block;
+    display: none;
     align-self: flex-end;
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
-    font-weight: 600;
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 40px;
+    font-weight: 550;
     border: none;
-    border-radius: 17px;
-    background-color: rgb(0, 135, 68);
-    color: white;
+    border-radius: 20px;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     cursor: pointer;
-    font-size: 1em;
+    font-size: 16px;
+    letter-spacing: 0.1pt;
 }
 
 .done-bill-button:hover {
-    background-color: rgb(0, 115, 58);
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2); 
 }
 
 .bill-alert {
     margin-left: 10px;
     display: flex;
     font-size: small;
-    color: rgb(214,45,32);
+    color: var(--md-sys-color-error);
     align-items: center;
 }

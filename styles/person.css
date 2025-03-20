@@ -3,30 +3,36 @@
     /* padding: 10px; */
     /* margin: 10px; */
     border: none;
-    background-color: rgb(255, 255, 255);
+    background-color: transparent;
     justify-content: left;
     align-items: center;
 }
 
 .input-name {
     display: inline-block;
-    font-size: 1em;
-    padding: 10px;
-    padding-left: 15px;
+    font-size: 16px;
+    height: 40px;
+    padding-left: 12px;
     margin: 2px;
     margin-left: 10px;
-    border: 1px solid #ccc;
-    border-radius: 17px;
-    background-color: rgb(255, 255, 255);
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 4px;
+    background-color: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-on-surface);
+}
+
+.input-name:focus {
+    border: none;
+    outline: 2px solid var(--md-sys-color-primary);
 }
 
 .input-name-button {
     display: flex;
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     margin-left: 2px;
     border: none;
-    border-radius: 17px;
+    border-radius: 20px;
     background-color: transparent;
     align-items: center;
     justify-content: center;
@@ -34,14 +40,19 @@
 }
 
 .input-name-button:hover {
-    background-color: rgb(236, 236, 236);
+    background-color: var(--md-sys-color-surface-variant);
+}
+
+.input-name-button:active {
+    background-color: var(--md-sys-color-surface-dim);
 }
 
 .add-name-alert {
+    margin-top: 5px;
     margin-left: 10px;
     display: flex;
     font-size: small;
-    color: rgb(214,45,32);
+    color: var(--md-sys-color-error);
     align-items: center;
 }
 
@@ -56,28 +67,27 @@
 
 .name-card {
     display: flex;
-    padding: 4px;
-    /* border: 1px solid #ccc; */
-    border-radius: 18px;
-    background-color: rgb(200, 200, 200);
+    padding-left: 16px;
+    padding-right: 8px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
     align-items: center;
     justify-content: space-between;
 }
 
 .name {
     display: inline-block;
-    margin: 5px;
-    padding-left: 5px;
-    padding-bottom: 1px;
-    color: rgb(0, 0, 0);
-    font-size: 1em;
-    font-weight: 400;
+    margin-right: 8px;
+    color: var(--md-sys-color-on-surface);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.1pt;
 }
 
 .delete-name-button {
     display: flex;
-    margin-left: 10px;
-    padding-right: 7px;
     width: 22px;
     height: 22px;
     border: none;
@@ -89,24 +99,26 @@
 }
 
 .delete-name-button:hover {
-    background-color: rgb(150, 150, 150);
+    background-color: var(--md-sys-color-surface-dim);
 }
+
 
 .done-name-button {
     display: inline-block;
     align-self: flex-end;
-    padding: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
-    font-weight: 600;
+    padding-left: 24px;
+    padding-right: 24px;
+    height: 40px;
+    font-weight: 550;
     border: none;
-    border-radius: 17px;
-    background-color: rgb(0, 135, 68);
-    color: white;
+    border-radius: 20px;
+    background-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
     cursor: pointer;
-    font-size: 1em;
+    font-size: 16px;
+    letter-spacing: 0.1pt;
 }
 
 .done-name-button:hover {
-    background-color: rgb(0, 115, 58);
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.2);
 }

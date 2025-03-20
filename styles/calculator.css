@@ -4,10 +4,10 @@
 	position: absolute;
 	width: 100%;
 	max-width: 250px;
-	border-radius: 18px;
-	padding: 10px 20px 20px;
-	background-color: rgb(255, 255, 255);
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+	border-radius: 28px;
+	padding: 24px;
+	padding-bottom: 10px;
+	background-color: var(--md-sys-color-surface-container);
 	z-index: 1;
 	visibility: hidden;
 	transition: 200ms ease-in-out;
@@ -21,12 +21,12 @@
 
 .close-calculator-button {
 	display: inline-flex;
-	width: 34px;
-	height: 34px;
-	margin-right: -15px;
-	margin-top: -5px;
+	width: 24px;
+	height: 24px;
+	margin-right: -4px;
+	margin-top: -9px;
 	border: none;
-	border-radius: 17px;
+	border-radius: 12px;
 	align-self: flex-end;
 	background-color: transparent;
 	align-items: center;
@@ -34,62 +34,80 @@
 	cursor: pointer;
 }
 .close-calculator-button:hover {
-	background-color: rgb(236, 236, 236);
+	background-color: var(--md-sys-color-secondary-container);
 }
 
 .calculator-display {
-	margin-top: 5px;
-	height: 38px;
+	margin-top: 10px;
+	height: 48px;
 	width: 100%;
-	border: solid 1px #6a6a6a;
+	border: solid 1px var(--md-sys-color-outline);
+	border-radius: 8px;
 	text-align: right;
 	margin-bottom: 10px;
-	color: black;
+	color: var(--md-sys-color-on-surface);
+	background-color: var(--md-sys-color-surface-container-lowest);
 	padding: 0;
-	font-size: 1em;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.calculator-display:focus {
+	border: none;
+	outline: var(--md-sys-color-primary) auto 2px;
 }
 
 .buttons {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-gap: 5px;
-	font-size: 1em;
+	font-size: 16px;
 }
 
 .operator, .number {
-	height: 25px;
+	height: 40px;
 	border: none;
 	border-radius: 5px;
-	background-color: #e0e0e0;
-	font-size: 15px;
+	background-color: var(--md-sys-color-primary-container);
+	color: var(--md-sys-color-on-primary-container);
+	font-size: 16px;
 	cursor: pointer;
 	font-weight: bold;
 }
 
 .operator{
-	color: rgb(42, 88, 175);
+	color: var(--md-sys-color-on-tertiary-container);
+	background-color: var(--md-sys-color-tertiary-container);
 }
 
-.operator:hover, .number:hover {
-	background-color: #bababa;
+.operator:hover{
+	background-color: var(--md-sys-color-tertiary-fixed-dim);
+}
+
+.number:hover {
+	background-color: var(--md-sys-color-primary-fixed-dim);
 }
 
 .save-calculator-button {
 	display: inline-flex;
 	margin-top: 10px;
-	padding: 5px 10px;
+	padding-left: 24px;
+	padding-right: 24px;
+	height: 40px;
 	border: none;
-	border-radius: 5px;
-	background-color: #e0e0e0;
+	border-radius: 20px;
+	background-color: transparent;
+	color: var(--md-sys-color-primary);
 	cursor: pointer;
-	font-size: 1em;
+	font-size: 16px;
 	font-weight: bold;
+	align-self: flex-end;
 	align-items: center;
 	justify-content: center;
 }
 
 .save-calculator-button:hover {
-	background-color: #bababa;
+	background-color: var(--md-sys-color-primary-container);
 }
 
 

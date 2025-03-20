@@ -142,6 +142,7 @@ function renderResult (send, receive) {
     const receiver_container = document.querySelector('.receiver-container');
     sender_container.innerHTML = '<p style="font-weight: 550; margin-top: 0;"> Senders </p>';
     receiver_container.innerHTML = '<p style="font-weight: 550; margin-top: 0;"> Receivers </p>';
+    document.querySelector('.sender-container + .receiver-container').style.borderTop = '1px solid var(--md-sys-color-outline';
 
     Object.keys(send).forEach(sender => {
         Object.entries(send[sender]).forEach(([receiver, amount]) => {
