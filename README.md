@@ -15,12 +15,11 @@ Bill Splitter is a web application that helps users fairly divide expenses among
 ✔️ **User-Friendly Interface** – Simple design for quick and hassle-free use.
 
 ## 📖 How To Use
-1️⃣ **Add Participants** – Enter names of people sharing the bill.
-
-2️⃣ **Enter Expenses** – Add the total amount and select either:
+1. **Add Participants** – Enter names of people sharing the bill.
+1. **Enter Expenses** – Add the total amount and select either:
     - *Equal Split*: Automatically divides the bill equally among all participants.
     - *Unequal Split*: Manually assign specific amounts to each person.
 
-3️⃣ **View Results** – The system calculates the most efficient way to settle payments.
+1. **View Results** – The system calculates the most efficient way to settle payments.
 
-4️⃣ **Make Payments** – Pay each other based on the calculated transactions.
+1. **Make Payments** – Pay each other based on the calculated transactions.
