@@ -12,7 +12,7 @@
 	visibility: hidden;
 	transition: 200ms ease-in-out;
 	align-self: center;
-	top: 35%;
+	top: 23em;
 }
 
 .calculator-container.active {
