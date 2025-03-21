@@ -60,6 +60,18 @@ function getMaxAmount (sender_list) {
 //Create the model for the solver
 function createModel () {
     // senders and receivers lists are already created
+    //  reset the model
+    model = {
+        optimize: "total_transactions",
+        opType: "min",
+        constraints: {},
+        variables: {
+            "max_number_of_transactions": {
+                "total_transactions": 1000 //For minimizing the max number of transactions per person
+            }
+        },
+        ints: {}
+    };
     let max_send = getMaxAmount(sender_list);
     for (let i = 0; i < sender_list.length; i++) {
         let sender_name = sender_list[i].name;
