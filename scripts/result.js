@@ -20,6 +20,7 @@ function formatCurrency(num) {
 
 //Create sender list and receiver list from person list
 function createSenderList (person_list) {
+    sender_list = [];
     for (let i = 0; i < person_list.length; i++) {
         if (person_list[i].spent > person_list[i].paid) {
             sender_list.push(
@@ -33,6 +34,7 @@ function createSenderList (person_list) {
 }
 
 function createReceiverList (person_list) {
+    receiver_list = [];
     for (let i = 0; i < person_list.length; i++) {
         if (person_list[i].spent < person_list[i].paid) {
             receiver_list.push(
