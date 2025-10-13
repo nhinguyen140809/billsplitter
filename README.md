@@ -1,25 +1,16 @@
-# 💰 BILL SPLITTER
+# React + Vite
 
-*Fair & simple expense sharing for groups!*
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 📌 Introduction
-Bill Splitter is a web application that helps users fairly divide expenses among friends, roommates, or groups. It ensures hassle-free payments with smart transaction optimization.
+Currently, two official plugins are available:
 
-## 🚀 Features
-✔️ **Flexible Bill Splitting** – Choose between equal or custom amounts for each participant.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-✔️ **Smart Transaction Optimization** – Minimizes the number of payments needed.
+## React Compiler
 
-✔️ **Easy Expense Tracking** – Add multiple expenses and view a clear breakdown.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-✔️ **User-Friendly Interface** – Simple design for quick and hassle-free use.
+## Expanding the ESLint configuration
 
-## 📖 How To Use
-1. **Add Participants** – Enter names of people sharing the bill.
-1. **Enter Expenses** – Add the total amount and select either:
-    - *Equal Split*: Automatically divides the bill equally among all participants.
-    - *Unequal Split*: Manually assign specific amounts to each person.
-
-1. **View Results** – The system calculates the most efficient way to settle payments.
-
-1. **Make Payments** – Pay each other based on the calculated transactions.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

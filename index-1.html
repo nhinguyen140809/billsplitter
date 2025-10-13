@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<head>
+    <title>Bill Splitter</title>
+    <link rel="stylesheet" href="styles/person.css">
+    <link rel="stylesheet" href="styles/check-list.css">
+    <link rel="stylesheet" href="styles/calculator.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/payment.css">
+    <link rel="stylesheet" href="styles/result.css">
+    <link rel="stylesheet" href="styles/theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fonts and icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+</head>
+<body class="denim-light-theme">
+    <h1>Bill Splitter</h1>
+
+    <!--Section Person-->
+    <p class="section"> Who will share the bill? </p>
+
+    <div class = "input-name-container">
+        <input type="text" class="input-name" placeholder="Enter new name">
+        <button class="input-name-button">
+            <img src="icon/add_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+    </div>
+
+    <div class="add-name-alert"></div>
+    <div class="name-card-container"></div>
+
+    <button class="done-name-button"> Done </button>
+    
+    <!--Section Bill-->
+    <p class="section"> What are the bills? </p>
+    <button class="add-bill-button">  
+        <div class="add-icon-container">
+            <img src="icon/add_18dp_161B2C_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </div>
+        <div class="add-bill-text"> Add new bill </div>
+    </button>
+
+    <div class = "popup-bill-form">
+        <button class = "close-popup-bill-button">
+            <img src="icon/close_20dp_161B2C_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+        <div class = "input-bill-container">
+            <input type="text" class="input-bill-name" placeholder="Paid for what?">
+            
+            <div class="bill-mode-button-container">
+                <button class="equal-bill-mode-button"> Equal </button>
+                <button class="unequal-bill-mode-button"> Unequal </button>
+            </div>
+            
+
+            <div class="bill-mode-container">
+                <div class="equal-bill-container">
+                    <select class="input-bill-person" data-mode = "equal"></select>
+        
+                    <div class="input-bill-amount-container">
+                        <input type="number" class="input-bill-amount" placeholder="How much?" data-value="equal">
+                        <button class="calculator-button" data-value = "equal">
+                            <img src="icon/calculate_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                        </button>
+                    </div>
+            
+                    <div class="share-group-container">
+                        <p class="share-group">
+                            Share between: All
+                        </p>
+                        <button class="edit-share-button">
+                            <img src = "icon/group_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="unequal-bill-container">
+                    <select class="input-bill-person" data-mode = "unequal"></select>
+            
+                    <div class="input-per-person-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class = "save-bill-button"> Save </button>
+    </div>
+
+
+    <div class="bill-alert"></div>
+
+
+    <!--Added bill-->
+    <div class="bill-card-container">
+    </div>
+
+    <button class="done-bill-button"> Done </button>
+    
+    <!--Section Result-->
+    <p class="section"> Result </p>
+    <div class = "result-container">
+        <div class = "sender-container">
+            <p style="font-weight: 550; margin-top: 0;"></p>
+        </div>
+        <div class = "receiver-container">
+            <p style="font-weight: 550; margin-top: 0;"></p>
+        </div>
+    </div>
+    
+    <!--Checklist popup--> 
+    <div class = checklist-container>
+        <button class = "close-checklist-button">
+            <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+        <div class = "checklist-item-container">
+            <div class = "check-name-card">
+                <input type = "checkbox" class = "checkbox-name">
+                <div class = "name-checklist"> Name 1 </div>
+            </div>
+            <div class = "check-name-card">
+                <input type = "checkbox" class = "checkbox-name">
+                <div class = "name-checklist"> Name 1 </div>
+            </div>
+        </div>
+        <button class = "save-checklist-button"> Save </button>
+    </div>
+
+
+    <!--Calculator popup-->
+    <div class = "calculator-container">
+
+        <button class = "close-calculator-button">
+            <img src="icon/close_16dp_000000_FILL0_wght400_GRAD0_opsz20.svg"/>
+        </button>
+
+        <input type = "text" class = "calculator-display" />
+        <div class = "buttons">
+            <button class = "operator" data-value="AC">AC</button>
+            <button class = "operator" data-value="(">&#40;</button> <!-- ( -->
+            <button class = "operator" data-value=")">&#41;</button> <!-- ) -->
+            <button class = "operator" data-value="/">&#247;</button> <!-- / -->
+
+            <button class = "number" data-value="7">7</button>
+            <button class = "number" data-value="8">8</button>
+            <button class = "number" data-value="9">9</button> 
+            <button class = "operator" data-value="*">&#215;</button> <!-- * -->
+
+            <button class = "number" data-value="4">4</button>
+            <button class = "number" data-value="5">5</button> 
+            <button class = "number" data-value="6">6</button>
+            <button class = "operator" data-value="-">&#8722;</button> <!-- - -->
+
+            <button class = "number" data-value="1">1</button>
+            <button class = "number" data-value="2">2</button>
+            <button class = "number" data-value="3">3</button>
+            <button class = "operator" data-value="+">&#43;</button> <!-- + -->
+
+            <button class = "number" data-value=".">.</button>
+            <button class = "number" data-value="0">0</button>
+            <button class = "operator" data-value="DEL">DEL</button>
+            <button class = "operator" data-value="=">=</button>
+        </div>
+
+        <button class = "save-calculator-button"> Save </button>
+    </div>
+
+
+    <!--Overlay for popup-->
+    <div class="overlay"></div>
+</body>
+
+
+<!-- Utilities -->
+<script src = "scripts/check-list.js"></script>
+<script src = "scripts/calculator.js"></script>
+<script src="https://unpkg.com/javascript-lp-solver/prod/solver.js"></script>
+
+<!-- Main -->
+<script src = "scripts/person.js"></script>
+<script src = "scripts/payment.js"></script>
+<script src = "scripts/result.js"></script>
