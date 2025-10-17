@@ -1,3 +1,4 @@
+import {Pencil, X} from "lucide-react"
 function BillItems({
     bills,
     type,
@@ -60,18 +61,18 @@ function BillItems({
 
     function ModifyBillButtons({ bill, type }) {
         return (
-            <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-top mb-4 gap-2 sm:gap-8">
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-top mb-4 gap-2 sm:gap-4">
                 <button
                     className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 w-10 h-10 flex items-center justify-center"
                     onClick={() => handleEditBill(bill, type)}
                 >
-                    <span className="material-icons">edit</span>
+                    <Pencil size={20} />
                 </button>
                 <button
                     className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 w-10 h-10 flex items-center justify-center"
                     onClick={() => handleDeleteBill(bill, type)}
                 >
-                    <span className="material-icons">✕</span>
+                    <X size={20} />
                 </button>
             </div>
         );
@@ -116,7 +117,7 @@ function BillItems({
     return bills.map((bill) => (
         <div
             key={`${type}-${bill.id}`}
-            className="flex-col border border-columbia-blue rounded-2xl p-4 px-6 justify-between"
+            className="flex-col border border-columbia-blue rounded-2xl p-4 px-6 justify-between hover:shadow-lg hover:shadow-columbia-blue/40 transition duration-400 hover:scale-102"
         >
             <div className="flex justify-between">
                 <BillNameType bill={bill} type={type} />

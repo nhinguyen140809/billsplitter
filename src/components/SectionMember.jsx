@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { X, Plus } from "lucide-react";
 
 function SectionMember({ members, setMembers, onDone }) {
     const [name, setName] = useState("");
@@ -67,9 +68,9 @@ function SectionMember({ members, setMembers, onDone }) {
                     />
                     <button
                         onClick={handleAddMember}
-                        className="bg-columbia-blue/50 text-alice-blue font-extrabold items-center text-2xl rounded-full w-12 h-12 active:bg-columbia-blue/70 transition hover:scale-105 hover:cursor-pointer"
+                        className="flex bg-columbia-blue/50 text-alice-blue justify-center font-extrabold items-center text-2xl rounded-full w-12 h-12 active:bg-columbia-blue/70 transition hover:scale-105 hover:cursor-pointer"
                     >
-                        +
+                        <Plus size={24} strokeWidth={3} color={"var(--color-alice-blue)"} />
                     </button>
                 </div>
             )}
@@ -90,7 +91,7 @@ function SectionMember({ members, setMembers, onDone }) {
                                 onClick={() => handleRemoveMember(member.id)}
                                 className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 w-6 h-6 flex items-center justify-center"
                             >
-                                ✕
+                                <X size={20} strokeWidth={2.5} color={"var(--color-honolulu-blue)"} />
                             </button>
                         )}
                     </div>

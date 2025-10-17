@@ -229,10 +229,10 @@ function PaymentItem({ paymentList, type }) {
             {Object.entries(paymentList).map(([senderName, receivers]) => (
                 <div
                     key={senderName}
-                    className="flex flex-col sm:flex-row border border-columbia-blue rounded-2xl p-4 px-6 justify-start gap-4"
+                    className="flex flex-col md:flex-row border border-columbia-blue rounded-2xl p-4 px-6 justify-start gap-4 hover:shadow-lg hover:shadow-columbia-blue/40 transition duration-400 hover:scale-102"
                 >
                     {/* Sender name + type */}
-                    <div className="flex flex-row sm:flex-col gap-4 sm:w-3/7 w-full">
+                    <div className="flex flex-row md:flex-col gap-4 sm:w-4/9 w-full">
                         <div>
                             <p className="text-columbia-blue font-bold text-xl">
                                 {senderName}
@@ -244,7 +244,7 @@ function PaymentItem({ paymentList, type }) {
                                     type === "sender"
                                         ? "bg-vanilla/70"
                                         : "bg-tea-green/70"
-                                } px-8 py-1 rounded-full w-fit`}
+                                } px-4 py-1 rounded-full w-fit`}
                             >
                                 {type === "sender" ? "Sender" : "Receiver"}
                             </p>
