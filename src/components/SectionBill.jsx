@@ -21,6 +21,7 @@ function SectionBill({
         amount: "",
         shares: {},
     });
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (formData.id !== "") {
@@ -29,13 +30,22 @@ function SectionBill({
     }, [formData]);
     
 
+    const handleDone = () => {
+        if (equalBills.length + unequalBills.length < 1) {
+            setErrorMessage("Please add at least one bill.");
+            return;
+        }
+        setErrorMessage("");
+        onDone();
+    };
+
     return (
         <div className="section-container">
             <h2 className="text-3xl font-extrabold text-columbia-blue mb-4">
                 Bills
             </h2>
             {currentSection !== "members" && (
-                <div className="flex justify-end p-2">
+                <div className="flex justify-end py-2">
                     <button
                         className="bg-columbia-blue/40 text-alice-blue font-semibold py-2 px-8 rounded-full hover:scale-105 hover:cursor-pointer active:bg-columbia-blue/70 transition"
                         onClick={() => setShowForm(true)}
@@ -48,8 +58,6 @@ function SectionBill({
                 <BillItems
                     bills={equalBills}
                     type="equal"
-                    equalBills={equalBills}
-                    unequalBills={unequalBills}
                     setEqualBills={setEqualBills}
                     setUnequalBills={setUnequalBills}
                     setFormData={setFormData}
@@ -79,9 +87,12 @@ function SectionBill({
                 />
             )}
             {currentSection !== "members" && (
-                <div className="mt-8 text-right">
+                <div className="mt-8 justify-between flex items-center">
+                    <div className="text-tea-rose">
+                        {errorMessage && <p>{errorMessage}</p>}
+                    </div>
                     <button
-                        onClick={onDone}
+                        onClick={handleDone}
                         className="bg-columbia-blue text-oxford-blue font-medium rounded-full px-10 py-2 active:bg-columbia-blue/80 transition hover:scale-105 hover:cursor-pointer"
                     >
                         Finish

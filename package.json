@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",
+    "javascript-lp-solver": "^0.4.24",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
