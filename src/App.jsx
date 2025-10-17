@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import SectionMember from "./components/SectionMember";
+import SectionBill from "./components/SectionBill";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [currentSection, setCurrentSection] = useState("members");
+    const [members, setMembers] = useState([]);
+    const [equalBills, setEqualBills] = useState([
+        {
+            id: crypto.randomUUID(),
+            name: "Sample Bill",
+            payer: "Name",
+            amount: 200,
+            participants: ["Name", "Name2", "Name4", "Name3", "Name5", "Name6"],
+        },
+    ]);
+    const [unequalBills, setUnequalBills] = useState([
+        {
+            id: crypto.randomUUID(),
+            name: "Sample Bill",
+            payer: "Name",
+            amount: 0,
+            shares: { name: 0, name2: 0 },
+        },
+    ]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    function AppTitle() {
+        return (
+            <div
+                className="section-container"
+            >
+                <h1 className="text-center text-5xl font-extrabold text-columbia-blue">
+                    Bill Splitter
+                </h1>
+                <p className="text-center text-alice-blue mt-4">
+                    This is a sample application using Tailwind CSS with a
+                    custom color palette.
+                </p>
+            </div>
+        );
+    }
+    return (
+        <div
+            className="min-h-screen bg-rich-black 
+            flex flex-col items-center justify-start
+            px-4 sm:px-8 pt-8 pb-8 space-y-8"
+        >
+            <AppTitle />
+            <SectionMember members={members} setMembers={setMembers} onDone={() => setCurrentSection("bills")} />
+            <SectionBill members={members} equalBills={equalBills} setEqualBills={setEqualBills} unequalBills={unequalBills} setUnequalBills={setUnequalBills} onDone={() => setCurrentSection("payments")} />
+        </div>
+    );
 }
 
-export default App
+export default App;
