@@ -3,6 +3,7 @@ import "./App.css";
 import SectionMember from "./components/SectionMember";
 import SectionBill from "./components/SectionBill";
 import SectionPayments from "./components/SectionPayments";
+import { Github } from "lucide-react";
 
 function App() {
     const [currentSection, setCurrentSection] = useState("members");
@@ -13,22 +14,33 @@ function App() {
 
     function AppTitle() {
         return (
-            <div className="section-container">
+            <div className="section-container glass">
                 <h1 className="text-center text-5xl font-extrabold text-columbia-blue">
                     Bill Splitter
                 </h1>
-                <p className="text-center text-alice-blue mt-4">
-                    This is a sample application using Tailwind CSS with a
-                    custom color palette.
-                </p>
+                <div className="flex justify-center items-center space-x-4 mt-6">
+                    <a
+                        href="https://github.com/nhinguyen140809/billsplitter"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-alice-blue/70 font-medium hover:text-columbia-blue/80 flex items-center active:text-columbia-blue transition"
+                    >
+                        <Github
+                            size={20}
+                            strokeWidth={2}
+                            className="inline mr-2"
+                        />
+                        View on GitHub
+                    </a>
+                </div>
             </div>
         );
     }
     return (
         <div
-            className="min-h-screen bg-rich-black 
+            className="static overflow-visible min-h-screen
             flex flex-col items-center justify-start
-            px-4 sm:px-8 pt-8 pb-8 space-y-8"
+            px-4 sm:px-8 pt-8 pb-8 space-y-8 animated-gradient"
         >
             <AppTitle />
             <SectionMember

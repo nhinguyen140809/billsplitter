@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import Calculator from "./Calculator";
 import { useRef } from "react";
-import { Calculator as CalculatorIcon } from "lucide-react";
+import {
+    Calculator as CalculatorIcon,
+    Check,
+    Banknote,
+    UserRound,
+} from "lucide-react";
 
 function BillNameInput({ formData, updateFormDetail }) {
     return (
@@ -20,12 +25,12 @@ function BillNameInput({ formData, updateFormDetail }) {
 
 function BillTypeButtons({ isEqual, setIsEqual }) {
     return (
-        <div className="flex mb-2 gap-4">
+        <div className="flex mb-4 gap-4">
             {["Equal", "Unequal"].map((type) => {
                 return (
                     <button
                         key={type}
-                        className={`px-8 py-2 rounded-full border border-columbia-blue font-medium ${
+                        className={`px-4 sm:px-8 py-2 rounded-full border border-columbia-blue font-medium ${
                             isEqual === (type === "Equal")
                                 ? "bg-columbia-blue text-oxford-blue"
                                 : "bg-rich-black text-alice-blue"
@@ -42,13 +47,21 @@ function BillTypeButtons({ isEqual, setIsEqual }) {
 
 function BillPayerSelect({ members, formData, updateFormDetail }) {
     return (
-        <div className="mb-2 flex items-center">
+        <div className="mb-4 flex items-center">
+            <div className="flex items-center justify-center h-10 w-10 rounded-full mr-4">
+                <UserRound
+                    size={22}
+                    strokeWidth={2.5}
+                    color={"var(--color-columbia-blue)"}
+                    className="inline"
+                />
+            </div>
             <select
                 name="payer"
                 value={formData.payer}
                 placeholder="Select payer"
                 onChange={updateFormDetail}
-                className={`w-full p-2 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-4 transition duration-200 border-b-honolulu-blue/80 ${
+                className={`w-full p-2 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-2 transition duration-200 border-b-honolulu-blue/80 ${
                     formData.payer === "" ? "text-gray-400" : "text-alice-blue"
                 }`}
             >
@@ -66,25 +79,33 @@ function BillPayerSelect({ members, formData, updateFormDetail }) {
 }
 
 function EqualBillAmount({ formData, updateFormDetail, handleOpenCalculator }) {
-    const inputRef = useRef(null);
+    let inputRef = useRef(null);
     return (
-        <div className="flex mb-2 gap-4 justify-between">
+        <div className="flex mb-4 gap-4 justify-between items-center">
+            <div className="flex items-center justify-center h-10 w-10 rounded-full">
+                <Banknote
+                    size={24}
+                    strokeWidth={2.5}
+                    color={"var(--color-columbia-blue)"}
+                    className="inline"
+                />
+            </div>
             <input
                 type="number"
                 name="amount"
                 placeholder="Total amount"
-                className="w-4/5 p-2 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-4 transition duration-200 border-b-honolulu-blue/80"
+                className="w-4/5 p-2 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-2 transition duration-200 border-b-honolulu-blue/80"
                 value={formData.amount}
                 onChange={updateFormDetail}
                 min="0"
                 ref={inputRef}
             />
             <button
-                className="flex items-center justify-center h-10 w-10 text-honolulu-blue hover:font-black transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 hover:text-columbia-blue"
-                onClick={() => handleOpenCalculator(inputRef)}
+                className="flex items-center justify-center h-10 w-10 text-honolulu-blue hover:font-black transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 hover:text-columbia-blue"
+                onClick={() => handleOpenCalculator(inputRef.current)}
             >
                 <CalculatorIcon
-                    size={20}
+                    size={22}
                     strokeWidth={2.5}
                     color={"var(--color-honolulu-blue)"}
                 />
@@ -115,8 +136,8 @@ function EqualBillParticipants({
 
     function checkboxItem(member, isSelectAll) {
         return (
-            <div
-                className="group flex items-center gap-3 px-4 transition-all cursor-pointer"
+            <label
+                className="relative group flex items-center gap-3 px-4 transition-all cursor-pointer"
                 key={member.id}
             >
                 <input
@@ -126,7 +147,7 @@ function EqualBillParticipants({
                             ? "select-all"
                             : `participant-${member.name}`
                     }
-                    className="accent-honolulu-blue w-4 h-4 cursor-pointer transition-all group-hover:scale-120 focus:ring-0 rounded-lg"
+                    className="accent-honolulu-blue w-4 h-4 cursor-pointer transition-all group-hover:scale-120 focus:ring-0 rounded-lg hidden peer"
                     onChange={
                         isSelectAll
                             ? (e) => toggleAllShares(e.target.checked)
@@ -138,15 +159,24 @@ function EqualBillParticipants({
                             : formData.shares[member.name] > 0
                     }
                 />
-                <label className="text-alice-blue font-medium select-none transition-colors duration-200 group-hover:text-columbia-blue">
+                <span className="w-5 h-5 rounded-full border-2 border-honolulu-blue flex items-center justify-center transition-all duration-200 peer-checked:bg-honolulu-blue peer-checked:border-honolulu-blue peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100">
+                    <Check
+                        size={14}
+                        strokeWidth={4}
+                        color={"var(--color-alice-blue)"}
+                        className="opacity-0 scale-75 transition-all duration-200"
+                    />
+                </span>
+
+                <p className="text-alice-blue font-medium select-none transition-colors duration-200 group-hover:text-columbia-blue">
                     {isSelectAll ? "All" : member.name}
-                </label>
-            </div>
+                </p>
+            </label>
         );
     }
 
     return (
-        <div className="mb-2">
+        <div className="mb-4">
             <p className="mb-4 font-bold text-lg text-columbia-blue">
                 Select Participants:
             </p>
@@ -165,35 +195,37 @@ function UnequalBillShares({
     handleOpenCalculator,
 }) {
     return (
-        <div className="mb-2">
-            <p className="text-alice-blue mb-1">Assign shares:</p>
+        <div className="mb-4">
+            <p className="mb-4 font-bold text-lg text-columbia-blue">
+                Assign shares:
+            </p>
             <div className="flex flex-col gap-2">
                 {members.map((member) => {
-                    const inputRef = useRef(null);
+                    let inputRef = useRef(null);
                     return (
                         <div
                             key={member.id}
-                            className="flex items-center justify-between"
+                            className="flex items-center justify-between gap-2 sm:gap-4"
                         >
-                            <p className="text-alice-blue">{member.name}:</p>
-                            <div className="flex items-center gap-8 justify-end">
+                            <p className="text-alice-blue max-w-2/5">{member.name}:</p>
+                            <div className="flex items-center gap-2 sm:gap-4 justify-end">
                                 <input
                                     type="number"
                                     name={`share-${member.name}`}
-                                    className="ml-2 p-1 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue transition duration-200 border-b-honolulu-blue/80"
+                                    className="ml-2 p-1 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue transition duration-200 border-b-honolulu-blue/80 w-4/5"
                                     min="0"
                                     onChange={updateFormDetail}
                                     value={formData.shares[member.name] || ""}
                                     ref={inputRef}
                                 />
                                 <button
-                                    className="flex items-center justify-center text-sm h-10 w-10 text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 hover:text-columbia-blue"
+                                    className="flex items-center justify-center text-sm h-10 w-10 text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 hover:text-columbia-blue"
                                     onClick={() =>
-                                        handleOpenCalculator(inputRef)
+                                        handleOpenCalculator(inputRef.current)
                                     }
                                 >
                                     <CalculatorIcon
-                                        size={20}
+                                        size={22}
                                         strokeWidth={2.5}
                                         color={"var(--color-honolulu-blue)"}
                                     />
@@ -215,14 +247,11 @@ function BillFormButtons({ handleAddBill, resetForm, setShowForm }) {
                     resetForm();
                     setShowForm(false);
                 }}
-                className="bg-honolulu-blue/40 text-alice-blue font-medium py-2 px-6 rounded-full hover:scale-105 hover:cursor-pointer active:bg-honolulu-blue/70 transition"
+                className="tonal-button"
             >
                 Cancel
             </button>
-            <button
-                onClick={handleAddBill}
-                className="bg-columbia-blue text-oxford-blue font-medium py-2 px-6 rounded-full hover:scale-105 hover:cursor-pointer active:bg-columbia-blue/80 transition"
-            >
+            <button onClick={handleAddBill} className="fill-button">
                 Save
             </button>
         </div>
@@ -251,12 +280,36 @@ function BillFormPopup({
     };
 
     const handleSaveCalculator = (value) => {
+        console.log("Calculator returned value:", value);
+        console.log("Active input ref:", activeInputRef.current);
+
         if (activeInputRef.current) {
-            activeInputRef.current.value = value;
-            activeInputRef.current.dispatchEvent(
-                new Event("input", { bubbles: true })
-            );
+            const inputName = activeInputRef.current.name;
+
+            setFormData((prev) => {
+                // If input of amount
+                if (inputName === "amount") {
+                    return {
+                        ...prev,
+                        amount: value,
+                    };
+                }
+
+                // If input of share of member
+                if (inputName.startsWith("share-")) {
+                    const memberName = inputName.replace("share-", "");
+                    return {
+                        ...prev,
+                        shares: {
+                            ...prev.shares,
+                            [memberName]: value,
+                        },
+                    };
+                }
+                return prev;
+            });
         }
+
         setOpenCalculator(false);
     };
 
@@ -416,8 +469,8 @@ function BillFormPopup({
 
     return (
         <>
-            <div className="fixed inset-0 bg-rich-black/80 flex items-center justify-center z-50 px-4 sm:px-0 transition-opacity">
-                <div className="section-container max-w-md sm:max-w-lg px-6 sm:px-10">
+            <div className="fixed top-0 left-0 w-screen h-screen bg-rich-black/70 flex items-center justify-center z-50 px-4 sm:px-0 transition-opacity duration-300 backdrop-blur-xl">
+                <div className="section-container popup-container">
                     <h2 className="text-2xl font-extrabold text-columbia-blue mb-4">
                         Bill Details
                     </h2>

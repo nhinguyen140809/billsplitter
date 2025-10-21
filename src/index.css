@@ -19,12 +19,45 @@
     --color-columbia-blue: #b1e4fb;
     --color-alice-blue: #ecf8fe;
     --color-tea-rose: #ffadad;
-    --color-vanilla: #fff5b5;
-    --color-tea-green: #d6ffc2;
+    --color-light-orange: #FFD8B5;
+    --color-tea-green: #D4FFC2;
+    --color-dark-moss-green: #185200;
+    --color-drab-dark-brown: #3D3500;
     --color-white: #f0f0f0;
 }
+
 @layer components {
     .section-container {
-        @apply w-full h-fit max-w-4xl bg-rich-black border border-columbia-blue rounded-2xl p-4 py-6 flex flex-col sm:px-10 sm:py-10;
+        @apply w-full h-fit max-w-4xl bg-rich-black/20 border border-columbia-blue rounded-2xl p-4 py-6 flex flex-col sm:px-10 sm:py-10 backdrop-blur-md;
+        isolation: isolate;
+    }
+    .popup-container {
+        @apply sm:max-w-lg px-6 sm:px-10 backdrop-blur-xl;
+        isolation: isolate;
+    }
+    .tonal-button {
+        @apply flex items-center justify-center bg-honolulu-blue/40 text-alice-blue font-medium py-2 px-6 rounded-full hover:scale-105 hover:cursor-pointer active:bg-honolulu-blue/70 transition;
+    }
+    .fill-button {
+        @apply flex items-center justify-center bg-columbia-blue text-oxford-blue font-medium py-2 px-6 rounded-full hover:scale-105 hover:cursor-pointer active:bg-columbia-blue/80 transition;
+    }
+}
+
+@layer utilities {
+    @keyframes gradient {
+        0% {
+            background-position: 0% 100%;
+        }
+        50% {
+            background-position: 100% 0%;
+        }
+        100% {
+            background-position: 0% 100%;
+        }
+    }
+
+    .animated-gradient {
+        @apply bg-gradient-to-bl from-oxford-blue/95 to-rich-black bg-[length:200%_200%];
+        animation: gradient 60s ease infinite;
     }
 }

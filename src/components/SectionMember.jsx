@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Check } from "lucide-react";
 
 function SectionMember({ members, setMembers, onDone }) {
     const [name, setName] = useState("");
@@ -68,9 +68,13 @@ function SectionMember({ members, setMembers, onDone }) {
                     />
                     <button
                         onClick={handleAddMember}
-                        className="flex bg-columbia-blue/50 text-alice-blue justify-center font-extrabold items-center text-2xl rounded-full w-12 h-12 active:bg-columbia-blue/70 transition hover:scale-105 hover:cursor-pointer"
+                        className="tonal-button w-10 h-10 px-0 py-0"
                     >
-                        <Plus size={24} strokeWidth={3} color={"var(--color-alice-blue)"} />
+                        <Plus
+                            size={20}
+                            strokeWidth={2.5}
+                            color={"var(--color-alice-blue)"}
+                        />
                     </button>
                 </div>
             )}
@@ -83,7 +87,7 @@ function SectionMember({ members, setMembers, onDone }) {
                 {members.map((member) => (
                     <div
                         key={member.id}
-                        className="flex items-center bg-columbia-blue text-rich-black font-medium px-4 py-2 gap-4 rounded-full hover:shadow-md shadow-alice-blue/40 transition hover:scale-105"
+                        className="flex items-center bg-columbia-blue text-rich-black font-medium px-4 py-2 gap-3 rounded-full hover:shadow-md shadow-columbia-blue/40 transition hover:scale-105"
                     >
                         <span>{member.name}</span>
                         {!isLocked && (
@@ -91,23 +95,33 @@ function SectionMember({ members, setMembers, onDone }) {
                                 onClick={() => handleRemoveMember(member.id)}
                                 className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 w-6 h-6 flex items-center justify-center"
                             >
-                                <X size={20} strokeWidth={2.5} color={"var(--color-honolulu-blue)"} />
+                                <X
+                                    size={20}
+                                    strokeWidth={2.5}
+                                    color={"var(--color-honolulu-blue)"}
+                                />
                             </button>
                         )}
                     </div>
                 ))}
             </div>
 
-			{!isLocked && (
-				<div className="mt-8 text-right">
-					<button
-						onClick={handleDone}
-						className="bg-columbia-blue text-oxford-blue font-medium rounded-full px-10 py-2 active:bg-columbia-blue/80 transition hover:scale-105 hover:cursor-pointer"
-					>
-						Finish
-					</button>
-				</div>
-			)}
+            {!isLocked && (
+                <div className="mt-8 justify-end flex items-center">
+                    <button
+                        onClick={handleDone}
+                        className="fill-button shadow-columbia-blue/35 shadow-lg"
+                    >
+                        <Check
+                            size={20}
+                            strokeWidth={2.5}
+                            color={"var(--color-oxford-blue)"}
+                            className="inline mr-2"
+                        />
+                        Finish
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

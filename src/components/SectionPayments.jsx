@@ -1,5 +1,6 @@
 import solver from "javascript-lp-solver";
 import { useEffect, useState } from "react";
+import { ArrowUpRight, ArrowDownLeft } from "lucide-react";
 
 // Function to share bills among members
 const shareBillList = ({ members, bills, type }) => {
@@ -225,14 +226,14 @@ const calculateSettlements = ({
 function PaymentItem({ paymentList, type }) {
     //sender and receiver are just names. This function can be used for both types
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <>
             {Object.entries(paymentList).map(([senderName, receivers]) => (
                 <div
                     key={senderName}
-                    className="flex flex-col md:flex-row border border-columbia-blue rounded-2xl p-4 px-6 justify-start gap-4 hover:shadow-lg hover:shadow-columbia-blue/40 transition duration-400 hover:scale-102"
+                    className="flex flex-wrap border border-columbia-blue rounded-2xl p-4 px-6 justify-start gap-4 hover:shadow-lg hover:shadow-columbia-blue/40 transition duration-400 hover:scale-102"
                 >
                     {/* Sender name + type */}
-                    <div className="flex flex-row md:flex-col gap-4 sm:w-4/9 w-full">
+                    <div className="flex flex-row sm:flex-col gap-4 sm:w-4/9 w-full overflow-visible">
                         <div>
                             <p className="text-columbia-blue font-bold text-xl">
                                 {senderName}
@@ -240,10 +241,10 @@ function PaymentItem({ paymentList, type }) {
                         </div>
                         <div>
                             <p
-                                className={`text-oxford-blue font-bold ${
+                                className={`font-bold ${
                                     type === "sender"
-                                        ? "bg-vanilla/70"
-                                        : "bg-tea-green/70"
+                                        ? "bg-light-orange/30 text-light-orange"
+                                        : "bg-tea-green/30 text-tea-green"
                                 } px-4 py-1 rounded-full w-fit`}
                             >
                                 {type === "sender" ? "Sender" : "Receiver"}
@@ -252,10 +253,32 @@ function PaymentItem({ paymentList, type }) {
                     </div>
 
                     {/* Receiver list */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col gap-2">
                         {Object.entries(receivers).map(
                             ([receiverName, amount]) => (
-                                <div key={receiverName} className="flex gap-2">
+                                <div
+                                    key={receiverName}
+                                    className="flex flex-wrap gap-2 items-center"
+                                >
+                                    {type === "sender" ? (
+                                        <div className="flex items-center w-6 h-6 rounded-full bg-light-orange/20 justify-center">
+                                            <ArrowUpRight
+                                                size={20}
+                                                strokeWidth={2.5}
+                                                color={
+                                                    "var(--color-light-orange)"
+                                                }
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center w-6 h-6 rounded-full bg-tea-green/20 justify-center">
+                                            <ArrowDownLeft
+                                                size={20}
+                                                strokeWidth={2.5}
+                                                color={"var(--color-tea-green)"}
+                                            />
+                                        </div>
+                                    )}
                                     <p className="text-alice-blue">
                                         {receiverName}:
                                     </p>
@@ -268,7 +291,7 @@ function PaymentItem({ paymentList, type }) {
                     </div>
                 </div>
             ))}
-        </div>
+        </>
     );
 }
 
@@ -306,20 +329,22 @@ function SectionPayments({
                 Payments
             </h2>
             <div className="space-y-4 mt-4">
-                {sendPayments.map((paymentList, index) => (
-                    <PaymentItem
-                        key={index}
-                        paymentList={paymentList}
-                        type="sender"
-                    />
-                ))}
-                {receivePayments.map((paymentList, index) => (
-                    <PaymentItem
-                        key={index}
-                        paymentList={paymentList}
-                        type="receiver"
-                    />
-                ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {sendPayments.map((paymentList, index) => (
+                        <PaymentItem
+                            key={index}
+                            paymentList={paymentList}
+                            type="sender"
+                        />
+                    ))}
+                    {receivePayments.map((paymentList, index) => (
+                        <PaymentItem
+                            key={index}
+                            paymentList={paymentList}
+                            type="receiver"
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );

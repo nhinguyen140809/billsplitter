@@ -1,4 +1,4 @@
-import {Pencil, X} from "lucide-react"
+import { Pencil, X } from "lucide-react";
 function BillItems({
     bills,
     type,
@@ -31,27 +31,29 @@ function BillItems({
             });
             setIsEqual(true);
         } else {
-            setShowForm(true);  // To avoid useEffect timing issues
+            setShowForm(true); // To avoid useEffect timing issues
             setFormData({
                 id: bill.id,
                 name: bill.name,
                 payer: bill.payer,
                 amount: bill.amount,
-                shares: {...bill.shares},
+                shares: { ...bill.shares },
             });
             setIsEqual(false);
         }
     };
     function BillNameType({ bill, type }) {
         return (
-            <div className="flex flex-col sm:flex-row sm:items-center justify-top mb-4 gap-4 sm:gap-12">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-top mb-4 gap-4 lg:gap-12">
                 <h3 className="text-xl font-bold text-columbia-blue py-1">
                     {bill.name}
                 </h3>
                 <p
-                    className={`text-oxford-blue font-bold ${
-                        type === "equal" ? "bg-vanilla/70" : "bg-tea-green/70"
-                    } px-8 py-1 rounded-full w-fit`}
+                    className={`font-bold ${
+                        type === "equal"
+                            ? "bg-light-orange/30 text-light-orange"
+                            : "bg-tea-green/30 text-tea-green"
+                    } px-4 py-1 rounded-full w-fit`}
                 >
                     {type === "equal" ? "Equal" : "Unequal"}
                 </p>
@@ -61,15 +63,15 @@ function BillItems({
 
     function ModifyBillButtons({ bill, type }) {
         return (
-            <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-top mb-4 gap-2 sm:gap-4">
+            <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-top mb-4 gap-2 lg:gap-4">
                 <button
-                    className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 w-10 h-10 flex items-center justify-center"
+                    className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 w-10 h-10 flex items-center justify-center"
                     onClick={() => handleEditBill(bill, type)}
                 >
                     <Pencil size={20} />
                 </button>
                 <button
-                    className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 w-10 h-10 flex items-center justify-center"
+                    className="text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 w-10 h-10 flex items-center justify-center"
                     onClick={() => handleDeleteBill(bill, type)}
                 >
                     <X size={20} />
@@ -98,19 +100,27 @@ function BillItems({
     }
     function UnequalBillShares({ bill }) {
         return (
-            <div className="mt-2">
-                <p className="text-alice-blue mb-1">Shares:</p>
-                <ul className="list-disc list-inside pl-4">
-                    {Object.entries(bill.shares).map(([member, share]) => (
-                        <li
-                            key={member}
-                            className="text-columbia-blue font-medium"
-                        >
-                            {member}: {share}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <>
+                <div className="flex gap-2 mt-2">
+                    <p className="text-alice-blue">Amount:</p>
+                    <p className="text-columbia-blue font-medium">
+                        {bill.amount}
+                    </p>
+                </div>
+                <div className="mt-2">
+                    <p className="text-alice-blue mb-1">Shares:</p>
+                    <ul className="list-disc list-inside pl-4">
+                        {Object.entries(bill.shares).map(([member, share]) => (
+                            <li
+                                key={member}
+                                className="text-columbia-blue font-medium"
+                            >
+                                {member}: {share}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </>
         );
     }
 
