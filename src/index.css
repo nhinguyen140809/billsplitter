@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme base {
+    /* --color-black: #000000; */
+    /* --color-oxford-blue: #14213dff; */
+    /* --color-orange-web: #fca311ff; */
+    /* --color-platinum: #e5e5e5ff; */
+    /* --color-white: #333333; */
+
+    /* --color-rich-black: #00072d; */
+    /* --color-oxford-blue: #001d3dff; */
+    /* --color-yale-blue: #003566ff; */
+    /* --color-mikado-yellow: #a6e1fa; */
+    /* --color-gold: #ffd60aff; */
+
+    --color-rich-black: #000314;
+    --color-oxford-blue: #00192c;
+    --color-honolulu-blue: #0f77bd;
+    --color-columbia-blue: #b1e4fb;
+    --color-alice-blue: #ecf8fe;
+    --color-tea-rose: #ffadad;
+    --color-light-orange: #FFD8B5;
+    --color-tea-green: #D4FFC2;
+    --color-dark-moss-green: #185200;
+    --color-drab-dark-brown: #3D3500;
+    --color-white: #f0f0f0;
+}
+
+@layer components {
+    .section-container {
+        @apply w-full h-fit max-w-4xl bg-rich-black/20 border border-columbia-blue rounded-2xl p-4 py-6 flex flex-col sm:px-10 sm:py-10 backdrop-blur-md;
+        isolation: isolate;
+    }
+    .popup-container {
+        @apply sm:max-w-lg px-6 sm:px-10 backdrop-blur-xl;
+        isolation: isolate;
+    }
+    .tonal-button {
+        @apply flex items-center justify-center bg-honolulu-blue/40 text-alice-blue font-medium py-2 px-6 rounded-full hover:scale-105 hover:cursor-pointer active:bg-honolulu-blue/70 transition;
+    }
+    .fill-button {
+        @apply flex items-center justify-center bg-columbia-blue text-oxford-blue font-medium py-2 px-6 rounded-full hover:scale-105 hover:cursor-pointer active:bg-columbia-blue/80 transition;
+    }
+}
+
+@layer utilities {
+    @keyframes gradient {
+        0% {
+            background-position: 0% 100%;
+        }
+        50% {
+            background-position: 100% 0%;
+        }
+        100% {
+            background-position: 0% 100%;
+        }
+    }
+
+    .animated-gradient {
+        @apply bg-gradient-to-bl from-oxford-blue/95 to-rich-black bg-[length:200%_200%];
+        animation: gradient 60s ease infinite;
+    }
+}
