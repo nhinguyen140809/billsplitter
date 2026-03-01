@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import "./App.css";
-import SectionMember from "./components/SectionMember";
-import SectionBill from "./components/SectionBill";
-import SectionPayments from "./components/SectionPayments";
+import SectionMember from "./SectionMember";
+import SectionBill from "./SectionBill";
+import SectionPayments from "./SectionPayments";
 import { Github } from "lucide-react";
+import { ThemeProvider } from "@/components/theme-provider";
 
 function App() {
     const [currentSection, setCurrentSection] = useState("members");
@@ -37,11 +38,12 @@ function App() {
         );
     }
     return (
-        <div
-            className="static overflow-visible min-h-screen
-            flex flex-col items-center justify-start
-            px-4 sm:px-8 pt-8 pb-8 space-y-8 animated-gradient"
-        >
+        <ThemeProvider>
+            <div
+                className="static overflow-visible min-h-screen
+                flex flex-col items-center justify-start
+                px-4 sm:px-8 pt-8 pb-8 space-y-8 animated-gradient"
+            >
             <AppTitle />
             <SectionMember
                 members={members}
@@ -70,6 +72,7 @@ function App() {
                 setCalculationState={setCalculationState}
             />
         </div>
+    </ThemeProvider>
     );
 }
 
