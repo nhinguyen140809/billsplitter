@@ -8,7 +8,7 @@ import {
     UserRound,
 } from "lucide-react";
 
-function BillNameInput({ formData, updateFormDetail }) {
+function BillNameInput({ formData, updateFormDetail }:{}) {
     return (
         <div className="mb-2">
             <input

@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import BillItems from "./BillItems";
-import BillFormPopup from "./BillForm";
+import BillList from "./components/BillIList";
+import BillFormPopup from "./components/BillForm";
 import { Check, Plus } from "lucide-react";
+import type { Member, Bill } from "@/types";
+import { Section } from "@/components/shared/Section";
+import { Button } from "@/components/ui/button";
 
 function SectionBill({
     members,
@@ -40,28 +43,26 @@ function SectionBill({
 
     return (
         <>
-            <div className="section-container">
-                <h2 className="text-3xl font-extrabold text-columbia-blue mb-4">
-                    Bills
-                </h2>
-                {currentSection !== "members" && (
-                    <div className="flex justify-end py-2">
-                        <button
-                            className="tonal-button"
-                            onClick={() => setShowForm(true)}
-                        >
-                            <Plus
-                                size={20}
-                                strokeWidth={2.5}
-                                color={"var(--color-alice-blue)"}
-                                className="inline mr-2"
-                            />
-                            Add bill
-                        </button>
-                    </div>
-                )}
+            <Section
+                title="Bills"
+                status={currentSection !== "members" ? "enabled" : "disabled"}
+            >
+                <div className="flex justify-end py-2">
+                    <Button
+                        variant="secondary"
+                        onClick={() => setShowForm(true)}
+                    >
+                        <Plus
+                            size={20}
+                            strokeWidth={2.5}
+                            color={"var(--color-alice-blue)"}
+                            className="inline mr-2"
+                        />
+                        Add bill
+                    </Button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <BillItems
+                    <BillList
                         bills={equalBills}
                         type="equal"
                         setEqualBills={setEqualBills}
@@ -70,7 +71,7 @@ function SectionBill({
                         setShowForm={setShowForm}
                         setIsEqual={setIsEqual}
                     />
-                    <BillItems
+                    <BillList
                         bills={unequalBills}
                         type="unequal"
                         setEqualBills={setEqualBills}
@@ -80,14 +81,13 @@ function SectionBill({
                         setIsEqual={setIsEqual}
                     />
                 </div>
-                {currentSection !== "members" && (
                     <div className="mt-8 justify-between flex items-center">
                         <div className="text-tea-rose">
                             {errorMessage && <p>{errorMessage}</p>}
                         </div>
-                        <button
+                        <Button
                             onClick={handleDone}
-                            className="fill-button shadow-columbia-blue/35 shadow-lg"
+                            variant="default"
                         >
                             <Check
                                 size={20}
@@ -96,10 +96,9 @@ function SectionBill({
                                 className="inline mr-2"
                             />
                             Finish
-                        </button>
+                        </Button>
                     </div>
-                )}
-            </div>
+            </Section>
             {showForm && (
                 <BillFormPopup
                     members={members}

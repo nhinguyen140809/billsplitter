@@ -1,5 +1,5 @@
 import { Pencil, X } from "lucide-react";
-function BillItems({
+function BillList({
     bills,
     type,
     setEqualBills,
@@ -147,4 +147,4 @@ function BillItems({
     ));
 }
 
-export default BillItems;
+export default BillList;
