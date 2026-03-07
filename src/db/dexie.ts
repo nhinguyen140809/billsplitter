@@ -1,23 +1,18 @@
 import Dexie from "dexie";
 import type { Table } from "dexie";
-
-export interface Transaction {
-  id?: number;
-  groupId: string;
-  from: string;
-  to: string;
-  amount: number;
-}
+import type { DraftSettlement, Settlement } from "@/types";
 
 export class BillSplitterDB extends Dexie {
-  transactions!: Table<Transaction>;
+    settlements!: Table<Settlement>;
+    draftSettlement!: Table<DraftSettlement>;
 
-  constructor() {
-    super("billSplitterDB");
-    this.version(1).stores({
-      transactions: "++id, groupId, from, to",
-    });
-  }
+    constructor() {
+        super("billSplitterDB");
+        this.version(1).stores({
+            settlements: "id, updatedAt",
+			draftSettlement: "id",
+        });
+    }
 }
 
 export const db = new BillSplitterDB();

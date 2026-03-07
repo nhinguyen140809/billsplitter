@@ -2,11 +2,8 @@ import { Pencil, X } from "lucide-react";
 function BillList({
     bills,
     type,
-    setEqualBills,
-    setUnequalBills,
-    setFormData,
-    setShowForm,
-    setIsEqual,
+    onDelete,
+    onEdit,
 }) {
     const handleDeleteBill = (bill, type) => {
         if (type === "equal") {

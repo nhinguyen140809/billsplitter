@@ -1,245 +1,23 @@
 import { useState, useEffect } from "react";
 import Calculator from "./Calculator";
 import { useRef } from "react";
-import {
-    Calculator as CalculatorIcon,
-    Check,
-    Banknote,
-    UserRound,
-} from "lucide-react";
+import BillNameInput from "./BillNameInput";
+import BillTypeButtons from "./BillTypeButtons";
+import BillPayerSelector from "./BillPayerSelector";
+import { EqualBillAmount, EqualBillParticipants } from "./EqualBill";
+import type { Member } from "@/types";
 
-function BillNameInput({ formData, updateFormDetail }:{}) {
-    return (
-        <div className="mb-2">
-            <input
-                type="text"
-                name="name"
-                placeholder="Bill name"
-                className="w-full p-2 font-bold text-xl bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-4 transition duration-200 border-b-honolulu-blue/80"
-                value={formData.name}
-                onChange={updateFormDetail}
-            />
-        </div>
-    );
-}
 
-function BillTypeButtons({ isEqual, setIsEqual }) {
-    return (
-        <div className="flex mb-4 gap-4">
-            {["Equal", "Unequal"].map((type) => {
-                return (
-                    <button
-                        key={type}
-                        className={`px-4 sm:px-8 py-2 rounded-full border border-columbia-blue font-medium ${
-                            isEqual === (type === "Equal")
-                                ? "bg-columbia-blue text-oxford-blue"
-                                : "bg-rich-black text-alice-blue"
-                        }`}
-                        onClick={() => setIsEqual(type === "Equal")}
-                    >
-                        {type}
-                    </button>
-                );
-            })}
-        </div>
-    );
-}
 
-function BillPayerSelect({ members, formData, updateFormDetail }) {
-    return (
-        <div className="mb-4 flex items-center">
-            <div className="flex items-center justify-center h-10 w-10 rounded-full mr-4">
-                <UserRound
-                    size={22}
-                    strokeWidth={2.5}
-                    color={"var(--color-columbia-blue)"}
-                    className="inline"
-                />
-            </div>
-            <select
-                name="payer"
-                value={formData.payer}
-                placeholder="Select payer"
-                onChange={updateFormDetail}
-                className={`w-full p-2 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-2 transition duration-200 border-b-honolulu-blue/80 ${
-                    formData.payer === "" ? "text-gray-400" : "text-alice-blue"
-                }`}
-            >
-                <option value="" disabled hidden>
-                    Paid by...
-                </option>
-                {members.map((member) => (
-                    <option key={member.id} value={member.name}>
-                        {member.name}
-                    </option>
-                ))}
-            </select>
-        </div>
-    );
-}
 
-function EqualBillAmount({ formData, updateFormDetail, handleOpenCalculator }) {
-    let inputRef = useRef(null);
-    return (
-        <div className="flex mb-4 gap-4 justify-between items-center">
-            <div className="flex items-center justify-center h-10 w-10 rounded-full">
-                <Banknote
-                    size={24}
-                    strokeWidth={2.5}
-                    color={"var(--color-columbia-blue)"}
-                    className="inline"
-                />
-            </div>
-            <input
-                type="number"
-                name="amount"
-                placeholder="Total amount"
-                className="w-4/5 p-2 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue mb-2 transition duration-200 border-b-honolulu-blue/80"
-                value={formData.amount}
-                onChange={updateFormDetail}
-                min="0"
-                ref={inputRef}
-            />
-            <button
-                className="flex items-center justify-center h-10 w-10 text-honolulu-blue hover:font-black transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 hover:text-columbia-blue"
-                onClick={() => handleOpenCalculator(inputRef.current)}
-            >
-                <CalculatorIcon
-                    size={22}
-                    strokeWidth={2.5}
-                    color={"var(--color-honolulu-blue)"}
-                />
-            </button>
-        </div>
-    );
-}
 
-function EqualBillParticipants({
-    members,
-    formData,
-    setFormData,
-    updateFormDetail,
-    selectedAll,
-    setSelectedAll,
-}) {
-    const toggleAllShares = (checked) => {
-        // For "Select All" checkbox
-        if (checked) {
-            const newShares = {};
-            members.forEach((member) => {
-                newShares[member.name] = checked ? 1 : 0;
-            });
-            setFormData((prev) => ({ ...prev, shares: newShares }));
-        }
-        setSelectedAll(checked);
-    };
-
-    function checkboxItem(member, isSelectAll) {
-        return (
-            <label
-                className="relative group flex items-center gap-3 px-4 transition-all cursor-pointer"
-                key={member.id}
-            >
-                <input
-                    type="checkbox"
-                    name={
-                        isSelectAll
-                            ? "select-all"
-                            : `participant-${member.name}`
-                    }
-                    className="accent-honolulu-blue w-4 h-4 cursor-pointer transition-all group-hover:scale-120 focus:ring-0 rounded-lg hidden peer"
-                    onChange={
-                        isSelectAll
-                            ? (e) => toggleAllShares(e.target.checked)
-                            : updateFormDetail
-                    }
-                    checked={
-                        isSelectAll
-                            ? selectedAll
-                            : formData.shares[member.name] > 0
-                    }
-                />
-                <span className="w-5 h-5 rounded-full border-2 border-honolulu-blue flex items-center justify-center transition-all duration-200 peer-checked:bg-honolulu-blue peer-checked:border-honolulu-blue peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100">
-                    <Check
-                        size={14}
-                        strokeWidth={4}
-                        color={"var(--color-alice-blue)"}
-                        className="opacity-0 scale-75 transition-all duration-200"
-                    />
-                </span>
-
-                <p className="text-alice-blue font-medium select-none transition-colors duration-200 group-hover:text-columbia-blue">
-                    {isSelectAll ? "All" : member.name}
-                </p>
-            </label>
-        );
+function BillFormButtons({ handleAddBill, resetForm, setShowForm }:
+    {
+        handleAddBill: (e: React.FormEvent<HTMLFormElement>) => void;
+        resetForm: () => void;
+        setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
     }
-
-    return (
-        <div className="mb-4">
-            <p className="mb-4 font-bold text-lg text-columbia-blue">
-                Select Participants:
-            </p>
-            <div className="flex flex-col gap-2">
-                {checkboxItem({ id: "select-all" }, true)}
-                {members.map((member) => checkboxItem(member, false))}
-            </div>
-        </div>
-    );
-}
-
-function UnequalBillShares({
-    members,
-    formData,
-    updateFormDetail,
-    handleOpenCalculator,
-}) {
-    return (
-        <div className="mb-4">
-            <p className="mb-4 font-bold text-lg text-columbia-blue">
-                Assign shares:
-            </p>
-            <div className="flex flex-col gap-2">
-                {members.map((member) => {
-                    let inputRef = useRef(null);
-                    return (
-                        <div
-                            key={member.id}
-                            className="flex items-center justify-between gap-2 sm:gap-4"
-                        >
-                            <p className="text-alice-blue max-w-2/5">{member.name}:</p>
-                            <div className="flex items-center gap-2 sm:gap-4 justify-end">
-                                <input
-                                    type="number"
-                                    name={`share-${member.name}`}
-                                    className="ml-2 p-1 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue transition duration-200 border-b-honolulu-blue/80 w-4/5"
-                                    min="0"
-                                    onChange={updateFormDetail}
-                                    value={formData.shares[member.name] || ""}
-                                    ref={inputRef}
-                                />
-                                <button
-                                    className="flex items-center justify-center text-sm h-10 w-10 text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 hover:text-columbia-blue"
-                                    onClick={() =>
-                                        handleOpenCalculator(inputRef.current)
-                                    }
-                                >
-                                    <CalculatorIcon
-                                        size={22}
-                                        strokeWidth={2.5}
-                                        color={"var(--color-honolulu-blue)"}
-                                    />
-                                </button>
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-    );
-}
-
-function BillFormButtons({ handleAddBill, resetForm, setShowForm }) {
+) {
     return (
         <div className="flex justify-end gap-4 mt-4">
             <button
@@ -266,20 +44,19 @@ function BillFormPopup({
     setUnequalBills,
     formData,
     setFormData,
-    isEqual,
-    setIsEqual,
 }) {
-    const [formErrorMessage, setFormErrorMessage] = useState("");
-    const [selectedAll, setSelectedAll] = useState(false);
-    const activeInputRef = useRef(null);
-    const [openCalculator, setOpenCalculator] = useState(false);
+    const [formErrorMessage, setFormErrorMessage] = useState<string>("");
+    const [selectedAll, setSelectedAll] = useState<boolean>(false);
+    const activeInputRef = useRef<HTMLInputElement | null>(null);
+    const [openCalculator, setOpenCalculator] = useState<boolean>(false);
 
-    const handleOpenCalculator = (inputRef) => {
+    const handleOpenCalculator = (inputRef: HTMLInputElement | null) => {
+        if (!inputRef || !activeInputRef.current) return;
         activeInputRef.current = inputRef;
         setOpenCalculator(true);
     };
 
-    const handleSaveCalculator = (value) => {
+    const handleSaveCalculator = (value: string) => {
         console.log("Calculator returned value:", value);
         console.log("Active input ref:", activeInputRef.current);
 
@@ -322,11 +99,11 @@ function BillFormPopup({
             shares: {},
         });
         setFormErrorMessage("");
-        setIsEqual(true);
+        // setIsEqual(true);
     };
 
     // Update form data based on input changes
-    const updateFormDetail = (e) => {
+    const updateFormDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         if (name.startsWith("share-")) {
             // For unequal shares input
@@ -355,7 +132,7 @@ function BillFormPopup({
         }
     };
 
-    const handleAddBill = (e) => {
+    const handleAddBill = (e: React.FormEvent<HTMLFormElement>) => {
         console.log("Adding bill...", { formData });
         e.preventDefault();
         const { id, name, payer, amount, shares } = formData;
@@ -368,10 +145,10 @@ function BillFormPopup({
             billName = "Bill #" + Math.floor(Math.random() * 1000);
         }
         const selectedParticipants = Object.keys(shares).filter(
-            (memberName) => shares[memberName] > 0 // For both case (unequal and equal)
+            (memberName) => shares[memberName] > 0, // For both case (unequal and equal)
         );
         const hasNegativeShare = Object.values(shares).some(
-            (value) => value < 0
+            (value) => value < 0,
         );
         if (hasNegativeShare) {
             setFormErrorMessage("Invalid amount: shares cannot be negative.");
@@ -394,11 +171,11 @@ function BillFormPopup({
                                   amount: amount,
                                   participants: selectedParticipants,
                               }
-                            : bill
-                    )
+                            : bill,
+                    ),
                 );
                 setUnequalBills((prev) =>
-                    prev.filter((bill) => bill.id !== id)
+                    prev.filter((bill) => bill.id !== id),
                 ); // Remove from unequal bills if exists
             } else {
                 // Adding new bill
@@ -414,7 +191,7 @@ function BillFormPopup({
         } else {
             const totalShares = selectedParticipants.reduce(
                 (sum, member) => sum + (shares[member] || 0),
-                0
+                0,
             );
             if (totalShares === 0) {
                 setFormErrorMessage("Please assign shares to participants.");
@@ -435,11 +212,11 @@ function BillFormPopup({
                                           ...obj,
                                           [member]: shares[member] || 0,
                                       }),
-                                      {}
+                                      {},
                                   ),
                               }
-                            : bill
-                    )
+                            : bill,
+                    ),
                 );
                 setEqualBills((prev) => prev.filter((bill) => bill.id !== id)); // Remove from equal bills if exists
             } else {
@@ -454,7 +231,7 @@ function BillFormPopup({
                             ...obj,
                             [member]: shares[member] || 0,
                         }),
-                        {}
+                        {},
                     ),
                 };
                 setUnequalBills((prev) => [...prev, newBill]);
@@ -482,7 +259,7 @@ function BillFormPopup({
                         isEqual={isEqual}
                         setIsEqual={setIsEqual}
                     />
-                    <BillPayerSelect
+                    <BillPayerSelector
                         members={members}
                         formData={formData}
                         updateFormDetail={updateFormDetail}

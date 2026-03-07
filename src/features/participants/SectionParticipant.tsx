@@ -1,49 +1,38 @@
-import { useState} from "react";
+import { useState } from "react";
 import { Check } from "lucide-react";
 import { Section } from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
 import type { Member } from "@/types";
 import NameInput from "./components/NameInput";
 import ParticipantList from "./components/ParticipantList";
-
-
+import { useMembers } from "./hooks/useMembers";
 
 function SectionParticipant({
-    members,
-    setMembers,
     onDone,
 }: {
     members: Member[];
     setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
     onDone: () => void;
 }) {
+    const { members, addMember, removeMember } = useMembers();
+
     const [name, setName] = useState<string>("");
     const [inputNameError, setInputNameError] = useState<string | false>(false);
     const [isLocked, setIsLocked] = useState<boolean>(false);
 
     const handleAddMember = () => {
-        if (name) {
-            for (let member of members) {
-                if (member.name === name) {
-                    setInputNameError("Name already exists");
-                    return;
-                }
-            }
-            setInputNameError(false);
-            setMembers([
-                ...members,
-                { id: crypto.randomUUID(), name: name, paid: 0, spent: 0 },
-            ]);
-            setName("");
-        } else {
-            setInputNameError("Name cannot be empty");
+        try {
+            addMember(name);
+        } catch (error) {
+            setInputNameError((error as Error).message);
+            return;
         }
+        setInputNameError(false);
+        setName("");
     };
 
     const handleRemoveMember = (id: string) => {
-        setMembers((prev: Member[]) =>
-            prev.filter((member) => member.id !== id),
-        );
+        removeMember(id);
     };
 
     const handleDone = () => {

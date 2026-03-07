@@ -4,30 +4,31 @@ import SectionPayments from "@/features/payments/SectionPayments";
 import type { Member } from "@/types";
 import { useState } from "react";
 import AppHeader from "@/components/shared/AppHeader";
+import { useDraftSettlement } from "@/hooks/useDraftSettlement";
 
 export default function HomePage() {
-    const [currentSection, setCurrentSection] = useState("members");
-    const [members, setMembers] = useState<Member[]>([]);
-    const [equalBills, setEqualBills] = useState([]);
-    const [unequalBills, setUnequalBills] = useState([]);
+    const { draft, saveDraft, updateDraft, clearDraft } = useDraftSettlement();
     const [calculationState, setCalculationState] = useState(false);
     return (
         <>
             <AppHeader />
             <SectionParticipant
-                members={members}
-                setMembers={setMembers}
-                onDone={() => setCurrentSection("bills")}
+                members={draft.members}
+                updateMembers={(members: Member[]) =>
+                    saveDraft({ ...draft, members })
+                }
+                onDone={() =>
+                    saveDraft({ ...draft, status: "bill" })
+                }
             />
-            <SectionBill 
-                members={members}
-                equalBills={equalBills}
-                setEqualBills={setEqualBills}
-                unequalBills={unequalBills}
-                setUnequalBills={setUnequalBills}
-                currentSection={currentSection}
-                onDone={() => setCurrentSection("payments")}
-            />
+            {/* <SectionBill 
+                members={draftSettlement.members}
+                equalBills={draftSettlement.equalBills}
+                unequalBills={draftSettlement.unequalBills}
+                setUnequalBills={(unequalBills) => setDraftSettlement({ ...draftSettlement, unequalBills })}
+                currentSection={draftSettlement.status}
+                onDone={() => setDraftSettlement({ ...draftSettlement, status: "payment" })}
+            />*/}
             {/* <SectionPayments /> */}
         </>
     );

@@ -5,18 +5,23 @@ import { Check, Plus } from "lucide-react";
 import type { Member, Bill } from "@/types";
 import { Section } from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
+import { useBills } from "./hooks/useBills";
 
-function SectionBill({
-    members,
-    equalBills,
-    setEqualBills,
-    unequalBills,
-    setUnequalBills,
-    onDone,
-    currentSection,
-}) {
+function SectionBill({ members, onDone, currentSection }) {
+    const {
+        equalBills,
+        unequalBills,
+        loading,
+        addEqualBill,
+        addUnequalBill,
+        deleteEqualBill,
+        deleteUnequalBill,
+    } = useBills();
+
+
+
     const [showForm, setShowForm] = useState(false);
-    const [isEqual, setIsEqual] = useState(true);
+    // const [isEqual, setIsEqual] = useState(true);
     const [formData, setFormData] = useState({
         id: "",
         name: "",
@@ -81,23 +86,20 @@ function SectionBill({
                         setIsEqual={setIsEqual}
                     />
                 </div>
-                    <div className="mt-8 justify-between flex items-center">
-                        <div className="text-tea-rose">
-                            {errorMessage && <p>{errorMessage}</p>}
-                        </div>
-                        <Button
-                            onClick={handleDone}
-                            variant="default"
-                        >
-                            <Check
-                                size={20}
-                                strokeWidth={2.5}
-                                color={"var(--color-oxford-blue)"}
-                                className="inline mr-2"
-                            />
-                            Finish
-                        </Button>
+                <div className="mt-8 justify-between flex items-center">
+                    <div className="text-tea-rose">
+                        {errorMessage && <p>{errorMessage}</p>}
                     </div>
+                    <Button onClick={handleDone} variant="default">
+                        <Check
+                            size={20}
+                            strokeWidth={2.5}
+                            color={"var(--color-oxford-blue)"}
+                            className="inline mr-2"
+                        />
+                        Finish
+                    </Button>
+                </div>
             </Section>
             {showForm && (
                 <BillFormPopup
