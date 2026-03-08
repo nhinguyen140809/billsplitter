@@ -1,63 +1,63 @@
 import { useState, useRef } from "react";
-import type { BillFormData } from "../types";
-import type { Bill } from "@/types";
+import type { Bill, BillType } from "@/types";
 
 export function useBillForm(
-    setEqualBills: React.Dispatch<React.SetStateAction<Bill[]>>,
-    setUnequalBills: React.Dispatch<React.SetStateAction<Bill[]>>,
-    setShowForm: React.Dispatch<React.SetStateAction<boolean>>,
+    onSubmitBillForm: (bill: Bill, type: BillType) => void,
+    onClose: () => void,
 ) {
-    const [formData, setFormData] = useState<BillFormData>({
+    const [formData, setFormData] = useState<Bill>({
         id: "",
         name: "",
         payer: "",
         amount: 0,
         shares: {},
     });
-    const [errorMessage, setErrorMessage] = useState("");
-    const [selectAll, setSelectAll] = useState(false);
-    const activeInputRef = useRef<HTMLInputElement | null>(null);
-    const [openCalculator, setOpenCalculator] = useState<boolean>(false);
-    const [isEqual, setIsEqual] = useState(true);
+    const [formErrorMessage, setFormErrorMessage] = useState<string>("");
+    const [calculatorOpened, setCalculatorOpened] = useState<boolean>(false);
+    const [isEqual, setIsEqual] = useState<boolean>(true);
+    
+    const selectAll = Object.values(formData.shares).every(v => v > 0);
 
-    const handleOpenCalculator = (inputRef: HTMLInputElement | null) => {
+    const activeInputRef = useRef<HTMLInputElement | null>(null);
+
+    const openCalculator = (inputRef: HTMLInputElement | null) => {
         if (!inputRef || !activeInputRef.current) return;
         activeInputRef.current = inputRef;
-        setOpenCalculator(true);
+        setCalculatorOpened(true);
     };
 
-    const handleSaveCalculator = (value: string) => {
+    const saveCalculator = (value: string) => {
         console.log("Calculator returned value:", value);
         console.log("Active input ref:", activeInputRef.current);
 
         if (activeInputRef.current) {
             const inputName = activeInputRef.current.name;
 
-            setFormData((prev) => {
+            setFormData((prev: Bill) => {
                 // If input of amount
                 if (inputName === "amount") {
                     return {
                         ...prev,
-                        amount: value,
-                    };
+                        amount: parseFloat(value),
+                    } as Bill;
                 }
 
                 // If input of share of member
-                if (inputName.startsWith("share-")) {
-                    const memberName = inputName.replace("share-", "");
+                if (inputName.startsWith("unequal-share-")) {
+                    const memberName = inputName.replace("unequal-share-", "");
                     return {
                         ...prev,
                         shares: {
                             ...prev.shares,
-                            [memberName]: value,
+                            [memberName]: parseFloat(value),
                         },
-                    };
+                    } as Bill;
                 }
                 return prev;
             });
         }
 
-        setOpenCalculator(false);
+        setCalculatorOpened(false);
     };
 
     const resetForm = () => {
@@ -67,40 +67,137 @@ export function useBillForm(
             payer: "",
             amount: 0,
             shares: {},
-        });
-        setErrorMessage("");
+        } as Bill);
+        setFormErrorMessage("");
         setIsEqual(true);
     };
 
     // Update form data based on input changes
-    const updateFormDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updateFormFieldWrapper = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
-        if (name.startsWith("share-")) {
-            // For unequal shares input
-            const memberName = name.replace("share-", "");
-            setFormData((prev) => ({
-                ...prev,
-                shares: {
-                    ...prev.shares,
-                    [memberName]: parseFloat(value) || 0,
-                },
-            }));
-        } else if (name.startsWith("participant-")) {
-            // For equal participants checkbox
-            const memberName = name.replace("participant-", "");
-            setFormData((prev) => ({
-                ...prev,
-                shares: { ...prev.shares, [memberName]: checked ? 1 : 0 },
-            }));
-            if (!checked) setSelectAll(false);
-        } else {
-            // For other inputs
-            setFormData((prev) => ({
-                ...prev,
-                [name]: type === "number" ? parseFloat(value) : value,
-            }));
+
+        if (name.startsWith("unequal-share-")) {
+            const member = name.replace("unequal-share-", "");
+            updateShare(member, parseFloat(value) || 0);
+            return;
         }
+
+        if (name.startsWith("equal-share-")) {
+            const member = name.replace("equal-share-", "");
+            updateShare(member, checked ? 1 : 0);
+            return;
+        }
+
+        const parsedValue =
+            type === "checkbox"
+                ? checked
+                : type === "number"
+                  ? parseFloat(value)
+                  : value;
+
+        updateFormField(name as keyof Bill, parsedValue as any);
     };
 
-    
+    const updateShare = (member: string, value: number) => {
+        setFormData((prev) => ({
+            ...prev,
+            shares: {
+                ...prev.shares,
+                [member]: value,
+            },
+        }));
+    };
+
+    const updateFormField = <K extends keyof Bill>(name: K, value: Bill[K]) => {
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmitForm = () => {
+        // Basic validation
+        const { id, name, payer, amount, shares } = formData;
+        if (!payer) {
+            setFormErrorMessage("Please select a payer.");
+            return;
+        }
+        if (isEqual && (amount <= 0 || !amount)) {
+            setFormErrorMessage("Please enter a valid amount.");
+            return;
+        }
+
+        let billName = name;
+        if (!billName.trim()) {
+            billName = `Bill #${Math.floor(Math.random() * 1000)}`;
+        }
+
+        const selectedParticipants = Object.keys(shares).filter(
+            (member) => shares[member] > 0,
+        );
+        if (selectedParticipants.length === 0) {
+            setFormErrorMessage("Please select at least one participant.");
+            return;
+        }
+
+        const hasNegativeShare = Object.values(shares).some(
+            (value) => value < 0,
+        );
+        if (hasNegativeShare) {
+            setFormErrorMessage("Invalid amount: shares cannot be negative.");
+            return;
+        }
+
+        if (!isEqual) {
+            const totalShares = Object.values(shares).reduce(
+                (sum, value) => sum + value,
+                0,
+            );
+            if (totalShares === 0) {
+                setFormErrorMessage("Total shares must be greater than zero.");
+                return;
+            }
+        }
+
+        onSubmitBillForm(
+            {
+                id,
+                name: billName,
+                payer,
+                amount,
+                shares,
+            },
+            isEqual ? "equal" : "unequal",
+        );
+
+        resetForm();
+    };
+
+    const handleCloseForm = () => {
+        resetForm();
+        onClose();
+    };
+
+    const setSelectedBill = (bill: Bill, type: BillType) => {
+        setFormData(bill);
+        setIsEqual(type === "equal");
+    };
+
+    return {
+        formData,
+        formErrorMessage,
+        selectAll,
+        isEqual,
+        calculatorOpened,
+        setIsEqual,
+        updateFormField,
+        updateFormFieldWrapper,
+        setFormErrorMessage,
+        openCalculator,
+        saveCalculator,
+        closeCalculator: () => setCalculatorOpened(false),
+        handleSubmitForm,
+        handleCloseForm,
+        setSelectedBill,
+    };
 }

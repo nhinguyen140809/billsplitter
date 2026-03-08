@@ -1,12 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { useBillFormContext } from "../context/BillFormContext";
 
-export default function BillTypeButtons({
-    isEqual,
-    setIsEqual,
-}: {
-    isEqual: boolean;
-    setIsEqual: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function BillTypeButtons() {
+    const { isEqual, setIsEqual } = useBillFormContext();
     return (
         <div className="flex mb-4 gap-4">
             {["Equal", "Unequal"].map((type) => {

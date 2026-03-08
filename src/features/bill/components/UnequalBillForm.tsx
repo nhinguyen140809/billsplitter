@@ -1,20 +1,12 @@
 import { CalculatorIcon } from "lucide-react";
-import type { BillFormData } from "../types";
 import { useRef } from "react";
 import type { Member } from "@/types";
+import { useBillFormContext } from "../context/BillFormContext";
 
+function UnequalBillShares({ members }: { members: Member[] }) {
+    const { formData, updateFormFieldWrapper, openCalculator } =
+        useBillFormContext();
 
-function UnequalBillShares({
-    members,
-    formData,
-    updateFormDetail,
-    handleOpenCalculator,
-}: {
-    members: Member[];
-    formData: BillFormData;
-    updateFormDetail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleOpenCalculator: (inputRef: HTMLInputElement | null) => void;
-}) {
     return (
         <div className="mb-4">
             <p className="mb-4 font-bold text-lg text-columbia-blue">
@@ -34,17 +26,17 @@ function UnequalBillShares({
                             <div className="flex items-center gap-2 sm:gap-4 justify-end">
                                 <input
                                     type="number"
-                                    name={`share-${member.name}`}
+                                    name={`unequal-share-${member.name}`}
                                     className="ml-2 p-1 bg-rich-black text-alice-blue outline-none border-b-2 focus:border-b-columbia-blue transition duration-200 border-b-honolulu-blue/80 w-4/5"
                                     min="0"
-                                    onChange={updateFormDetail}
+                                    onChange={updateFormFieldWrapper}
                                     value={formData.shares[member.name] || ""}
                                     ref={inputRef}
                                 />
                                 <button
                                     className="flex items-center justify-center text-sm h-10 w-10 text-honolulu-blue hover:font-black font-extrabold transition rounded-full hover:scale-110 cursor-pointer hover:bg-honolulu-blue/40 active:bg-honolulu-blue/50 hover:text-columbia-blue"
                                     onClick={() =>
-                                        handleOpenCalculator(inputRef.current)
+                                        openCalculator(inputRef.current)
                                     }
                                 >
                                     <CalculatorIcon

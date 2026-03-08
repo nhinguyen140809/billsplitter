@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import { Section } from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
-import type { Member } from "@/types";
 import NameInput from "./components/NameInput";
 import ParticipantList from "./components/ParticipantList";
 import { useMembers } from "./hooks/useMembers";
@@ -10,8 +9,6 @@ import { useMembers } from "./hooks/useMembers";
 function SectionParticipant({
     onDone,
 }: {
-    members: Member[];
-    setMembers: React.Dispatch<React.SetStateAction<Member[]>>;
     onDone: () => void;
 }) {
     const { members, addMember, removeMember } = useMembers();

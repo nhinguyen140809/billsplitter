@@ -1,41 +1,56 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import BillList from "./components/BillIList";
 import BillFormPopup from "./components/BillForm";
 import { Check, Plus } from "lucide-react";
-import type { Member, Bill } from "@/types";
 import { Section } from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
 import { useBills } from "./hooks/useBills";
+import { useBillForm } from "./hooks/useBillForm";
+import { useMembers } from "../participants/hooks/useMembers";
+import type { Bill, BillType, SectionStatus } from "@/types";
 
-function SectionBill({ members, onDone, currentSection }) {
-    const {
-        equalBills,
-        unequalBills,
-        loading,
-        addEqualBill,
-        addUnequalBill,
-        deleteEqualBill,
-        deleteUnequalBill,
-    } = useBills();
+function AddBillButton({
+    onClick,
+    disabled,
+}: {
+    onClick: () => void;
+    disabled?: boolean;
+}) {
+    return (
+        <Button variant="secondary" onClick={onClick} disabled={disabled}>
+            <Plus
+                size={20}
+                strokeWidth={2.5}
+                color={"var(--color-alice-blue)"}
+                className="inline mr-2"
+            />
+            Add bill
+        </Button>
+    );
+}
 
+function SectionBill({
+    onDone,
+    status,
+}: {
+    onDone: () => void;
+    status?: SectionStatus;
+}) {
+    const { members } = useMembers();
+    const { equalBills, unequalBills, onSubmitBillForm, removeBill } =
+        useBills();
 
+    const { setSelectedBill } = useBillForm(onSubmitBillForm, () =>
+        setShowForm(false),
+    );
 
-    const [showForm, setShowForm] = useState(false);
-    // const [isEqual, setIsEqual] = useState(true);
-    const [formData, setFormData] = useState({
-        id: "",
-        name: "",
-        payer: "",
-        amount: "",
-        shares: {},
-    });
-    const [errorMessage, setErrorMessage] = useState("");
+    const [showForm, setShowForm] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
-    useEffect(() => {
-        if (formData.id !== "") {
-            console.log("Editing bill:", formData);
-        }
-    }, [formData]);
+    const handleEditBillClick = (bill: Bill, type: BillType) => {
+        setSelectedBill(bill, type);
+        setShowForm(true);
+    };
 
     const handleDone = () => {
         if (equalBills.length + unequalBills.length < 1) {
@@ -48,49 +63,38 @@ function SectionBill({ members, onDone, currentSection }) {
 
     return (
         <>
-            <Section
-                title="Bills"
-                status={currentSection !== "members" ? "enabled" : "disabled"}
-            >
+            <Section title="Bills" status={status}>
                 <div className="flex justify-end py-2">
-                    <Button
-                        variant="secondary"
+                    <AddBillButton
                         onClick={() => setShowForm(true)}
-                    >
-                        <Plus
-                            size={20}
-                            strokeWidth={2.5}
-                            color={"var(--color-alice-blue)"}
-                            className="inline mr-2"
-                        />
-                        Add bill
-                    </Button>
+                        disabled={status === "disabled"}
+                    />
                 </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <BillList
                         bills={equalBills}
                         type="equal"
-                        setEqualBills={setEqualBills}
-                        setUnequalBills={setUnequalBills}
-                        setFormData={setFormData}
-                        setShowForm={setShowForm}
-                        setIsEqual={setIsEqual}
+                        onDelete={removeBill}
+                        onEdit={handleEditBillClick}
                     />
                     <BillList
                         bills={unequalBills}
                         type="unequal"
-                        setEqualBills={setEqualBills}
-                        setUnequalBills={setUnequalBills}
-                        setFormData={setFormData}
-                        setShowForm={setShowForm}
-                        setIsEqual={setIsEqual}
+                        onDelete={removeBill}
+                        onEdit={handleEditBillClick}
                     />
                 </div>
+
                 <div className="mt-8 justify-between flex items-center">
                     <div className="text-tea-rose">
                         {errorMessage && <p>{errorMessage}</p>}
                     </div>
-                    <Button onClick={handleDone} variant="default">
+                    <Button
+                        onClick={handleDone}
+                        variant="default"
+                        disabled={status === "disabled"}
+                    >
                         <Check
                             size={20}
                             strokeWidth={2.5}
@@ -104,13 +108,8 @@ function SectionBill({ members, onDone, currentSection }) {
             {showForm && (
                 <BillFormPopup
                     members={members}
-                    setEqualBills={setEqualBills}
-                    setUnequalBills={setUnequalBills}
-                    setShowForm={setShowForm}
-                    isEqual={isEqual}
-                    formData={formData}
-                    setFormData={setFormData}
-                    setIsEqual={setIsEqual}
+                    onSubmitBillForm={onSubmitBillForm}
+                    onClose={() => setShowForm(false)}
                 />
             )}
         </>

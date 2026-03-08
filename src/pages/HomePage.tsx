@@ -8,15 +8,10 @@ import { useDraftSettlement } from "@/hooks/useDraftSettlement";
 
 export default function HomePage() {
     const { draft, saveDraft, updateDraft, clearDraft } = useDraftSettlement();
-    const [calculationState, setCalculationState] = useState(false);
     return (
         <>
             <AppHeader />
             <SectionParticipant
-                members={draft.members}
-                updateMembers={(members: Member[]) =>
-                    saveDraft({ ...draft, members })
-                }
                 onDone={() =>
                     saveDraft({ ...draft, status: "bill" })
                 }

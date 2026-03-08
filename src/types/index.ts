@@ -36,6 +36,8 @@ export type SettlementStatus = "member" | "bill" | "payment";
 
 export type BillType = "equal" | "unequal";
 
+export type SectionStatus = "enabled" | "disabled";
+
 export interface DraftSettlement {
     id: "draft";
     data: Settlement;

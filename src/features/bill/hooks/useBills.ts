@@ -14,6 +14,9 @@ export const useBills = (settlementId?: string) => {
     const equalBills = settlement ? settlement.equalBills : draft.equalBills;
 
     const addBill = (bill: Bill, type: BillType) => {
+        if (bill.id === "") {
+            bill.id = crypto.randomUUID();
+        }
         if (type === "equal") {
             const newEqualBills = [...equalBills, bill];
             if (settlement) {
@@ -85,6 +88,24 @@ export const useBills = (settlementId?: string) => {
         }
     };
 
+    const onSubmitBillForm = (bill: Bill, type: BillType) => {
+        if (type === "equal") {
+            if (bill.id !== "") {
+                updateBill(bill, "equal");
+                removeBill(bill.id, "unequal");
+            } else {
+                addBill(bill, "equal");
+            }
+        } else {
+            if (bill.id !== "") {
+                updateBill(bill, "unequal");
+                removeBill(bill.id, "equal");
+            } else {
+                addBill(bill, "unequal");
+            }
+        }
+    };
+
     return {
         equalBills,
         unequalBills,
@@ -92,5 +113,6 @@ export const useBills = (settlementId?: string) => {
         removeBill,
         updateBill,
         duplicateBill,
+        onSubmitBillForm,
     };
 };
