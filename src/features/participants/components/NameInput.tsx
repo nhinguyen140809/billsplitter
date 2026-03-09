@@ -40,17 +40,17 @@ export default function NameInput({
                     onChange={(e) => setName(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Enter participant name"
-                    className="rounded-full p-5 pb-6 pl-4 mr-2 font-medium text-base"
+                    className="rounded-full p-5 pb-6 pl-4 mr-2 font-medium text-base focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
                     aria-invalid={!!inputError}
                     aria-describedby={inputError ? "name-error" : undefined}
                 />
                 <Button
                     variant="default"
                     size="icon-lg"
-                    className="rounded-full"
+                    className="rounded-full [&_svg]:size-10 [&_svg]:shrink-0"
                     onClick={onAdd}
                 >
-                    <Plus size={20} strokeWidth={2.5} />
+                    <Plus size={24} strokeWidth={3} />
                 </Button>
             </div>
             {inputError && (

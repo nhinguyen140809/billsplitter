@@ -5,17 +5,22 @@ import { Button } from "@/components/ui/button";
 import NameInput from "./components/NameInput";
 import ParticipantList from "./components/ParticipantList";
 import { useMembers } from "./hooks/useMembers";
+import type { SectionStatus } from "@/types";
 
 function SectionParticipant({
     onDone,
+    settlementId,
+    status,
 }: {
     onDone: () => void;
+    settlementId?: string;
+    status: SectionStatus;
 }) {
-    const { members, addMember, removeMember } = useMembers();
+    const { members, addMember, removeMember } = useMembers(settlementId);
 
     const [name, setName] = useState<string>("");
-    const [inputNameError, setInputNameError] = useState<string | false>(false);
-    const [isLocked, setIsLocked] = useState<boolean>(false);
+    const [inputNameError, setInputNameError] = useState<string>("");
+    const isLocked = status !== "enabled";  
 
     const handleAddMember = () => {
         try {
@@ -24,7 +29,7 @@ function SectionParticipant({
             setInputNameError((error as Error).message);
             return;
         }
-        setInputNameError(false);
+        setInputNameError("");
         setName("");
     };
 
@@ -37,8 +42,7 @@ function SectionParticipant({
             setInputNameError("At least two members are required");
             return;
         }
-        setInputNameError(false);
-        setIsLocked(true);
+        setInputNameError("");
         onDone();
     };
 

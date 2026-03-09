@@ -42,5 +42,13 @@ export function useMembers(settlementId?: string) {
         }
     };
 
-    return { members, addMember, removeMember };
+    const updateMembers = (newMembers: Member[]) => {
+        if (settlement) {
+            updateSettlementPartial({ members: newMembers });
+        } else {
+            updateDraft({ members: newMembers });
+        }
+    };
+
+    return { members, addMember, removeMember, updateMembers };
 }

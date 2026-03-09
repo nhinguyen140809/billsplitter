@@ -1,6 +1,6 @@
-import { X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { Member } from '@/types';
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { Member } from "@/types";
 
 function ParticipantItem({
     member,
@@ -12,7 +12,7 @@ function ParticipantItem({
     isLocked: boolean;
 }) {
     return (
-        <div className="flex items-center bg-primary text-primary-foreground font-medium px-4 has-[>svg]:pr-2 py-2 gap-3 rounded-full hover:shadow-md shadow-primary/40 transition hover:scale-105">
+        <div className="flex items-center bg-primary text-primary-foreground font-medium px-4 has-[button]:pr-2 has-[button]:pl-4 [&>svg]:size-4 py-2 gap-1 rounded-full hover:shadow-md shadow-primary/40 transition hover:scale-105">
             <span>{member.name}</span>
             {!isLocked && (
                 <Button
@@ -21,10 +21,7 @@ function ParticipantItem({
                     size="icon-xs"
                     className="rounded-full"
                 >
-                    <X
-                        size={20}
-                        strokeWidth={2.5}
-                    />
+                    <X/>
                 </Button>
             )}
         </div>
