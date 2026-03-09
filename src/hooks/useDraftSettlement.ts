@@ -17,7 +17,8 @@ export function useDraftSettlement() {
             members: [],
             equalBills: [],
             unequalBills: [],
-            transactions: [],
+            sendPayments: {},
+            receivePayments: {},
             updatedAt: new Date().toISOString(),
         } as Settlement);
 

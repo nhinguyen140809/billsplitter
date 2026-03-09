@@ -1,30 +1,52 @@
 import SectionBill from "@/features/bill/SectionBill";
 import SectionParticipant from "@/features/participants/SectionParticipant";
 import SectionPayments from "@/features/payments/SectionPayments";
-import type { Member } from "@/types";
-import { useState } from "react";
 import AppHeader from "@/components/shared/AppHeader";
 import { useDraftSettlement } from "@/hooks/useDraftSettlement";
+import { usePayments } from "@/features/payments/hooks/usePayments";
+import { Button } from "@/components/ui/button";
+import { ChevronRight, RotateCcw } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-    const { draft, saveDraft, updateDraft, clearDraft } = useDraftSettlement();
+    const { draft, saveDraft, clearDraft } = useDraftSettlement();
+    const { setCalculationState } = usePayments();
+    const navigate = useNavigate();
     return (
         <>
-            <AppHeader />
+            <AppHeader>
+                <Button variant="secondary" onClick={clearDraft}>
+                    <RotateCcw /> Clear
+                </Button>
+                <Button
+                    variant="ghost"
+                    className="pl-6 has-[>svg]:pr-2"
+                    onClick={() => navigate("/settlements")}
+                >
+                    View saved settlements
+                    <ChevronRight />
+                </Button>
+            </AppHeader>
+
+
             <SectionParticipant
-                onDone={() =>
-                    saveDraft({ ...draft, status: "bill" })
-                }
+                onDone={() => saveDraft({ ...draft, status: "bill" })}
+                status={draft.status === "member" ? "enabled" : "disabled"}
             />
-            {/* <SectionBill 
-                members={draftSettlement.members}
-                equalBills={draftSettlement.equalBills}
-                unequalBills={draftSettlement.unequalBills}
-                setUnequalBills={(unequalBills) => setDraftSettlement({ ...draftSettlement, unequalBills })}
-                currentSection={draftSettlement.status}
-                onDone={() => setDraftSettlement({ ...draftSettlement, status: "payment" })}
-            />*/}
-            {/* <SectionPayments /> */}
+            
+
+            <SectionBill
+                onDone={() => {
+                    saveDraft({ ...draft, status: "payment" });
+                    setCalculationState(true); // trigger tính toán khi hoàn thành phần bill
+                }}
+                status={draft.status !== "member" ? "enabled" : "disabled"}
+            />
+            
+            
+            <SectionPayments
+                status={draft.status === "payment" ? "enabled" : "disabled"}
+            />
         </>
     );
 }
