@@ -1,8 +1,6 @@
 import { Github } from "lucide-react";
-import { Section } from "./Section";
-import { Button } from "../ui/button";
+import { Section } from "./Section"
 import { ModeToggle } from "../mode-toggle";
-import { Alert } from "../ui/alert";
 
 function GithubButton() {
     return (
@@ -18,7 +16,7 @@ function GithubButton() {
     );
 }
 
-function AppHeader() {
+function AppHeader({children}: {children?: React.ReactNode}) {
     return (
         <Section className="text-center">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-primary">
@@ -29,7 +27,7 @@ function AppHeader() {
             </div>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
                 <ModeToggle />
-                {/* Navigation to saved settlement */}
+                {children}
             </div>
         </Section>
     );
