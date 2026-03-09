@@ -7,6 +7,10 @@ import BillTypeButtons from "./BillTypeButtons";
 import UnequalBillShares from "./UnequalBillForm";
 import { EqualBillAmount, EqualBillParticipants } from "./EqualBillForm";
 import Calculator from "../../calculator/Calculator";
+import { Button } from "@/components/ui/button";
+import Overlay from "@/components/shared/Overlay";
+import Popup from "@/components/shared/Popup";
+import { useMembers } from "../../participants/hooks/useMembers";
 
 function BillFormFooterButtons({
     onClose,
@@ -16,35 +20,32 @@ function BillFormFooterButtons({
     onSave: () => void;
 }) {
     return (
-        <div className="flex justify-end gap-4 mt-4">
-            <button onClick={onClose} className="tonal-button">
+        <div className="flex justify-end gap-4 mt-2">
+            <Button onClick={onClose} variant="outline">
                 Cancel
-            </button>
-            <button onClick={onSave} className="fill-button">
+            </Button>
+            <Button onClick={onSave} variant="default">
                 Save
-            </button>
+            </Button>
         </div>
     );
 }
 
+
 export default function BillFormPopup({
-    members,
     onSubmitBillForm,
     onClose,
 }: {
-    members: Member[];
     onSubmitBillForm: (data: Bill, type: BillType) => void;
     onClose: () => void;
 }) {
-    const billForm = useBillForm(onSubmitBillForm, onClose);
+    const { members } = useMembers();
+    const billForm = useBillForm(members, onSubmitBillForm, onClose);
 
     return (
         <BillFormContext.Provider value={billForm}>
-            <div className="fixed top-0 left-0 w-screen h-screen bg-rich-black/70 flex items-center justify-center z-50 px-4 sm:px-0 transition-opacity duration-300 backdrop-blur-xl">
-                <div className="section-container popup-container">
-                    <h2 className="text-2xl font-extrabold text-columbia-blue mb-4">
-                        Bill Details
-                    </h2>
+            <Overlay>
+                <Popup title="Bill Details">
                     <BillNameInput />
                     <BillTypeButtons />
                     <BillPayerSelector members={members} />
@@ -66,8 +67,8 @@ export default function BillFormPopup({
                         onClose={billForm.handleCloseForm}
                         onSave={billForm.handleSubmitForm}
                     />
-                </div>
-            </div>
+                </Popup>
+            </Overlay>
             <Calculator
                 openCalculator={billForm.calculatorOpened}
                 onClose={billForm.closeCalculator}

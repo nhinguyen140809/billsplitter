@@ -1,22 +1,24 @@
 import { useState, useRef } from "react";
-import type { Bill, BillType } from "@/types";
+import type { Bill, BillType, BillFormData, Member } from "@/types";
 
 export function useBillForm(
+    members: Member[],
     onSubmitBillForm: (bill: Bill, type: BillType) => void,
     onClose: () => void,
 ) {
-    const [formData, setFormData] = useState<Bill>({
+    const [formData, setFormData] = useState<BillFormData>({
         id: "",
         name: "",
         payer: "",
-        amount: 0,
+        amount: "",
         shares: {},
     });
     const [formErrorMessage, setFormErrorMessage] = useState<string>("");
     const [calculatorOpened, setCalculatorOpened] = useState<boolean>(false);
     const [isEqual, setIsEqual] = useState<boolean>(true);
-    
-    const selectAll = Object.values(formData.shares).every(v => v > 0);
+
+    const selectAll =
+        members.every((m) => ((parseFloat(formData.shares[m.name]) || 0) > 0));
 
     const activeInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -33,13 +35,13 @@ export function useBillForm(
         if (activeInputRef.current) {
             const inputName = activeInputRef.current.name;
 
-            setFormData((prev: Bill) => {
+            setFormData((prev: BillFormData) => {
                 // If input of amount
                 if (inputName === "amount") {
                     return {
                         ...prev,
-                        amount: parseFloat(value),
-                    } as Bill;
+                        amount: value,
+                    } as BillFormData;
                 }
 
                 // If input of share of member
@@ -49,9 +51,9 @@ export function useBillForm(
                         ...prev,
                         shares: {
                             ...prev.shares,
-                            [memberName]: parseFloat(value),
+                            [memberName]: value,
                         },
-                    } as Bill;
+                    } as BillFormData;
                 }
                 return prev;
             });
@@ -65,9 +67,9 @@ export function useBillForm(
             id: "",
             name: "",
             payer: "",
-            amount: 0,
+            amount: "",
             shares: {},
-        } as Bill);
+        } as BillFormData);
         setFormErrorMessage("");
         setIsEqual(true);
     };
@@ -103,7 +105,7 @@ export function useBillForm(
             ...prev,
             shares: {
                 ...prev.shares,
-                [member]: value,
+                [member]: value.toString(),
             },
         }));
     };
@@ -118,11 +120,15 @@ export function useBillForm(
     const handleSubmitForm = () => {
         // Basic validation
         const { id, name, payer, amount, shares } = formData;
+        const amountValue = parseFloat(amount);
+        const sharesValues = Object.fromEntries(
+            Object.entries(shares).map(([k, v]) => [k, parseFloat(v) || 0]),
+        );
         if (!payer) {
             setFormErrorMessage("Please select a payer.");
             return;
         }
-        if (isEqual && (amount <= 0 || !amount)) {
+        if (isEqual && (amountValue <= 0 || isNaN(amountValue))) {
             setFormErrorMessage("Please enter a valid amount.");
             return;
         }
@@ -132,15 +138,15 @@ export function useBillForm(
             billName = `Bill #${Math.floor(Math.random() * 1000)}`;
         }
 
-        const selectedParticipants = Object.keys(shares).filter(
-            (member) => shares[member] > 0,
+        const selectedParticipants = Object.keys(sharesValues).filter(
+            (member) => sharesValues[member] > 0,
         );
         if (selectedParticipants.length === 0) {
             setFormErrorMessage("Please select at least one participant.");
             return;
         }
 
-        const hasNegativeShare = Object.values(shares).some(
+        const hasNegativeShare = Object.values(sharesValues).some(
             (value) => value < 0,
         );
         if (hasNegativeShare) {
@@ -148,15 +154,13 @@ export function useBillForm(
             return;
         }
 
-        if (!isEqual) {
-            const totalShares = Object.values(shares).reduce(
-                (sum, value) => sum + value,
-                0,
-            );
-            if (totalShares === 0) {
-                setFormErrorMessage("Total shares must be greater than zero.");
-                return;
-            }
+        const totalShares = Object.values(sharesValues).reduce(
+            (sum, value) => sum + value,
+            0,
+        );
+        if (!isEqual && (totalShares <= 0 || isNaN(totalShares))) {
+            setFormErrorMessage("Total shares must be greater than zero.");
+            return;
         }
 
         onSubmitBillForm(
@@ -164,8 +168,8 @@ export function useBillForm(
                 id,
                 name: billName,
                 payer,
-                amount,
-                shares,
+                amount: amountValue || totalShares,
+                shares: sharesValues,
             },
             isEqual ? "equal" : "unequal",
         );
@@ -179,7 +183,14 @@ export function useBillForm(
     };
 
     const setSelectedBill = (bill: Bill, type: BillType) => {
-        setFormData(bill);
+        const parsedBill: BillFormData = {
+            ...bill,
+            amount: bill.amount.toString(),
+            shares: Object.fromEntries(
+                Object.entries(bill.shares).map(([k, v]) => [k, v.toString()]),
+            ),
+        };
+        setFormData(parsedBill);
         setIsEqual(type === "equal");
     };
 

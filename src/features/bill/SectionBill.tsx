@@ -17,13 +17,8 @@ function AddBillButton({
     disabled?: boolean;
 }) {
     return (
-        <Button variant="secondary" onClick={onClick} disabled={disabled}>
-            <Plus
-                size={20}
-                strokeWidth={2.5}
-                color={"var(--color-alice-blue)"}
-                className="inline mr-2"
-            />
+        <Button variant="outline" onClick={onClick} disabled={disabled}>
+            <Plus/>
             Add bill
         </Button>
     );
@@ -32,15 +27,17 @@ function AddBillButton({
 function SectionBill({
     onDone,
     status,
+    settlementId,
 }: {
     onDone: () => void;
     status?: SectionStatus;
+    settlementId?: string;
 }) {
-    const { members } = useMembers();
-    const { equalBills, unequalBills, onSubmitBillForm, removeBill } =
-        useBills();
+    const { members } = useMembers(settlementId);
+    const { equalBills, unequalBills, onSubmitBillForm, removeBill, duplicateBill } =
+        useBills(settlementId);
 
-    const { setSelectedBill } = useBillForm(onSubmitBillForm, () =>
+    const { setSelectedBill } = useBillForm(members, onSubmitBillForm, () =>
         setShowForm(false),
     );
 
@@ -77,17 +74,19 @@ function SectionBill({
                         type="equal"
                         onDelete={removeBill}
                         onEdit={handleEditBillClick}
+                        onDuplicate={duplicateBill}
                     />
                     <BillList
                         bills={unequalBills}
                         type="unequal"
                         onDelete={removeBill}
                         onEdit={handleEditBillClick}
+                        onDuplicate={duplicateBill}
                     />
                 </div>
 
                 <div className="mt-8 justify-between flex items-center">
-                    <div className="text-tea-rose">
+                    <div className="text-destructive">
                         {errorMessage && <p>{errorMessage}</p>}
                     </div>
                     <Button
@@ -95,19 +94,13 @@ function SectionBill({
                         variant="default"
                         disabled={status === "disabled"}
                     >
-                        <Check
-                            size={20}
-                            strokeWidth={2.5}
-                            color={"var(--color-oxford-blue)"}
-                            className="inline mr-2"
-                        />
+                        <Check/>
                         Finish
                     </Button>
                 </div>
             </Section>
             {showForm && (
                 <BillFormPopup
-                    members={members}
                     onSubmitBillForm={onSubmitBillForm}
                     onClose={() => setShowForm(false)}
                 />

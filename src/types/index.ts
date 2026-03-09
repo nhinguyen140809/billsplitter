@@ -10,14 +10,20 @@ export interface Bill {
     name: string;
     payer: string;
     amount: number;
-    shares: { [memberName: string]: number };
+    shares: BillShareValue;
 }
 
-export interface Transaction {
-    from: string;
-    to: string;
-    amount: number;
-}
+export type BillShareValue = Record<string, number>;
+
+export type TransactionMap = Record<string, string>;
+
+export type PaymentData = Record<string, TransactionMap>;
+
+export type PaymentItemData = {
+    name: string;
+    transactions: TransactionMap;
+    type: DebtPartyType;
+};
 
 export interface Settlement {
     id: string;
@@ -26,9 +32,18 @@ export interface Settlement {
     members: Member[];
     equalBills: Bill[];
     unequalBills: Bill[];
-    transactions: Transaction[];
+    sendPayments: PaymentData;
+    receivePayments: PaymentData;
     updatedAt: string;
 }
+
+export type BillFormData = {
+    id: string;
+    name: string;
+    payer: string;
+    amount: string;
+    shares: Record<string, string>;
+};
 
 export type SettlementInput = Omit<Settlement, "id" | "updatedAt">;
 
@@ -37,6 +52,8 @@ export type SettlementStatus = "member" | "bill" | "payment";
 export type BillType = "equal" | "unequal";
 
 export type SectionStatus = "enabled" | "disabled";
+
+export type DebtPartyType = "sender" | "receiver";
 
 export interface DraftSettlement {
     id: "draft";
