@@ -6,22 +6,20 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { UserRound } from "lucide-react";
-import type { Member } from "@/types";
 import { useBillFormContext } from "../context/BillFormContext";
+import { useMembers } from "../../participants/hooks/useMembers";
 
-function BillPayerSelector({ members }: { members: Member[] }) {
+function BillPayerSelector() {
     const { formData, updateFormField } = useBillFormContext();
+    const { members } = useMembers();
     const handleSelectChange = (value: string) => {
         updateFormField("payer", value);
     };
     return (
         <div className="flex items-center">
-            <div className="flex items-center justify-center h-10 w-10 rounded-full mr-4">
+            <div className="flex items-center justify-center text-primary h-6 w-10 rounded-full mr-4">
                 <UserRound
-                    size={22}
-                    strokeWidth={2.5}
-                    color={"var(--primary)"}
-                    className="inline"
+                    size={20}
                 />
             </div>
             <Select
@@ -31,18 +29,13 @@ function BillPayerSelector({ members }: { members: Member[] }) {
                 onValueChange={handleSelectChange}
             >
                 <SelectTrigger
-                    className={`w-full p-2 rounded-none bg-none text-base text-secondary outline-none border-0 border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-muted ${
-                        formData.payer === ""
-                            ? "text-gray-400"
-                            : "text-secondary"
-                    }`}
+                    className="w-full p-2 text-secondary outline-none border-0 focus:border-primary mb-2 transition duration-200"
                 >
-                    <SelectValue placeholder="Paid by..." />
+                    <SelectValue placeholder="Paid by..." className="text-muted"/>
                 </SelectTrigger>
                 <SelectContent
                     side="bottom"
                     position="popper"
-                    className="text-base"
                 >
                     <option value="" disabled hidden>
                         Paid by...

@@ -7,6 +7,7 @@ export interface Member {
 
 export interface Bill {
     id: string;
+    type: BillType;
     name: string;
     payer: string;
     amount: number;
@@ -30,8 +31,7 @@ export interface Settlement {
     name: string;
     status: SettlementStatus;
     members: Member[];
-    equalBills: Bill[];
-    unequalBills: Bill[];
+    bills: Bill[];
     sendPayments: PaymentData;
     receivePayments: PaymentData;
     updatedAt: string;
@@ -39,6 +39,7 @@ export interface Settlement {
 
 export type BillFormData = {
     id: string;
+    type: BillType;
     name: string;
     payer: string;
     amount: string;

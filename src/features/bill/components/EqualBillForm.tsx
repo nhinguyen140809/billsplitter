@@ -1,10 +1,11 @@
 import { Banknote, CalculatorIcon } from "lucide-react";
-import type { BillShareValue, Member } from "@/types";
+import type { BillShareValue } from "@/types";
 import { useRef } from "react";
 import { useBillFormContext } from "../context/BillFormContext";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useMembers } from "../../participants/hooks/useMembers";
 
 function AmountInput({
     value,
@@ -20,7 +21,7 @@ function AmountInput({
             type="string"
             name="amount"
             placeholder="Total amount"
-            className="w-4/5 p-2 bg-primary-foreground text-secondary outline-none border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-muted"
+            className="w-4/5 p-2 text-card-foreground outline-none border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-accent text-sm"
             value={value}
             onChange={onChange}
             min="0"
@@ -32,17 +33,12 @@ function AmountInput({
 function EqualBillAmount() {
     const { formData, updateFormFieldWrapper, openCalculator } =
         useBillFormContext();
-    let inputRef = useRef(null);
+    let inputRef = useRef<HTMLInputElement | null>(null);
 
     function BanknoteIcon() {
         return (
-            <div className="flex items-center justify-center h-10 w-10 rounded-full">
-                <Banknote
-                    size={24}
-                    strokeWidth={2.5}
-                    color={"var(--primary)"}
-                    className="inline"
-                />
+            <div className="flex items-center justify-center h-10 text-primary w-10 rounded-full">
+                <Banknote size={20} />
             </div>
         );
     }
@@ -55,7 +51,7 @@ function EqualBillAmount() {
                 size="icon-lg"
                 onClick={handleClick}
             >
-                <CalculatorIcon size={24} />
+                <CalculatorIcon className="size-5" />
             </Button>
         );
     }
@@ -74,9 +70,11 @@ function EqualBillAmount() {
     );
 }
 
-function EqualBillParticipants({ members }: { members: Member[] }) {
+function EqualBillParticipants() {
     const { formData, updateFormField, updateFormFieldWrapper, selectAll } =
         useBillFormContext();
+
+    const { members } = useMembers();
 
     const toggleAllShares = (checked: boolean) => {
         // For "Select All" checkbox
@@ -133,16 +131,16 @@ function EqualBillParticipants({ members }: { members: Member[] }) {
                     onChange={onChange}
                     checked={checked}
                 />
-                <span className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center transition-all duration-200 peer-checked:bg-primary peer-checked:border-primary peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100">
+                <span className="w-5 h-5 rounded-full border-2 border-accent flex items-center justify-center transition-all duration-200 peer-checked:bg-accent peer-checked:border-accent peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100">
                     <Check
                         size={14}
                         strokeWidth={4}
-                        color={"var(--primary-foreground)"}
+                        color={"var(--secondary)"}
                         className="opacity-0 scale-75 transition-all duration-200"
                     />
                 </span>
 
-                <p className="text-secondary font-medium select-none transition-colors duration-200 group-hover:text-primary">
+                <p className="text-secondary select-none transition-colors duration-200 group-hover:text-primary text-sm">
                     {label}
                 </p>
             </label>
@@ -151,11 +149,11 @@ function EqualBillParticipants({ members }: { members: Member[] }) {
 
     return (
         <div className="mb-2">
-            <p className="mb-4 font-bold text-lg text-primary">
+            <p className="mb-4 font-bold text-md text-primary">
                 Select Participants:
             </p>
             <ScrollArea className="">
-                <div className="flex flex-1 flex-col gap-2 max-h-[25vh] min-h-0">
+                <div className="flex flex-1 flex-col gap-3 max-h-[30vh] min-h-0">
                     <SelectAllCheckbox
                         checked={selectAll}
                         onChange={(e) => toggleAllShares(e.target.checked)}

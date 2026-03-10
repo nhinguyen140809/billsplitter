@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { useBillFormContext } from "../context/BillFormContext";
 
 export default function BillTypeButtons() {
-    const { isEqual, setIsEqual } = useBillFormContext();
+    const { formData, updateFormField } = useBillFormContext();
+    const isEqual = (formData.type === "equal");
     return (
         <div className="flex mb-4 gap-4">
             {["Equal", "Unequal"].map((type) => {
@@ -10,7 +11,8 @@ export default function BillTypeButtons() {
                     <Button
                         key={type}
                         variant={`${isEqual === (type === "Equal") ? "default" : "outline"}`}
-                        onClick={() => setIsEqual(type === "Equal")}
+                        onClick={() => updateFormField("type", type === "Equal" ? "equal" : "unequal")}
+                        className="text-sm"
                     >
                         {type}
                     </Button>

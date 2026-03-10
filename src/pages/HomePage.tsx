@@ -3,14 +3,14 @@ import SectionParticipant from "@/features/participants/SectionParticipant";
 import SectionPayments from "@/features/payments/SectionPayments";
 import AppHeader from "@/components/shared/AppHeader";
 import { useDraftSettlement } from "@/hooks/useDraftSettlement";
-import { usePayments } from "@/features/payments/hooks/usePayments";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function HomePage() {
     const { draft, saveDraft, clearDraft } = useDraftSettlement();
-    const { setCalculationState } = usePayments();
+    const [ calculationState, setCalculationState] = useState<Boolean>(false);
     const navigate = useNavigate();
     return (
         <>
@@ -46,6 +46,8 @@ export default function HomePage() {
             
             <SectionPayments
                 status={draft.status === "payment" ? "enabled" : "disabled"}
+                calculationState={calculationState}
+                setCalculationState={setCalculationState}
             />
         </>
     );

@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Field, FieldLabel } from "@/components/ui/field";
 
-
 export default function NameInput({
     name,
     setName,
@@ -31,7 +30,9 @@ export default function NameInput({
     };
 
     return (
-        <Field className={`flex flex-col gap-1 mb-2 pt-2 pb-2 ${inputError ? 'data-invalid' : ''}`}>
+        <Field
+            className={`flex flex-col gap-1 mb-2 pt-2 pb-2 ${inputError ? "data-invalid" : ""}`}
+        >
             <div className="flex items-center gap-2 mb-2">
                 <Input
                     type="text"
@@ -40,7 +41,7 @@ export default function NameInput({
                     onChange={(e) => setName(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Enter participant name"
-                    className="rounded-full p-5 pb-6 pl-4 mr-2 font-medium text-base focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
+                    className="rounded-full p-5 mr-2 font-medium text-md focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
                     aria-invalid={!!inputError}
                     aria-describedby={inputError ? "name-error" : undefined}
                 />
@@ -54,7 +55,12 @@ export default function NameInput({
                 </Button>
             </div>
             {inputError && (
-                <FieldLabel htmlFor="input-invalid" className="text-destructive">{inputError}</FieldLabel>
+                <FieldLabel
+                    htmlFor="input-invalid"
+                    className="text-destructive"
+                >
+                    {inputError}
+                </FieldLabel>
             )}
         </Field>
     );

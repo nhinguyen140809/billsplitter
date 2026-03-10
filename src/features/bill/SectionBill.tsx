@@ -5,8 +5,6 @@ import { Check, Plus } from "lucide-react";
 import { Section } from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
 import { useBills } from "./hooks/useBills";
-import { useBillForm } from "./hooks/useBillForm";
-import { useMembers } from "../participants/hooks/useMembers";
 import type { Bill, BillType, SectionStatus } from "@/types";
 
 function AddBillButton({
@@ -33,24 +31,20 @@ function SectionBill({
     status?: SectionStatus;
     settlementId?: string;
 }) {
-    const { members } = useMembers(settlementId);
-    const { equalBills, unequalBills, onSubmitBillForm, removeBill, duplicateBill } =
+    const { bills, onSubmitBillForm, removeBill, duplicateBill } =
         useBills(settlementId);
-
-    const { setSelectedBill } = useBillForm(members, onSubmitBillForm, () =>
-        setShowForm(false),
-    );
 
     const [showForm, setShowForm] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const [selectedBill, setSelectedBill] = useState<Bill | null>(null);
 
-    const handleEditBillClick = (bill: Bill, type: BillType) => {
-        setSelectedBill(bill, type);
+    const handleEditBillClick = (bill: Bill) => {
+        setSelectedBill(bill);
         setShowForm(true);
     };
 
     const handleDone = () => {
-        if (equalBills.length + unequalBills.length < 1) {
+        if (bills.length < 1) {
             setErrorMessage("Please add at least one bill.");
             return;
         }
@@ -70,15 +64,7 @@ function SectionBill({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <BillList
-                        bills={equalBills}
-                        type="equal"
-                        onDelete={removeBill}
-                        onEdit={handleEditBillClick}
-                        onDuplicate={duplicateBill}
-                    />
-                    <BillList
-                        bills={unequalBills}
-                        type="unequal"
+                        bills={bills}
                         onDelete={removeBill}
                         onEdit={handleEditBillClick}
                         onDuplicate={duplicateBill}
@@ -101,6 +87,7 @@ function SectionBill({
             </Section>
             {showForm && (
                 <BillFormPopup
+                    selectedBill={selectedBill}
                     onSubmitBillForm={onSubmitBillForm}
                     onClose={() => setShowForm(false)}
                 />

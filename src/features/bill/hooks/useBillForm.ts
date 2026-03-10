@@ -3,27 +3,31 @@ import type { Bill, BillType, BillFormData, Member } from "@/types";
 
 export function useBillForm(
     members: Member[],
-    onSubmitBillForm: (bill: Bill, type: BillType) => void,
+    onSubmitBillForm: (bill: Bill) => void,
     onClose: () => void,
 ) {
     const [formData, setFormData] = useState<BillFormData>({
         id: "",
         name: "",
+        type: "equal",
         payer: "",
         amount: "",
         shares: {},
-    });
+    } as BillFormData);
     const [formErrorMessage, setFormErrorMessage] = useState<string>("");
     const [calculatorOpened, setCalculatorOpened] = useState<boolean>(false);
-    const [isEqual, setIsEqual] = useState<boolean>(true);
 
-    const selectAll =
-        members.every((m) => ((parseFloat(formData.shares[m.name]) || 0) > 0));
+    const selectAll = members.every(
+        (m) => (parseFloat(formData.shares[m.name]) || 0) > 0,
+    );
 
     const activeInputRef = useRef<HTMLInputElement | null>(null);
 
     const openCalculator = (inputRef: HTMLInputElement | null) => {
-        if (!inputRef || !activeInputRef.current) return;
+        if (!inputRef) {
+            console.warn("No active input ref found for calculator.");
+            return;
+        }
         activeInputRef.current = inputRef;
         setCalculatorOpened(true);
     };
@@ -66,12 +70,12 @@ export function useBillForm(
         setFormData({
             id: "",
             name: "",
+            type: "equal",
             payer: "",
             amount: "",
             shares: {},
         } as BillFormData);
         setFormErrorMessage("");
-        setIsEqual(true);
     };
 
     // Update form data based on input changes
@@ -119,7 +123,7 @@ export function useBillForm(
 
     const handleSubmitForm = () => {
         // Basic validation
-        const { id, name, payer, amount, shares } = formData;
+        const { id, name, type, payer, amount, shares } = formData;
         const amountValue = parseFloat(amount);
         const sharesValues = Object.fromEntries(
             Object.entries(shares).map(([k, v]) => [k, parseFloat(v) || 0]),
@@ -128,7 +132,7 @@ export function useBillForm(
             setFormErrorMessage("Please select a payer.");
             return;
         }
-        if (isEqual && (amountValue <= 0 || isNaN(amountValue))) {
+        if (type === "equal" && (amountValue <= 0 || isNaN(amountValue))) {
             setFormErrorMessage("Please enter a valid amount.");
             return;
         }
@@ -158,23 +162,22 @@ export function useBillForm(
             (sum, value) => sum + value,
             0,
         );
-        if (!isEqual && (totalShares <= 0 || isNaN(totalShares))) {
+        if (type === "unequal" && (totalShares <= 0 || isNaN(totalShares))) {
             setFormErrorMessage("Total shares must be greater than zero.");
             return;
         }
 
-        onSubmitBillForm(
-            {
-                id,
-                name: billName,
-                payer,
-                amount: amountValue || totalShares,
-                shares: sharesValues,
-            },
-            isEqual ? "equal" : "unequal",
-        );
+        onSubmitBillForm({
+            id,
+            name: billName,
+            type,
+            payer,
+            amount: amountValue || totalShares,
+            shares: sharesValues,
+        } as Bill);
 
         resetForm();
+        onClose();
     };
 
     const handleCloseForm = () => {
@@ -182,7 +185,11 @@ export function useBillForm(
         onClose();
     };
 
-    const setSelectedBill = (bill: Bill, type: BillType) => {
+    const setSelectedBillForm = (bill: Bill | null) => {
+        if (!bill) {
+            resetForm();
+            return;
+        }
         const parsedBill: BillFormData = {
             ...bill,
             amount: bill.amount.toString(),
@@ -191,16 +198,13 @@ export function useBillForm(
             ),
         };
         setFormData(parsedBill);
-        setIsEqual(type === "equal");
     };
 
     return {
         formData,
         formErrorMessage,
         selectAll,
-        isEqual,
         calculatorOpened,
-        setIsEqual,
         updateFormField,
         updateFormFieldWrapper,
         setFormErrorMessage,
@@ -209,6 +213,6 @@ export function useBillForm(
         closeCalculator: () => setCalculatorOpened(false),
         handleSubmitForm,
         handleCloseForm,
-        setSelectedBill,
+        setSelectedBillForm,
     };
 }

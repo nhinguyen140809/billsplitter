@@ -9,11 +9,11 @@ export default function CalculatorDisplay({
         <div className="mb-4">
             <input
                 type="text"
-                className="w-full p-2 border border-columbia-blue outline-columbia-blue rounded-lg text-right text-2xl font-bold text-alice-blue"
+                className="w-full p-2 border border-primary outline-primary rounded-lg text-right text-lg font-bold text-secondary"
                 value={expression}
                 readOnly
             />
-            <p className="text-tea-rose mt-4">{errorMessage}</p>
+            <p className="text-destructive text-sm mt-1">{errorMessage}</p>
         </div>
     );
 }

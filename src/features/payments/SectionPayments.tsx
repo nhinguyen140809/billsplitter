@@ -7,17 +7,25 @@ import type { SectionStatus } from "@/types";
 import { Section } from "@/components/shared/Section";
 import PaymentItem from "./components/PaymentItem";
 
-function SectionPayments({ status, settlementId }: { status?: SectionStatus; settlementId?: string }) {
+function SectionPayments({
+    status,
+    settlementId,
+    calculationState,
+    setCalculationState,
+}: {
+    status?: SectionStatus;
+    settlementId?: string;
+    calculationState: Boolean;
+    setCalculationState: React.Dispatch<React.SetStateAction<Boolean>>;
+}) {
     const {
         sendPayments,
         receivePayments,
-        calculationState,
-        setCalculationState,
         updateSendPayments,
         updateReceivePayments,
     } = usePayments(settlementId);
     const { members, updateMembers } = useMembers(settlementId);
-    const { equalBills, unequalBills } = useBills(settlementId);
+    const { bills } = useBills(settlementId);
 
     useEffect(() => {
         if (calculationState && status === "enabled") {
@@ -25,11 +33,7 @@ function SectionPayments({ status, settlementId }: { status?: SectionStatus; set
             setCalculationState(false); // reset sau khi dùng
 
             const { membersWithAllBills, sendPayments, receivePayments } =
-                calculateSettlement(
-                    members,
-                    equalBills,
-                    unequalBills,
-                );
+                calculateSettlement(members, bills);
             updateMembers(membersWithAllBills);
             updateSendPayments(sendPayments);
             updateReceivePayments(receivePayments);

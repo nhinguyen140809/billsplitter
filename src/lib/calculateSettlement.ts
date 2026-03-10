@@ -1,5 +1,5 @@
 import solver from "javascript-lp-solver";
-import type { Member, Bill, BillType, PaymentData } from "@/types";
+import type { Member, Bill, PaymentData } from "@/types";
 import { formatCurrency } from "./utils";
 
 type DebtParty = {
@@ -16,19 +16,18 @@ type LPSolution = {
 const shareBillList = ({
     members,
     bills,
-    type,
 }: {
     members: Member[];
     bills: Bill[];
-    type: BillType;
 }) => {
     const updatedMembers = members.map((member) => ({ ...member }));
 
     for (const bill of bills) {
         const { payer, amount, shares } = bill;
 
-        if (type === "equal") {
-            const shareAmount = amount / shares.length;
+        if (bill.type === "equal") {
+            const shareCount = Object.values(shares).filter((share) => share > 0).length;
+            const shareAmount = amount / shareCount;
             for (const memberName of Object.keys(shares)) {
                 const member = updatedMembers.find(
                     (m) => m.name === memberName,
@@ -41,7 +40,7 @@ const shareBillList = ({
             if (memberPaid) {
                 memberPaid.paid += amount;
             }
-        } else if (type === "unequal") {
+        } else if (bill.type === "unequal") {
             for (const memberName of Object.keys(shares)) {
                 const member = updatedMembers.find(
                     (m) => m.name === memberName,
@@ -184,8 +183,7 @@ const createPaymentData = (
 
 export const calculateSettlement = (
     members: Member[],
-    equalBills: Bill[],
-    unequalBills: Bill[],
+    bills: Bill[],
 ) => {
     const resetMembers = members.map((member) => ({
         ...member,
@@ -193,16 +191,9 @@ export const calculateSettlement = (
         spent: 0,
     }));
 
-    const membersWithEqualBills = shareBillList({
-        members: resetMembers,
-        bills: equalBills,
-        type: "equal",
-    });
-
     const membersWithAllBills = shareBillList({
-        members: membersWithEqualBills,
-        bills: unequalBills,
-        type: "unequal",
+        members: resetMembers,
+        bills: bills,
     });
 
     const { senders, receivers } =

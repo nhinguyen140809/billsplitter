@@ -7,7 +7,7 @@ function BillNameInput() {
             type="text"
             name="name"
             placeholder="Bill name"
-            className="w-full p-2 font-bold text-xl bg-primary-foreground text-secondary outline-none border-b-2 focus:border-b-primary mb-4 transition duration-200 border-b-muted"
+            className="w-full p-2 font-bold text-xl text-secondary outline-none border-b-2 focus:border-b-primary mb-4 transition duration-200 border-b-accent"
             value={formData.name}
             onChange={updateFormFieldWrapper}
         />

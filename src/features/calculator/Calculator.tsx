@@ -2,6 +2,9 @@ import { useCalculator } from "./hooks/useCalculator";
 import CalulatorDisplay from "./components/CalculatorDisplay";
 import CalculatorButton from "./components/CalculatorButton";
 import { CALCULATOR_BUTTONS } from "./constants";
+import Overlay from "@/components/shared/Overlay";
+import Popup from "@/components/shared/Popup";
+import { Button } from "@/components/ui/button";
 
 function Calculator({
     openCalculator,
@@ -20,11 +23,8 @@ function Calculator({
     if (!openCalculator) return null;
 
     return (
-        <div className="fixed top-0 left-0 w-screen h-screen bg-rich-black/60 flex items-center justify-center z-60 px-4 sm:px-0 transition-opacity">
-            <div className="section-container popup-container">
-                <h2 className="text-2xl font-extrabold text-columbia-blue mb-8">
-                    Calculator
-                </h2>
+        <Overlay>
+            <Popup title="Calculator" className="w-full max-w-md min-w-[300px]">
                 <CalulatorDisplay
                     expression={expression}
                     errorMessage={errorMessage}
@@ -36,19 +36,20 @@ function Calculator({
                             key={button.value}
                             value={button.value}
                             onClick={handleClick}
+                            className={button.className}
                         />
                     ))}
                 </div>
-                <div className="flex justify-end space-x-6 mt-6">
-                    <button className="tonal-button" onClick={onClose}>
+                <div className="flex justify-end space-x-6 mt-4">
+                    <Button variant="outline" className="text-sm" onClick={onClose}>
                         Cancel
-                    </button>
-                    <button className="fill-button" onClick={handleSave}>
+                    </Button>
+                    <Button variant="default" className="text-sm" onClick={handleSave}>
                         Save
-                    </button>
+                    </Button>
                 </div>
-            </div>
-        </div>
+            </Popup>
+        </Overlay>
     );
 }
 

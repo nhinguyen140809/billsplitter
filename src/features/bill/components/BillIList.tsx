@@ -2,18 +2,18 @@ import { Copy, Pencil, X } from "lucide-react";
 import type { Bill, BillType, BillShareValue } from "@/types";
 import { Button } from "@/components/ui/button";
 
-function BillItemHeader({ bill, type }: { bill: Bill; type: BillType }) {
+function BillItemHeader({ bill }: { bill: Bill }) {
     function BillItemName({ name }: { name: string }) {
-        return <h3 className="text-xl font-bold text-primary py-1">{name}</h3>;
+        return <h3 className="text-lg font-bold text-primary py-1">{name}</h3>;
     }
 
     function BillItemType({ type }: { type: BillType }) {
         return (
             <p
-                className={`font-bold ${
+                className={`font-bold text-sm ${
                     type === "equal"
-                        ? "bg-chart-1/30 text-chart-1"
-                        : "bg-chart-2/30 text-chart-2"
+                        ? "bg-chart-2/20 text-chart-2"
+                        : "bg-chart-3/20 text-chart-3"
                 } px-4 py-1 rounded-full w-fit`}
             >
                 {type === "equal" ? "Equal" : "Unequal"}
@@ -22,9 +22,9 @@ function BillItemHeader({ bill, type }: { bill: Bill; type: BillType }) {
     }
 
     return (
-        <div className="flex flex-col lg:flex-row lg:items-center justify-top mb-4 gap-4 lg:gap-12">
+        <div className="flex flex-col items-start justify-top mb-2 gap-2">
             <BillItemName name={bill.name} />
-            <BillItemType type={type} />
+            <BillItemType type={bill.type} />
         </div>
     );
 }
@@ -45,12 +45,12 @@ function BillItemButtons({
     ];
 
     return (
-        <div className="flex flex-col-reverse lg:flex-row lg:items-center justify-top mb-4 gap-2">
+        <div className="flex flex-row items-center justify-top mb-4 gap-1">
             {buttonList.map((button, index) => (
                 <Button
                     key={index}
                     variant="ghost"
-                    className="rounded-full w-10 h-10"
+                    className="rounded-full size-10"
                     onClick={button.onClick}
                 >
                     {button.icon}
@@ -137,7 +137,7 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
 
 function BillItemContainer({ children }: { children: React.ReactNode }) {
     return (
-        <div className="border border-primary rounded-2xl p-4 px-6 justify-between hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102">
+        <div className="border border-primary rounded-2xl p-4 pl-6 justify-between hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102">
             {children}
         </div>
     );
@@ -145,31 +145,29 @@ function BillItemContainer({ children }: { children: React.ReactNode }) {
 
 function BillItem({
     bill,
-    type,
     onEdit,
     onDelete,
     onDuplicate,
 }: {
     bill: Bill;
-    type: BillType;
     onEdit: () => void;
     onDelete: () => void;
     onDuplicate: () => void;
 }) {
     return (
         <BillItemContainer>
-            <div className="flex justify-between">
-                <BillItemHeader bill={bill} type={type} />
+            <div className="flex justify-between items-start">
+                <BillItemHeader bill={bill} />
                 <BillItemButtons
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onDuplicate={onDuplicate}
                 />
             </div>
-            <div className="flex-col flex mt-2">
+            <div className="flex-col flex mt-2 text-sm">
                 <BillItemPayer bill={bill}></BillItemPayer>
-                {type === "equal" && <EqualBillContent bill={bill} />}
-                {type === "unequal" && <UnequalBillContent bill={bill} />}
+                {bill.type === "equal" && <EqualBillContent bill={bill} />}
+                {bill.type === "unequal" && <UnequalBillContent bill={bill} />}
             </div>
         </BillItemContainer>
     );
@@ -177,27 +175,28 @@ function BillItem({
 
 function BillList({
     bills,
-    type,
     onDelete,
     onEdit,
     onDuplicate,
 }: {
     bills: Bill[];
-    type: BillType;
-    onDelete: (billId: string, type: BillType) => void;
-    onEdit: (bill: Bill, type: BillType) => void;
-    onDuplicate: (billId: string, type: BillType) => void;
+    onDelete: (billId: string) => void;
+    onEdit: (bill: Bill) => void;
+    onDuplicate: (billId: string) => void;
 }) {
-    return bills.map((bill) => (
-        <BillItem
-            key={bill.id}
-            bill={bill}
-            type={type}
-            onEdit={() => onEdit(bill, type)}
-            onDelete={() => onDelete(bill.id, type)}
-            onDuplicate={() => onDuplicate(bill.id, type)}
-        />
-    ));
+    return (
+        <>
+            {bills.map((bill) => (
+                <BillItem
+                    key={bill.id}
+                    bill={bill}
+                    onEdit={() => onEdit(bill)}
+                    onDelete={() => onDelete(bill.id)}
+                    onDuplicate={() => onDuplicate(bill.id)}
+                />
+            ))}
+        </>
+    );
 }
 
 export default BillList;

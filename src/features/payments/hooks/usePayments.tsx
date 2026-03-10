@@ -1,7 +1,6 @@
 import { useSettlement } from "@/hooks/useSettlement";
 import { useDraftSettlement } from "@/hooks/useDraftSettlement";
 import type { PaymentData } from "@/types";
-import { useState } from "react";
 
 export function usePayments(settlementId?: string) {
     const { settlement, updateSettlementPartial } = settlementId
@@ -14,8 +13,6 @@ export function usePayments(settlementId?: string) {
     const receivePayments = settlement
         ? settlement.receivePayments
         : draft.receivePayments;
-
-    const [calculationState, setCalculationState] = useState<Boolean>(false);
 
     const updateSendPayments = (newSendPayments: PaymentData) => {
         if (settlement) {
@@ -36,9 +33,7 @@ export function usePayments(settlementId?: string) {
     return {
         sendPayments,
         receivePayments,
-        calculationState,
         updateSendPayments,
         updateReceivePayments,
-        setCalculationState,
     };
 }

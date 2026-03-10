@@ -1,5 +1,4 @@
 import { useBillForm } from "../hooks/useBillForm";
-import type { Bill, BillType, Member } from "@/types";
 import BillPayerSelector from "./BillPayerSelector";
 import BillFormContext from "../context/BillFormContext";
 import BillNameInput from "./BillNameInput";
@@ -10,7 +9,9 @@ import Calculator from "../../calculator/Calculator";
 import { Button } from "@/components/ui/button";
 import Overlay from "@/components/shared/Overlay";
 import Popup from "@/components/shared/Popup";
-import { useMembers } from "../../participants/hooks/useMembers";
+import { useMembers } from "@/features/participants/hooks/useMembers";
+import type { Bill } from "@/types";
+import { useEffect } from "react";
 
 function BillFormFooterButtons({
     onClose,
@@ -21,26 +22,35 @@ function BillFormFooterButtons({
 }) {
     return (
         <div className="flex justify-end gap-4 mt-2">
-            <Button onClick={onClose} variant="outline">
+            <Button onClick={onClose} variant="outline" className="text-sm">
                 Cancel
             </Button>
-            <Button onClick={onSave} variant="default">
+            <Button onClick={onSave} variant="default" className="text-sm">
                 Save
             </Button>
         </div>
     );
 }
 
-
 export default function BillFormPopup({
+    selectedBill,
     onSubmitBillForm,
     onClose,
 }: {
-    onSubmitBillForm: (data: Bill, type: BillType) => void;
+    selectedBill: Bill | null;
+    onSubmitBillForm: (bill: Bill) => void;
     onClose: () => void;
 }) {
     const { members } = useMembers();
     const billForm = useBillForm(members, onSubmitBillForm, onClose);
+
+    useEffect(() => {
+        if (selectedBill) {
+            billForm.setSelectedBillForm(selectedBill);
+        } else {
+            billForm.setSelectedBillForm(null);
+        }
+    }, [selectedBill]);
 
     return (
         <BillFormContext.Provider value={billForm}>
@@ -48,18 +58,18 @@ export default function BillFormPopup({
                 <Popup title="Bill Details">
                     <BillNameInput />
                     <BillTypeButtons />
-                    <BillPayerSelector members={members} />
-                    {billForm.isEqual && (
+                    <BillPayerSelector />
+                    {billForm.formData.type === "equal" && (
                         <>
                             <EqualBillAmount />
-                            <EqualBillParticipants members={members} />
+                            <EqualBillParticipants />
                         </>
                     )}
-                    {!billForm.isEqual && (
-                        <UnequalBillShares members={members} />
+                    {billForm.formData.type === "unequal" && (
+                        <UnequalBillShares />
                     )}
                     {billForm.formErrorMessage && (
-                        <p className="text-tea-rose mb-2">
+                        <p className="text-destructive font-medium text-sm">
                             {billForm.formErrorMessage}
                         </p>
                     )}

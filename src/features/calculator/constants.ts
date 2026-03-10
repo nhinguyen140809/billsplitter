@@ -1,5 +1,5 @@
 export const CALCULATOR_BUTTONS = [
-    { label: "AC", value: "AC", className: "text-tea-rose" },
+    { label: "AC", value: "AC", className: "text-destructive" },
     { label: "(", value: "(" },
     { label: ")", value: ")" },
     { label: "÷", value: "/" },
@@ -17,6 +17,6 @@ export const CALCULATOR_BUTTONS = [
     { label: "+", value: "+" },
     { label: ".", value: "." },
     { label: "0", value: "0" },
-    { label: "DEL", value: "DEL", className: "text-light-orange" },
+    { label: "DEL", value: "DEL", className: "text-chart-3" },
     { label: "=", value: "=" },
 ];

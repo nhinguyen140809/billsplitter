@@ -17,7 +17,7 @@ export function Section({
     return (
         <section
             className={cn(
-                `w-full h-fit bg-background/20 border border-primary rounded-2xl p-4 py-6 flex flex-col sm:px-10 sm:py-10 backdrop-blur-md isolate ${status === "disabled" ? "opacity-50 pointer-events-none" : ""}`,
+                `w-full h-fit bg-card/30 border border-primary rounded-2xl p-4 py-6 flex flex-col sm:px-10 sm:py-10 backdrop-blur-md isolate ${status === "disabled" ? "opacity-50 pointer-events-none" : ""}`,
                 className,
             )}
             {...props}
