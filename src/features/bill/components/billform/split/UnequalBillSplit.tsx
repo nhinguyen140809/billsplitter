@@ -1,9 +1,9 @@
 import { CalculatorIcon } from "lucide-react";
 import { useRef } from "react";
-import { useBillFormContext } from "../context/BillFormContext";
+import { useBillFormContext } from "../../../context/BillFormContext";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { useMembers } from "../../participants/hooks/useMembers";
+import { useMembers } from "../../../../participants/hooks/useMembers";
 import type { Member } from "@/types";
 
 function UnequalShareInput({
@@ -52,11 +52,18 @@ function UnequalBillShares() {
 
     const { members } = useMembers();
 
+    const participantCount = members.filter(
+        (m) => (parseFloat(formData.shares[m.name]) || 0) > 0,
+    ).length;
+
     return (
         <div className="mb-2 mt-2">
-            <p className="mb-2 font-bold text-md text-primary">
-                Assign shares:
-            </p>
+            <div className="flex justify-between items-center mb-2">
+                <p className="font-bold text-md text-primary">Assign shares:</p>
+                <p className="text-xs text-muted-foreground">
+                    {participantCount} / {members.length} selected
+                </p>
+            </div>
             <ScrollArea className="flex flex-1 flex-col text-sm max-h-[30vh] min-h-0">
                 {members.map((member) => (
                     <UnequalShareInput

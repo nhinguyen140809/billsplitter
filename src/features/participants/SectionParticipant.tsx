@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
-import { Section } from "@/components/shared/Section";
+import Section from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
 import NameInput from "./components/NameInput";
 import ParticipantList from "./components/ParticipantList";

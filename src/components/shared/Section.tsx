@@ -7,7 +7,7 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
     children: React.ReactNode;
 }
 
-export function Section({
+export default function Section({
     title,
     status = "enabled",
     children,

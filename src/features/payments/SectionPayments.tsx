@@ -4,7 +4,7 @@ import { usePayments } from "./hooks/usePayments";
 import { useMembers } from "../participants/hooks/useMembers";
 import { useBills } from "../bill/hooks/useBills";
 import type { SectionStatus } from "@/types";
-import { Section } from "@/components/shared/Section";
+import Section from "@/components/shared/Section";
 import PaymentItem from "./components/PaymentItem";
 
 function SectionPayments({

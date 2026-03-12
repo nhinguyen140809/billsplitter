@@ -59,7 +59,7 @@ export default function PaymentItem({
                         />
                     </div>
                 )}
-                <p className="text-secondary">{name}:</p>
+                <p className="text-muted-foreground">{name}:</p>
                 <p className="text-primary font-medium">{amount}</p>
             </div>
         );

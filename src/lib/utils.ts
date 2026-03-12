@@ -7,8 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatCurrency(amount: number): string {
     return new Intl.NumberFormat("vn-VN", {
-        style: "currency",
-        currency: "VND",
+        style: "decimal",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 3,
     }).format(amount);
 }
 

@@ -1,17 +1,18 @@
-import { useBillForm } from "../hooks/useBillForm";
-import BillPayerSelector from "./BillPayerSelector";
-import BillFormContext from "../context/BillFormContext";
-import BillNameInput from "./BillNameInput";
-import BillTypeButtons from "./BillTypeButtons";
-import UnequalBillShares from "./UnequalBillForm";
-import { EqualBillAmount, EqualBillParticipants } from "./EqualBillForm";
-import Calculator from "../../calculator/Calculator";
+import { useBillForm } from "../../hooks/useBillForm";
+import BillPayerSelector from "./info/BillPayerSelector";
+import BillFormContext from "../../context/BillFormContext";
+import BillNameInput from "./info/BillNameInput";
+import BillTypeButtons from "./info/BillTypeButtons";
+import UnequalBillShares from "./split/UnequalBillSplit";
+import { EqualBillAmount, EqualBillParticipants } from "./split/EqualBillSplit";
+import Calculator from "../../../calculator/Calculator";
 import { Button } from "@/components/ui/button";
 import Overlay from "@/components/shared/Overlay";
 import Popup from "@/components/shared/Popup";
 import { useMembers } from "@/features/participants/hooks/useMembers";
-import type { Bill } from "@/types";
+import type { Bill, BillType } from "@/types";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 function BillFormFooterButtons({
     onClose,
@@ -28,6 +29,35 @@ function BillFormFooterButtons({
             <Button onClick={onSave} variant="default" className="text-sm">
                 Save
             </Button>
+        </div>
+    );
+}
+
+function BillSplit({ type }: { type: BillType }) {
+    return (
+        <div className="grid">
+            <div
+                className={cn(
+                    "col-start-1 row-start-1 transition-opacity duration-300",
+                    type === "equal"
+                        ? "opacity-100"
+                        : "opacity-0 pointer-events-none",
+                )}
+            >
+                <EqualBillAmount />
+                <EqualBillParticipants />
+            </div>
+
+            <div
+                className={cn(
+                    "col-start-1 row-start-1 transition-opacity duration-300",
+                    type === "unequal"
+                        ? "opacity-100"
+                        : "opacity-0 pointer-events-none",
+                )}
+            >
+                <UnequalBillShares />
+            </div>
         </div>
     );
 }
@@ -59,15 +89,7 @@ export default function BillFormPopup({
                     <BillNameInput />
                     <BillTypeButtons />
                     <BillPayerSelector />
-                    {billForm.formData.type === "equal" && (
-                        <>
-                            <EqualBillAmount />
-                            <EqualBillParticipants />
-                        </>
-                    )}
-                    {billForm.formData.type === "unequal" && (
-                        <UnequalBillShares />
-                    )}
+                    <BillSplit type={billForm.formData.type} />
                     {billForm.formErrorMessage && (
                         <p className="text-destructive font-medium text-sm">
                             {billForm.formErrorMessage}

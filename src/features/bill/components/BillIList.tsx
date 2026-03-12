@@ -1,6 +1,8 @@
 import { Copy, Pencil, X } from "lucide-react";
 import type { Bill, BillType, BillShareValue } from "@/types";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { formatCurrency } from "@/lib/utils";
 
 function BillItemHeader({ bill }: { bill: Bill }) {
     function BillItemName({ name }: { name: string }) {
@@ -63,7 +65,7 @@ function BillItemButtons({
 function BillItemPayer({ bill }: { bill: Bill }) {
     return (
         <div className="flex gap-2">
-            <p className="text-secondary">Payer:</p>
+            <p className="text-muted-foreground">Payer:</p>
             <p className="text-primary font-medium">{bill.payer}</p>
         </div>
     );
@@ -73,8 +75,8 @@ function EqualBillContent({ bill }: { bill: Bill }) {
     function BillAmount({ amount }: { amount: number }) {
         return (
             <div className="flex gap-2 mt-2">
-                <p className="text-secondary">Amount:</p>
-                <p className="text-primary font-medium">{amount}</p>
+                <p className="text-muted-foreground">Amount:</p>
+                <p className="text-primary font-medium">{formatCurrency(amount)}</p>
             </div>
         );
     }
@@ -86,7 +88,7 @@ function EqualBillContent({ bill }: { bill: Bill }) {
 
         return (
             <div className="flex gap-2 mt-2">
-                <p className="text-secondary">Participants:</p>
+                <p className="text-muted-foreground">Participants:</p>
                 <p className="text-primary font-medium">
                     {participants.join(", ")}
                 </p>
@@ -106,8 +108,8 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
     function BillAmount({ amount }: { amount: number }) {
         return (
             <div className="flex gap-2 mt-2">
-                <p className="text-secondary">Amount:</p>
-                <p className="text-primary font-medium">{amount}</p>
+                <p className="text-muted-foreground">Amount:</p>
+                <p className="text-primary font-medium">{formatCurrency(amount)}</p>
             </div>
         );
     }
@@ -115,14 +117,25 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
     function BillShares({ shares }: { shares: BillShareValue }) {
         return (
             <div className="mt-2">
-                <p className="text-secondary mb-1">Shares:</p>
-                <ul className="list-disc list-inside pl-4">
+                <p className="text-muted-foreground mb-1">Shares:</p>
+                <div className="grid grid-cols-[max-content_max-content] gap-x-5 pl-4">
                     {Object.entries(shares).map(([member, share]) => (
-                        <li key={member} className="text-primary font-medium">
-                            {member}: {share}
-                        </li>
+                        <>
+                            <span
+                                className="text-primary font-medium"
+                                key={member}
+                            >
+                                {member}
+                            </span>
+                            <span
+                                className="text-primary font-medium text-right"
+                                key={`${member}_${share}"`}
+                            >
+                                {formatCurrency(share)}
+                            </span>
+                        </>
                     ))}
-                </ul>
+                </div>
             </div>
         );
     }
@@ -137,7 +150,7 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
 
 function BillItemContainer({ children }: { children: React.ReactNode }) {
     return (
-        <div className="border border-primary rounded-2xl p-4 pl-6 justify-between hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102">
+        <div className="border border-primary rounded-2xl p-4 pl-6 hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102 h-full flex flex-col">
             {children}
         </div>
     );
@@ -185,17 +198,25 @@ function BillList({
     onDuplicate: (billId: string) => void;
 }) {
     return (
-        <>
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 items-stretch">
             {bills.map((bill) => (
-                <BillItem
+                <motion.div
                     key={bill.id}
-                    bill={bill}
-                    onEdit={() => onEdit(bill)}
-                    onDelete={() => onDelete(bill.id)}
-                    onDuplicate={() => onDuplicate(bill.id)}
-                />
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="h-full flex flex-col"
+                >
+                    <BillItem
+                        key={bill.id}
+                        bill={bill}
+                        onEdit={() => onEdit(bill)}
+                        onDelete={() => onDelete(bill.id)}
+                        onDuplicate={() => onDuplicate(bill.id)}
+                    />
+                </motion.div>
             ))}
-        </>
+        </motion.div>
     );
 }
 

@@ -8,5 +8,14 @@ export function useSettlements() {
         [],
     );
 
-    return settlementList;
+    const deleteSettlement = async (settlementId: string) => {
+        await settlementRepo.deleteSettlement(settlementId);
+    };
+
+    const duplicateSettlement = async (settlementId: string) => {
+        const newSettlementId = await settlementRepo.duplicateSettlement(settlementId);
+        return newSettlementId;
+    };
+    
+    return { settlementList, deleteSettlement, duplicateSettlement };
 }

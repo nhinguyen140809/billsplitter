@@ -41,10 +41,18 @@ function Calculator({
                     ))}
                 </div>
                 <div className="flex justify-end space-x-6 mt-4">
-                    <Button variant="outline" className="text-sm" onClick={onClose}>
+                    <Button
+                        variant="outline"
+                        className="text-sm"
+                        onClick={onClose}
+                    >
                         Cancel
                     </Button>
-                    <Button variant="default" className="text-sm" onClick={handleSave}>
+                    <Button
+                        variant="default"
+                        className="text-sm"
+                        onClick={handleSave}
+                    >
                         Save
                     </Button>
                 </div>

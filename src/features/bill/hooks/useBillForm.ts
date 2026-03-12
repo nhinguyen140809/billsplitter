@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import type { Bill, BillType, BillFormData, Member } from "@/types";
+import type { Bill, BillFormData, Member } from "@/types";
 
 export function useBillForm(
     members: Member[],

@@ -6,8 +6,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { UserRound } from "lucide-react";
-import { useBillFormContext } from "../context/BillFormContext";
-import { useMembers } from "../../participants/hooks/useMembers";
+import { useBillFormContext } from "../../../context/BillFormContext";
+import { useMembers } from "../../../../participants/hooks/useMembers";
 
 function BillPayerSelector() {
     const { formData, updateFormField } = useBillFormContext();

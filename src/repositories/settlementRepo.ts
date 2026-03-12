@@ -55,4 +55,19 @@ export const settlementRepo = {
     async deleteSettlement(id: string) {
         await db.settlements.delete(id);
     },
+
+    async duplicateSettlement(id: string) {
+        const settlementToDuplicate = await db.settlements.get(id);
+        if (!settlementToDuplicate) {
+            throw new Error("Settlement not found");
+        }
+        const newSettlement = {
+            ...settlementToDuplicate,
+            id: crypto.randomUUID(),
+            name: "Copy of " + settlementToDuplicate.name,
+            updatedAt: new Date().toISOString(),
+        };
+        await db.settlements.add(newSettlement);
+        return newSettlement.id;
+    },
 };

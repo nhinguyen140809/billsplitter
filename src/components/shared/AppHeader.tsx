@@ -1,5 +1,5 @@
 import { Github } from "lucide-react";
-import { Section } from "./Section"
+import Section from "./Section";
 import { ModeToggle } from "../mode-toggle";
 
 function GithubButton() {
@@ -16,19 +16,17 @@ function GithubButton() {
     );
 }
 
-function AppHeader({children}: {children?: React.ReactNode}) {
+function AppHeader({ children }: { children?: React.ReactNode }) {
     return (
         <Section className="text-center">
             <h1 className="text-3xl sm:text-4xl font-extrabold text-primary">
                 Bill Splitter
             </h1>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+                <ModeToggle />
                 <GithubButton />
             </div>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
-                <ModeToggle />
-                {children}
-            </div>
+            {children}
         </Section>
     );
 }

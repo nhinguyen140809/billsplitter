@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Member } from "@/types";
+import { motion } from "framer-motion";
 
 function ParticipantItem({
     member,
@@ -38,15 +39,22 @@ export default function ParticipantList({
     isLocked: boolean;
 }) {
     return (
-        <div className="flex flex-wrap gap-4 mt-4 transition-all duration-200">
+        <motion.div className="flex flex-wrap gap-4 mt-4 transition-all duration-200">
             {members.map((member) => (
+                <motion.div
+                    key={member.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                >
                 <ParticipantItem
                     key={member.id}
                     member={member}
                     onRemove={onRemove}
                     isLocked={isLocked}
                 />
+                </motion.div>
             ))}
-        </div>
+        </motion.div>
     );
 }

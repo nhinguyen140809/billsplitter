@@ -1,11 +1,11 @@
 import { Banknote, CalculatorIcon } from "lucide-react";
 import type { BillShareValue } from "@/types";
 import { useRef } from "react";
-import { useBillFormContext } from "../context/BillFormContext";
+import { useBillFormContext } from "../../../context/BillFormContext";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useMembers } from "../../participants/hooks/useMembers";
+import { useMembers } from "../../../../participants/hooks/useMembers";
 
 function AmountInput({
     value,
@@ -75,6 +75,10 @@ function EqualBillParticipants() {
         useBillFormContext();
 
     const { members } = useMembers();
+
+    const participantCount = members.filter(
+        (m) => (parseFloat(formData.shares[m.name]) || 0) > 0,
+    ).length;
 
     const toggleAllShares = (checked: boolean) => {
         // For "Select All" checkbox
@@ -149,9 +153,14 @@ function EqualBillParticipants() {
 
     return (
         <div className="mb-2">
-            <p className="mb-4 font-bold text-md text-primary">
-                Select Participants:
-            </p>
+            <div className="flex justify-between items-center mb-4">
+                <p className="font-bold text-md text-primary">
+                    Select Participants:
+                </p>
+                <p className="text-muted-foreground text-xs">
+                    {participantCount} / {members.length} selected
+                </p>
+            </div>
             <ScrollArea className="">
                 <div className="flex flex-1 flex-col gap-3 max-h-[30vh] min-h-0">
                     <SelectAllCheckbox
