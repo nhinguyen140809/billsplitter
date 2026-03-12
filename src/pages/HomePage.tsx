@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function HomePage() {
     const { draft, saveDraft, clearDraft } = useDraftSettlement();
-    const [ calculationState, setCalculationState] = useState<Boolean>(false);
+    const [calculationState, setCalculationState] = useState<number>(0);
     const navigate = useNavigate();
     return (
         <>
@@ -28,26 +28,22 @@ export default function HomePage() {
                 </Button>
             </AppHeader>
 
-
             <SectionParticipant
                 onDone={() => saveDraft({ ...draft, status: "bill" })}
                 status={draft.status === "member" ? "enabled" : "disabled"}
             />
-            
 
             <SectionBill
                 onDone={() => {
                     saveDraft({ ...draft, status: "payment" });
-                    setCalculationState(true); // trigger tính toán khi hoàn thành phần bill
+                    setCalculationState((prev) => prev + 1); // trigger tính toán khi hoàn thành phần bill
                 }}
                 status={draft.status !== "member" ? "enabled" : "disabled"}
             />
-            
-            
+
             <SectionPayments
                 status={draft.status === "payment" ? "enabled" : "disabled"}
                 calculationState={calculationState}
-                setCalculationState={setCalculationState}
             />
         </>
     );

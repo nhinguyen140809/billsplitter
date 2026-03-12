@@ -46,8 +46,6 @@ export type BillFormData = {
     shares: Record<string, string>;
 };
 
-export type SettlementInput = Omit<Settlement, "id" | "updatedAt">;
-
 export type SettlementStatus = "member" | "bill" | "payment";
 
 export type BillType = "equal" | "unequal";

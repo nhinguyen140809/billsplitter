@@ -1,10 +1,10 @@
 import { db } from "@/db/dexie";
-import type { SettlementInput, Settlement } from "@/types";
+import type { Settlement } from "@/types";
 
 export const settlementRepo = {
     async getDraft() {
         const draft = await db.draftSettlement.get("draft");
-        return draft?.data;
+        return draft?.data || null;
     },
 
     async saveDraft(settlement: Settlement) {
@@ -15,7 +15,19 @@ export const settlementRepo = {
         await db.draftSettlement.delete("draft");
     },
 
-    async createSettlement(settlement: SettlementInput) {
+    async updateDraft(settlement: Partial<Settlement>) {
+        const currentDraft = await db.draftSettlement.get("draft");
+
+        await db.draftSettlement.update("draft", {
+            data: {
+                ...currentDraft?.data,
+                ...settlement,
+                updatedAt: new Date().toISOString(),
+            } as Settlement,
+        });
+    },
+
+    async createSettlement(settlement: Settlement) {
         const id = crypto.randomUUID();
         await db.settlements.add({
             ...settlement,
