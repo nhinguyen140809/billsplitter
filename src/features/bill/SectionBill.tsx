@@ -16,7 +16,7 @@ function AddBillButton({
 }) {
     return (
         <Button variant="outline" onClick={onClick} disabled={disabled}>
-            <Plus/>
+            <Plus />
             Add bill
         </Button>
     );
@@ -57,7 +57,10 @@ function SectionBill({
             <Section title="Bills" status={status}>
                 <div className="flex justify-end py-2">
                     <AddBillButton
-                        onClick={() => setShowForm(true)}
+                        onClick={() => {
+                            setShowForm(true);
+                            setSelectedBill(null);
+                        }}
                         disabled={status === "disabled"}
                     />
                 </div>
@@ -80,7 +83,7 @@ function SectionBill({
                         variant="default"
                         disabled={status === "disabled"}
                     >
-                        <Check/>
+                        <Check />
                         Finish
                     </Button>
                 </div>

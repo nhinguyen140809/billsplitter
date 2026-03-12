@@ -172,7 +172,7 @@ export function useBillForm(
             name: billName,
             type,
             payer,
-            amount: amountValue || totalShares,
+            amount: type === "equal" ? amountValue : totalShares,
             shares: sharesValues,
         } as Bill);
 
