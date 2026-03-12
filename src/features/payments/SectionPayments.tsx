@@ -16,30 +16,31 @@ function SectionPayments({
     settlementId?: string;
     calculationState: number;
 }) {
-    const {
-        sendPayments,
-        receivePayments,
-        updateSendPayments,
-        updateReceivePayments,
-    } = usePayments(settlementId);
+    const { sendPayments, receivePayments, updatePayments } =
+        usePayments(settlementId);
     const { members, updateMembers } = useMembers(settlementId);
     const { bills } = useBills(settlementId);
     const [calculationError, setCalculationError] = useState<string>("");
+
+    console.log("UI sendPayments", sendPayments);
+    console.log("UI receivePayments", receivePayments);
 
     useEffect(() => {
         if (members.length === 0 || bills.length === 0) {
             return;
         }
-        
+
         console.log("Calculating settlements...");
 
         try {
-            const { membersWithAllBills, sendPayments, receivePayments } =
-                calculateSettlement(members, bills);
+            const {
+                membersWithAllBills,
+                sendPayments: send,
+                receivePayments: receive,
+            } = calculateSettlement(members, bills);
 
             updateMembers(membersWithAllBills);
-            updateSendPayments(sendPayments);
-            updateReceivePayments(receivePayments);
+            updatePayments(send, receive);
         } catch (error) {
             console.error("Error calculating settlement:", error);
             setCalculationError(

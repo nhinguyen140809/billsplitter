@@ -14,26 +14,17 @@ export function usePayments(settlementId?: string) {
         ? settlement.receivePayments
         : draft.receivePayments;
 
-    const updateSendPayments = (newSendPayments: PaymentData) => {
+    const updatePayments = (newSendPayments: PaymentData, newReceivePayments: PaymentData) => {
         if (settlement) {
-            updateSettlementPartial({ sendPayments: newSendPayments });
+            updateSettlementPartial({ sendPayments: newSendPayments, receivePayments: newReceivePayments });
         } else {
-            updateDraft({ sendPayments: newSendPayments });
-        }
-    };
-
-    const updateReceivePayments = (newReceivePayments: PaymentData) => {
-        if (settlement) {
-            updateSettlementPartial({ receivePayments: newReceivePayments });
-        } else {
-            updateDraft({ receivePayments: newReceivePayments });
+            updateDraft({ sendPayments: newSendPayments, receivePayments: newReceivePayments });
         }
     };
 
     return {
         sendPayments,
         receivePayments,
-        updateSendPayments,
-        updateReceivePayments,
+        updatePayments,
     };
 }

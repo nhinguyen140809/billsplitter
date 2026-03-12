@@ -16,16 +16,14 @@ export default function PaymentItem({
         return (
             <div className="flex flex-row sm:flex-col gap-4 sm:w-4/9 w-full overflow-visible">
                 <div>
-                    <p className="text-columbia-blue font-bold text-xl">
-                        {name}
-                    </p>
+                    <p className="text-primary font-bold text-lg">{name}</p>
                 </div>
                 <div>
                     <p
-                        className={`font-bold ${
+                        className={`font-bold text-sm ${
                             type === "sender"
-                                ? "bg-light-orange/30 text-light-orange"
-                                : "bg-tea-green/30 text-tea-green"
+                                ? "bg-chart-3/20 text-chart-3"
+                                : "bg-chart-2/20 text-chart-2"
                         } px-4 py-1 rounded-full w-fit`}
                     >
                         {type === "sender" ? "Sender" : "Receiver"}
@@ -45,26 +43,24 @@ export default function PaymentItem({
         type: DebtPartyType;
     }) {
         return (
-            <div key={name} className="flex flex-wrap gap-2 items-center">
+            <div key={name} className="flex flex-wrap gap-2 items-center text-sm">
                 {type === "sender" ? (
-                    <div className="flex items-center w-6 h-6 rounded-full bg-light-orange/20 justify-center">
+                    <div className="flex items-center w-6 h-6 rounded-full bg-chart-3/20 text-chart-3 justify-center">
                         <ArrowUpRight
                             size={20}
                             strokeWidth={2.5}
-                            color={"var(--color-light-orange)"}
                         />
                     </div>
                 ) : (
-                    <div className="flex items-center w-6 h-6 rounded-full bg-tea-green/20 justify-center">
+                    <div className="flex items-center w-6 h-6 rounded-full bg-chart-2/20 text-chart-2 justify-center">
                         <ArrowDownLeft
                             size={20}
                             strokeWidth={2.5}
-                            color={"var(--color-tea-green)"}
                         />
                     </div>
                 )}
-                <p className="text-alice-blue">{name}:</p>
-                <p className="text-columbia-blue font-medium">{amount}</p>
+                <p className="text-secondary">{name}:</p>
+                <p className="text-primary font-medium">{amount}</p>
             </div>
         );
     }
@@ -91,7 +87,7 @@ export default function PaymentItem({
     }
 
     return (
-        <div className="flex flex-wrap border border-columbia-blue rounded-2xl p-4 px-6 justify-start gap-4 hover:shadow-lg hover:shadow-columbia-blue/40 transition duration-400 hover:scale-102">
+        <div className="flex flex-wrap border border-primary rounded-2xl p-4 px-6 justify-start gap-4 hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102">
             <PaymentItemHeader name={name} type={type} />
             <TransactionList transactions={transactions} type={type} />
         </div>

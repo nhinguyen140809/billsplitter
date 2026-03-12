@@ -33,8 +33,8 @@ export function useBillForm(
     };
 
     const saveCalculator = (value: string) => {
-        console.log("Calculator returned value:", value);
-        console.log("Active input ref:", activeInputRef.current);
+        // console.log("Calculator returned value:", value);
+        // console.log("Active input ref:", activeInputRef.current);
 
         if (activeInputRef.current) {
             const inputName = activeInputRef.current.name;
