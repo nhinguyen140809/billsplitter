@@ -47,7 +47,7 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Save settlement</DialogTitle>
+                    <DialogTitle className="text-left">Save settlement</DialogTitle>
                 </DialogHeader>
                 <Field>
                     <Input
@@ -56,7 +56,7 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
                         className="text-sm my-2 font-medium focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
                     />
                 </Field>
-                <DialogFooter>
+                <DialogFooter className="flex flex-row justify-end">
                     <DialogClose asChild>
                         <Button variant="outline" size="sm">
                             Cancel
@@ -92,7 +92,7 @@ export default function HomePage() {
                 <div className="flex justify-end items-end">
                     <Button
                         variant="ghost"
-                        className="pl-6 has-[>svg]:pr-2 hover:gap-3 transition-all duration-200"
+                        className="pl-6! pr-2! hover:gap-3 transition-all duration-200"
                         onClick={() => navigate("/settlements")}
                     >
                         Settlements

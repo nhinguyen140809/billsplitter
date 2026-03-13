@@ -95,12 +95,12 @@ export default function SettlementsPage() {
                 <div className="flex flex-col sm:flex-row justify-start items-start gap-4">
                     <Button
                         variant="ghost"
-                        className="pr-6 pl-2 has-[>svg]:pr-2 hover:gap-3 transition-all duration-200"
+                        className="pr-6! pl-2! hover:gap-3 transition-all duration-200"
                         onClick={() => navigate("/")}
                     >
                         <ChevronLeft className="size-6 sm:size-7"/>
                         <span className="hidden sm:inline">Home</span>
-                        <Home className="size-5 sm:hidden mr-2"/>
+                        <Home className="size-5 sm:hidden"/>
                     </Button>
                 </div>
             </AppHeader>
