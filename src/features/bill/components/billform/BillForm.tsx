@@ -24,10 +24,10 @@ function BillFormFooterButtons({
 }) {
     return (
         <div className="flex justify-end gap-4 mt-2">
-            <Button onClick={onClose} variant="outline" className="text-sm">
+            <Button onClick={onClose} variant="outline" size="sm">
                 Cancel
             </Button>
-            <Button onClick={onSave} variant="default" className="text-sm">
+            <Button onClick={onSave} variant="default" size="sm">
                 Save
             </Button>
         </div>
@@ -36,10 +36,10 @@ function BillFormFooterButtons({
 
 function BillSplit({ type }: { type: BillType }) {
     return (
-        <div className="grid">
+        <div className="grid w-full">
             <div
                 className={cn(
-                    "col-start-1 row-start-1 transition-opacity duration-300",
+                    "col-start-1 row-start-1 min-w-0 transition-opacity duration-300",
                     type === "equal"
                         ? "opacity-100"
                         : "opacity-0 pointer-events-none",
@@ -51,7 +51,7 @@ function BillSplit({ type }: { type: BillType }) {
 
             <div
                 className={cn(
-                    "col-start-1 row-start-1 transition-opacity duration-300",
+                    "col-start-1 row-start-1 min-w-0 transition-opacity duration-300",
                     type === "unequal"
                         ? "opacity-100"
                         : "opacity-0 pointer-events-none",
@@ -93,7 +93,7 @@ export default function BillFormPopup({
                     <BillPayerSelector />
                     <BillSplit type={billForm.formData.type} />
                     {billForm.formErrorMessage && (
-                        <p className="text-destructive font-medium text-sm">
+                        <p className="text-destructive font-medium text-xs sm:text-sm">
                             {billForm.formErrorMessage}
                         </p>
                     )}

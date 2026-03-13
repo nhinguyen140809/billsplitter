@@ -21,14 +21,14 @@ function UnequalShareInput({
     return (
         <div
             key={member.id}
-            className="flex items-center justify-between gap-2 sm:gap-4 pr-3 mt-1"
+            className="flex items-end justify-between gap-2 sm:gap-4 pr-3 mt-1"
         >
-            <p className="text-secondary max-w-2/5">{member.name}:</p>
+            <p className="text-secondary w-1/2 break-all mb-2">{member.name}:</p>
             <div className="flex items-center gap-2 sm:gap-4 justify-end">
                 <input
                     type="number"
                     name={`unequal-share-${member.name}`}
-                    className="ml-2 p-1 text-secondary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent w-4/5"
+                    className="w-full ml-2 p-1 text-secondary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
                     min="0"
                     onChange={onChange}
                     value={value}
@@ -60,13 +60,13 @@ function UnequalBillShares() {
 
     return (
         <div className="mb-2 mt-2">
-            <div className="flex justify-between items-center mb-2">
-                <p className="font-bold text-md text-primary">Assign shares:</p>
+            <div className="flex justify-between items-center mb-2 sm:mb-4">
+                <p className="font-bold text-sm sm:text-base text-primary">Assign shares:</p>
                 <p className="text-xs text-muted-foreground">
                     {participantCount} / {members.length} selected
                 </p>
             </div>
-            <ScrollArea className="flex flex-1 flex-col text-sm max-h-[30vh] min-h-0">
+            <ScrollArea className="flex flex-1 flex-col text-sm max-h-[38vh] min-h-0">
                 {members.map((member) => (
                     <UnequalShareInput
                         key={member.id}

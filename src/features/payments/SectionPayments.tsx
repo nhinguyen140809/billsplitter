@@ -65,7 +65,7 @@ function SectionPayments({
             <Section title="Payments" status={status}>
                 <div className="space-y-4 mt-4">
                     {calculationError && (
-                        <div className="text-destructive text-sm">
+                        <div className="text-destructive text-xs sm:text-sm">
                             {calculationError}
                         </div>
                     )}
@@ -94,8 +94,8 @@ function SectionPayments({
                 </div>
             </Section>
             {isCalculating && (
-                <Overlay>
-                    <Spinner className="size-12"/>
+                <Overlay className="flex flex-col items-center">
+                    <Spinner className="size-10 sm:size-12"/>
                     Processing ...
                 </Overlay>
             )}

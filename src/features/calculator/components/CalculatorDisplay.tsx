@@ -14,7 +14,7 @@ export default function CalculatorDisplay({
         >
             <Input
                 type="text"
-                className="rounded-full p-5 text-right font-medium text-md"
+                className="rounded-full p-5 text-right font-medium text-base"
                 value={expression}
                 aria-invalid={!!errorMessage}
                 aria-describedby={errorMessage ? "expression-error" : undefined}
@@ -22,7 +22,7 @@ export default function CalculatorDisplay({
             {errorMessage && (
                 <FieldLabel
                     htmlFor="input-invalid"
-                    className="text-destructive"
+                    className="text-destructive sm:text-sm text-xs"
                 >
                     {errorMessage}
                 </FieldLabel>

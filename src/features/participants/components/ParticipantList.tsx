@@ -13,8 +13,8 @@ function ParticipantItem({
     isLocked: boolean;
 }) {
     return (
-        <div className="flex items-center bg-primary text-primary-foreground font-medium px-4 has-[button]:pr-2 has-[button]:pl-4 [&>svg]:size-4 py-2 gap-1 rounded-full hover:shadow-md shadow-primary/40 transition hover:scale-105">
-            <span>{member.name}</span>
+        <div className="flex items-center bg-primary text-primary-foreground font-medium px-4 has-[button]:pr-2 has-[button]:pl-4 [&>svg]:size-4 py-2 has-[button]:py-1.5 sm:has-[button]:py-2 gap-1 rounded-full hover:shadow-md shadow-primary/40 transition hover:scale-105 text-sm sm:text-base">
+            <span className="break-all">{member.name}</span>
             {!isLocked && (
                 <Button
                     onClick={() => onRemove(member.id)}
@@ -39,7 +39,7 @@ export default function ParticipantList({
     isLocked: boolean;
 }) {
     return (
-        <motion.div className="flex flex-wrap gap-4 mt-4 transition-all duration-200">
+        <motion.div className="flex flex-wrap gap-4 mt-1 sm:mt-4 transition-all duration-200">
             {members.map((member) => (
                 <motion.div
                     key={member.id}

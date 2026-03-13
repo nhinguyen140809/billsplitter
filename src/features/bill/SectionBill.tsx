@@ -50,7 +50,7 @@ function SectionBill({
                         disabled={status === "disabled"}
                     >
                         <Plus />
-                        Add bill
+                        New bill
                     </Button>
                 </div>
 
@@ -62,7 +62,7 @@ function SectionBill({
                 />
 
                 <div className="mt-8 justify-between flex items-center">
-                    <div className="text-destructive">
+                    <div className="text-destructive sm:text-sm text-xs">
                         {errorMessage && <p>{errorMessage}</p>}
                     </div>
                     <Button

@@ -14,7 +14,7 @@ export default function CalculatorButton({
 }) {
     const isNumber = /^[0-9.]$/.test(value);
     const baseClasses =
-        "flex items-center justify-center text-lg font-mono font-bold py-5 rounded-2xl";
+        "flex items-center justify-center text-base sm:text-lg font-mono font-bold py-5 rounded-2xl";
     const numberClasses = "bg-background/60 hover:bg-primary/30 text-secondary";
     const operatorClasses = "bg-accent/30 hover:bg-accent/50 text-primary";
     const combinedClasses = cn(

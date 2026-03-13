@@ -12,6 +12,7 @@ import {
     RotateCcw,
     Copy,
     Trash,
+    Home,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Section from "@/components/shared/Section";
@@ -19,7 +20,7 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import Overlay from "@/components/shared/Overlay";
 import { Spinner } from "@/components/ui/spinner";
 
-function NameSection({
+function ButtonsSection({
     onDelete,
     onClear,
     onDuplicate,
@@ -28,12 +29,13 @@ function NameSection({
     onClear: () => void;
     onDuplicate: () => void;
 }) {
-    const buttonList: {
+    type ButtonInfo = {
         icon: React.ReactNode;
         label: string;
         onClick: () => void;
         variant: "outline" | "ghost" | "destructive";
-    }[] = [
+    };
+    const buttonLeft: ButtonInfo[] = [
         {
             icon: <RotateCcw />,
             label: "Clear",
@@ -46,6 +48,8 @@ function NameSection({
             onClick: onDuplicate,
             variant: "outline",
         },
+    ];
+    const buttonRight: ButtonInfo[] = [
         {
             icon: <Trash />,
             label: "Delete",
@@ -53,37 +57,29 @@ function NameSection({
             variant: "destructive",
         },
     ];
-
-    const { id: settlementId } = useParams();
-    const { settlement, updateSettlementPartial } = settlementId
-        ? useSettlement(settlementId)
-        : { settlement: undefined, updateSettlementPartial: () => {} };
-
     return (
-        <Section>
-            <div className="flex justify-between items-center gap-8">
-                <Field>
-                    <FieldLabel htmlFor="input-settlement-name">
-                        Settlement name
-                    </FieldLabel>
-                    <input
-                        type="text"
-                        placeholder="Untitled settlement"
-                        id="input-settlement-name"
-                        value={settlement?.name || ""}
-                        onChange={(e) =>
-                            updateSettlementPartial({ name: e.target.value })
-                        }
-                        className="w-full p-2 font-bold text-xl text-secondary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
-                    />
-                </Field>
-                <div className="flex gap-4">
-                    {buttonList.map((button, index) => (
+        <Section className="border-border py-6!">
+            <div className="flex justify-between">
+                <div className="flex gap-2 items-start">
+                    {buttonLeft.map((button, index) => (
                         <Button
                             key={index}
                             variant={button.variant}
-                            className="pl-2 has-[>svg]:pr-6"
                             onClick={button.onClick}
+                            size="sm"
+                        >
+                            {button.icon}
+                            {button.label}
+                        </Button>
+                    ))}
+                </div>
+                <div className="flex gap-2 items-end">
+                    {buttonRight.map((button, index) => (
+                        <Button
+                            key={index}
+                            variant={button.variant}
+                            onClick={button.onClick}
+                            size="sm"
                         >
                             {button.icon}
                             {button.label}
@@ -95,11 +91,38 @@ function NameSection({
     );
 }
 
+function NameSection() {
+    const { id: settlementId } = useParams();
+    const { settlement, updateSettlementPartial } = settlementId
+        ? useSettlement(settlementId)
+        : { settlement: undefined, updateSettlementPartial: () => {} };
+
+    return (
+        <Section>
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-8">
+                <Field className="md:max-w-4/7 w-full gap-1 sm:gap-3">
+                    <FieldLabel htmlFor="input-settlement-name">
+                        Settlement name
+                    </FieldLabel>
+                    <input
+                        type="text"
+                        placeholder="Untitled settlement"
+                        id="input-settlement-name"
+                        value={settlement?.name || ""}
+                        onChange={(e) =>
+                            updateSettlementPartial({ name: e.target.value })
+                        }
+                        className="w-full p-2 font-bold text-lg md:text-xl text-secondary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
+                    />
+                </Field>
+            </div>
+        </Section>
+    );
+}
+
 export default function SettlementDetailPage() {
     const navigate = useNavigate();
     const { id: settlementId } = useParams();
-
-    console.log("URL id:", settlementId);
 
     const {
         settlement,
@@ -116,8 +139,6 @@ export default function SettlementDetailPage() {
               duplicateSettlement: () => {},
               clearSettlement: () => {},
           };
-
-    console.log("Settlement from hook:", settlement);
 
     const [calculationState, setCalculationState] = useState<number>(0);
 
@@ -140,25 +161,26 @@ export default function SettlementDetailPage() {
                 <div className="flex justify-between items-start">
                     <Button
                         variant="ghost"
-                        className="pr-6 has-[>svg]:pl-2 hover:gap-3 transition-all duration-200"
+                        className="pr-6 pl-2 has-[>svg]:pr-2 hover:gap-3 transition-all duration-200"
                         onClick={() => navigate("/")}
                     >
-                        <ChevronLeft className="size-7"/>
-                        Back to Home
+                        <ChevronLeft className="size-6 sm:size-7" />
+                        <span className="hidden sm:inline">Home</span>
+                        <Home className="size-5 sm:hidden mr-2" />
                     </Button>
                     <Button
                         variant="ghost"
                         className="pl-6 has-[>svg]:pr-2 hover:gap-3 transition-all duration-200"
                         onClick={() => navigate("/settlements")}
                     >
-                        My settlements
-                        <ChevronRight className="size-7" />
+                        Settlements
+                        <ChevronRight className="size-6 sm:size-7" />
                     </Button>
                 </div>
             </AppHeader>
             {settlement && (
                 <>
-                    <NameSection
+                    <ButtonsSection
                         onDelete={async () => {
                             await deleteSettlement();
                             navigate("/");
@@ -166,6 +188,7 @@ export default function SettlementDetailPage() {
                         onClear={clearSettlement}
                         onDuplicate={handleDuplication}
                     />
+                    <NameSection />
 
                     <SectionParticipant
                         onDone={async () =>
@@ -180,7 +203,9 @@ export default function SettlementDetailPage() {
 
                     <SectionBill
                         onDone={async () => {
-                            await updateSettlementPartial({ status: "payment" });
+                            await updateSettlementPartial({
+                                status: "payment",
+                            });
                             setCalculationState((prev) => prev + 1);
                         }}
                         status={
@@ -210,7 +235,7 @@ export default function SettlementDetailPage() {
 
             {settlement === null && (
                 <Section className="border-border py-6! text-center">
-                    <p className="text-md text-muted-foreground">
+                    <p className="text-base text-muted-foreground">
                         Settlement not found
                     </p>
                 </Section>

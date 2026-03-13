@@ -33,7 +33,7 @@ export default function NameInput({
         <Field
             className={`flex flex-col gap-1 mb-2 pt-2 pb-2 ${inputError ? "data-invalid" : ""}`}
         >
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-1 sm:mb-2">
                 <Input
                     type="text"
                     ref={inputRef}
@@ -41,17 +41,17 @@ export default function NameInput({
                     onChange={(e) => setName(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Enter participant name"
-                    className="rounded-full p-5 mr-2 font-medium text-md"
+                    className="rounded-full p-4 py-4.5 sm:p-5 mr-2 font-medium"
                     aria-invalid={!!inputError}
                     aria-describedby={inputError ? "name-error" : undefined}
                 />
                 <Button
-                    variant="default"
+                    variant="outline"
                     size="icon-lg"
-                    className="rounded-full [&_svg]:size-10 [&_svg]:shrink-0"
+                    className="rounded-full"
                     onClick={onAdd}
                 >
-                    <Plus size={24} strokeWidth={3} />
+                    <Plus className="size-4 sm:size-5"/>
                 </Button>
             </div>
             {inputError && (

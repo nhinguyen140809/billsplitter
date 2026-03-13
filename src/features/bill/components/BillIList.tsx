@@ -6,7 +6,11 @@ import { formatCurrency } from "@/lib/utils";
 
 function BillItemHeader({ bill }: { bill: Bill }) {
     function BillItemName({ name }: { name: string }) {
-        return <h3 className="text-lg font-bold text-primary py-1">{name}</h3>;
+        return (
+            <h3 className="sm:text-lg text-base font-bold text-primary py-1 break-all">
+                {name}
+            </h3>
+        );
     }
 
     function BillItemType({ type }: { type: BillType }) {
@@ -16,7 +20,7 @@ function BillItemHeader({ bill }: { bill: Bill }) {
                     type === "equal"
                         ? "bg-chart-2/20 text-chart-2"
                         : "bg-chart-3/20 text-chart-3"
-                } px-4 py-1 rounded-full w-fit`}
+                } sm:px-4 py-1 px-3 rounded-full w-fit`}
             >
                 {type === "equal" ? "Equal" : "Unequal"}
             </p>
@@ -47,12 +51,12 @@ function BillItemButtons({
     ];
 
     return (
-        <div className="flex flex-row items-center justify-top mb-4 gap-1">
+        <div className="flex @[300px]:flex-row flex-col-reverse items-center justify-top mb-4 gap-1">
             {buttonList.map((button, index) => (
                 <Button
                     key={index}
                     variant="ghost"
-                    className="rounded-full size-10"
+                    className="rounded-full size-9 sm:size-10"
                     onClick={button.onClick}
                 >
                     {button.icon}
@@ -64,9 +68,9 @@ function BillItemButtons({
 
 function BillItemPayer({ bill }: { bill: Bill }) {
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-start">
             <p className="text-muted-foreground">Payer:</p>
-            <p className="text-primary font-medium">{bill.payer}</p>
+            <p className="text-primary font-medium break-all">{bill.payer}</p>
         </div>
     );
 }
@@ -91,7 +95,7 @@ function EqualBillContent({ bill }: { bill: Bill }) {
         return (
             <div className="flex gap-2 mt-2">
                 <p className="text-muted-foreground">Participants:</p>
-                <p className="text-primary font-medium">
+                <p className="text-primary font-medium break-all">
                     {participants.join(", ")}
                 </p>
             </div>
@@ -126,13 +130,13 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
                     {Object.entries(shares).map(([member, share]) => (
                         <>
                             <span
-                                className="text-primary font-medium"
+                                className="text-primary font-medium max-w-[60cqw] break-all"
                                 key={member}
                             >
                                 {member}
                             </span>
                             <span
-                                className="text-primary font-medium text-right"
+                                className="text-primary font-medium text-right max-w-[30cqw] break-all"
                                 key={`${member}_${share}`}
                             >
                                 {formatCurrency(share)}
@@ -154,7 +158,7 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
 
 function BillItemContainer({ children }: { children: React.ReactNode }) {
     return (
-        <div className="border border-primary rounded-2xl p-4 pl-6 hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102 h-full flex flex-col">
+        <div className="@container relative border border-primary rounded-2xl p-4 pl-6 hover:shadow-lg hover:shadow-primary/40 transition duration-400 hover:scale-102 h-full flex flex-col">
             {children}
         </div>
     );
@@ -173,18 +177,24 @@ function BillItem({
 }) {
     return (
         <BillItemContainer>
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col justify-between gap-2 items-start">
                 <BillItemHeader bill={bill} />
+                <div className="flex-col flex text-sm">
+                    <BillItemPayer bill={bill}></BillItemPayer>
+                    {bill.type === "equal" && (
+                        <EqualBillContent key={bill.id} bill={bill} />
+                    )}
+                    {bill.type === "unequal" && (
+                        <UnequalBillContent key={bill.id} bill={bill} />
+                    )}
+                </div>
+            </div>
+            <div className="absolute top-4 right-4">
                 <BillItemButtons
                     onEdit={onEdit}
                     onDelete={onDelete}
                     onDuplicate={onDuplicate}
                 />
-            </div>
-            <div className="flex-col flex mt-2 text-sm">
-                <BillItemPayer bill={bill}></BillItemPayer>
-                {bill.type === "equal" && <EqualBillContent key={bill.id} bill={bill} />}
-                {bill.type === "unequal" && <UnequalBillContent key={bill.id} bill={bill} />}
             </div>
         </BillItemContainer>
     );

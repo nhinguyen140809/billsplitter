@@ -12,7 +12,7 @@ export default function BillTypeButtons() {
                         key={type}
                         variant={`${isEqual === (type === "Equal") ? "default" : "outline"}`}
                         onClick={() => updateFormField("type", type === "Equal" ? "equal" : "unequal")}
-                        className="text-sm"
+                        size="sm"
                     >
                         {type}
                     </Button>

@@ -2,7 +2,7 @@ import { useSettlements } from "@/hooks/useSettlements";
 import { useNavigate } from "react-router-dom";
 import type { Settlement } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Copy, Pencil, X } from "lucide-react";
+import { Copy, Home, Pencil, X } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { motion } from "framer-motion";
 import AppHeader from "@/components/shared/AppHeader";
@@ -23,7 +23,7 @@ function SettlementItem({
 }) {
     function SettlementItemHeader({ settlement }: { settlement: Settlement }) {
         return (
-            <h3 className="text-lg font-bold text-primary py-1 break-all hyphens-auto">
+            <h3 className="text-base sm:text-lg font-bold text-primary py-1 break-all hyphens-auto">
                 {settlement.name || "Untitled Settlement"}
             </h3>
         );
@@ -49,7 +49,7 @@ function SettlementItem({
                     <Button
                         key={index}
                         variant="ghost"
-                        className="rounded-full size-10"
+                        className="rounded-full size-9 sm:size-10"
                         onClick={button.onClick}
                     >
                         {button.icon}
@@ -62,7 +62,7 @@ function SettlementItem({
     function SettlementItemContent({ settlement }: { settlement: Settlement }) {
         return (
             <div className="flex flex-col items-start justify-top mb-2 gap-2">
-                <p className="font-medium text-sm text-muted-foreground">
+                <p className="font-medium text-xs sm:text-sm text-muted-foreground wrap-break-word">
                     Updated at: {formatDate(settlement.updatedAt)}
                 </p>
             </div>
@@ -95,11 +95,12 @@ export default function SettlementsPage() {
                 <div className="flex flex-col sm:flex-row justify-start items-start gap-4">
                     <Button
                         variant="ghost"
-                        className="pr-6 has-[>svg]:pl-2 hover:gap-3 transition-all duration-200"
+                        className="pr-6 pl-2 has-[>svg]:pr-2 hover:gap-3 transition-all duration-200"
                         onClick={() => navigate("/")}
                     >
-                        <ChevronLeft className="size-7" />
-                        Back to Home
+                        <ChevronLeft className="size-6 sm:size-7"/>
+                        <span className="hidden sm:inline">Home</span>
+                        <Home className="size-5 sm:hidden mr-2"/>
                     </Button>
                 </div>
             </AppHeader>
@@ -107,7 +108,7 @@ export default function SettlementsPage() {
             <Section title="My Settlements">
                 <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
                     {settlementList.length === 0 && (
-                        <p className="text-muted-foreground text-center mt-4 col-span-full">
+                        <p className="text-muted-foreground text-center my-4 col-span-full sm:text-base text-sm">
                             No settlements found. Create a new one from the home
                             page!
                         </p>

@@ -22,7 +22,7 @@ function AmountInput({
             type="string"
             name="amount"
             placeholder="Total amount"
-            className="w-4/5 p-2 text-card-foreground outline-none border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-accent text-sm"
+            className="flex-1 p-2 text-card-foreground outline-none border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-accent text-sm sm:text-base mr-4"
             value={value}
             onChange={onChange}
             min="0"
@@ -38,7 +38,7 @@ function EqualBillAmount() {
 
     function BanknoteIcon() {
         return (
-            <div className="flex items-center justify-center h-10 text-primary w-10 rounded-full">
+            <div className="flex items-center justify-center text-primary h-7 w-6 sm:w-10 rounded-full mr-3.5">
                 <Banknote size={20} />
             </div>
         );
@@ -57,7 +57,7 @@ function EqualBillAmount() {
         );
     }
     return (
-        <div className="flex mb-2 gap-4 justify-between items-center">
+        <div className="flex mb-2 w-full justify-between items-center">
             <BanknoteIcon />
             <AmountInput
                 value={formData.amount}
@@ -132,20 +132,18 @@ function EqualBillParticipants() {
                 <input
                     type="checkbox"
                     name={name}
-                    className="accent-primary w-4 h-4 cursor-pointer transition-all group-hover:scale-120 focus:ring-0 rounded-lg hidden peer"
+                    className="accent-primary size-3.5 sm:w-4 sm:h-4 cursor-pointer transition-all group-hover:scale-120 focus:ring-0 rounded-lg hidden peer"
                     onChange={onChange}
                     checked={checked}
                 />
-                <span className="w-5 h-5 rounded-full border-2 border-accent flex items-center justify-center transition-all duration-200 peer-checked:bg-accent peer-checked:border-accent peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100">
+                <span className="size-4 sm:size-5 rounded-full border-2 border-accent flex items-center justify-center transition-all duration-200 peer-checked:bg-accent peer-checked:border-accent peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100 text-secondary">
                     <Check
-                        size={14}
-                        strokeWidth={4}
-                        color={"var(--secondary)"}
-                        className="opacity-0 scale-75 transition-all duration-200"
+                        strokeWidth={3.5}
+                        className="opacity-0 scale-75 transition-all duration-200 size-3 sm:size-3.5"
                     />
                 </span>
 
-                <p className="text-secondary select-none transition-colors duration-200 group-hover:text-primary text-sm">
+                <p className="text-secondary select-none transition-colors duration-200 group-hover:text-primary text-sm break-all">
                     {label}
                 </p>
             </label>
@@ -154,8 +152,8 @@ function EqualBillParticipants() {
 
     return (
         <div className="mb-2">
-            <div className="flex justify-between items-center mb-4">
-                <p className="font-bold text-md text-primary">
+            <div className="flex justify-between items-center mb-2 sm:mb-4">
+                <p className="font-bold text-sm sm:text-base text-primary">
                     Select Participants:
                 </p>
                 <p className="text-muted-foreground text-xs">

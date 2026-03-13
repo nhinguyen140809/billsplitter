@@ -18,11 +18,9 @@ function BillPayerSelector() {
         updateFormField("payer", value);
     };
     return (
-        <div className="flex items-center">
-            <div className="flex items-center justify-center text-primary h-6 w-10 rounded-full mr-4">
-                <UserRound
-                    size={20}
-                />
+        <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center text-primary h-7 w-6 sm:w-10 rounded-full mr-4">
+                <UserRound className="size-5"/>
             </div>
             <Select
                 name="payer"
@@ -31,20 +29,21 @@ function BillPayerSelector() {
                 onValueChange={handleSelectChange}
             >
                 <SelectTrigger
-                    className="w-full p-2 text-secondary outline-none border-0 focus:border-primary mb-2 transition duration-200"
+                    className="w-full p-2 text-secondary outline-none border-0 focus:border-primary mb-1 transition duration-200 text-sm sm:text-base"
                 >
                     <SelectValue placeholder="Paid by..." className="text-muted"/>
                 </SelectTrigger>
                 <SelectContent
                     side="bottom"
                     position="popper"
+                    className="w-[var(--radix-select-trigger-width)]"
                 >
                     <option value="" disabled hidden>
                         Paid by...
                     </option>
                     {members.map((member) => (
-                        <SelectItem key={member.id} value={member.name}>
-                            {member.name}
+                        <SelectItem className="break-all" key={member.id} value={member.name}>
+                            <span> {member.name} </span>
                         </SelectItem>
                     ))}
                 </SelectContent>

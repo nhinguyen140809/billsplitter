@@ -58,11 +58,11 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
                 </Field>
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="outline" className="text-sm">
+                        <Button variant="outline" size="sm">
                             Cancel
                         </Button>
                     </DialogClose>
-                    <Button onClick={handleSaveClick} className="text-sm">
+                    <Button onClick={handleSaveClick} size="sm">
                         Save
                     </Button>
                 </DialogFooter>
@@ -95,13 +95,13 @@ export default function HomePage() {
                         className="pl-6 has-[>svg]:pr-2 hover:gap-3 transition-all duration-200"
                         onClick={() => navigate("/settlements")}
                     >
-                        My settlements
-                        <ChevronRight className="size-7" />
+                        Settlements
+                        <ChevronRight className="size-6 sm:size-7" />
                     </Button>
                 </div>
             </AppHeader>
             <Section className="border-border py-6!">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div className="flex flex-row justify-between items-center gap-4">
                     <Button variant="secondary" onClick={clearDraft}>
                         <RotateCcw strokeWidth={2.5} /> Clear
                     </Button>
