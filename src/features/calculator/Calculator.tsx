@@ -24,7 +24,7 @@ function Calculator({
 
     return (
         <Overlay>
-            <Popup title="Calculator" className="w-full max-w-md min-w-[300px]">
+            <Popup title="Calculator" className="w-full max-w-md min-w-75">
                 <CalulatorDisplay
                     expression={expression}
                     errorMessage={errorMessage}

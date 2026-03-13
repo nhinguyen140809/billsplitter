@@ -29,7 +29,7 @@ function BillPayerSelector() {
                 onValueChange={handleSelectChange}
             >
                 <SelectTrigger
-                    className="w-full p-2 text-secondary outline-none border-0 focus:border-primary mb-1 transition duration-200 text-sm sm:text-base"
+                    className="w-full p-2 text-card-foreground outline-none border-0 focus:border-primary mb-1 transition duration-200 text-sm sm:text-base"
                 >
                     <SelectValue placeholder="Paid by..." className="text-muted"/>
                 </SelectTrigger>

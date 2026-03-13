@@ -23,12 +23,12 @@ function UnequalShareInput({
             key={member.id}
             className="flex items-end justify-between gap-2 sm:gap-4 pr-3 mt-1"
         >
-            <p className="text-secondary w-1/2 break-all mb-2">{member.name}:</p>
+            <p className="text-card-foreground w-1/2 break-all mb-2">{member.name}:</p>
             <div className="flex items-center gap-2 sm:gap-4 justify-end">
                 <input
                     type="number"
                     name={`unequal-share-${member.name}`}
-                    className="w-full ml-2 p-1 text-secondary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
+                    className="w-full ml-2 p-1 text-card-foreground outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
                     min="0"
                     onChange={onChange}
                     value={value}

@@ -33,20 +33,20 @@ function ButtonsSection({
         icon: React.ReactNode;
         label: string;
         onClick: () => void;
-        variant: "outline" | "ghost" | "destructive";
+        variant: "outline" | "ghost" | "destructive" | "secondary";
     };
     const buttonLeft: ButtonInfo[] = [
         {
             icon: <RotateCcw />,
             label: "Clear",
             onClick: onClear,
-            variant: "outline",
+            variant: "secondary",
         },
         {
             icon: <Copy />,
             label: "Duplicate",
             onClick: onDuplicate,
-            variant: "outline",
+            variant: "secondary",
         },
     ];
     const buttonRight: ButtonInfo[] = [
@@ -112,7 +112,7 @@ function NameSection() {
                         onChange={(e) =>
                             updateSettlementPartial({ name: e.target.value })
                         }
-                        className="w-full p-2 font-bold text-lg md:text-xl text-secondary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
+                        className="w-full p-2 font-bold text-lg md:text-xl text-primary outline-none border-b-2 focus:border-b-primary transition duration-200 border-b-accent"
                     />
                 </Field>
             </div>

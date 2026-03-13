@@ -22,7 +22,7 @@ function AmountInput({
             type="string"
             name="amount"
             placeholder="Total amount"
-            className="flex-1 p-2 text-card-foreground outline-none border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-accent text-sm sm:text-base mr-4"
+            className="flex-1 p-1 text-card-foreground outline-none border-b-2 focus:border-b-primary mb-2 transition duration-200 border-b-accent text-sm sm:text-base mr-4"
             value={value}
             onChange={onChange}
             min="0"
@@ -136,14 +136,14 @@ function EqualBillParticipants() {
                     onChange={onChange}
                     checked={checked}
                 />
-                <span className="size-4 sm:size-5 rounded-full border-2 border-accent flex items-center justify-center transition-all duration-200 peer-checked:bg-accent peer-checked:border-accent peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100 text-secondary">
+                <span className="size-4 sm:size-5 rounded-full border-2 border-accent flex items-center justify-center transition-all duration-200 peer-checked:bg-accent peer-checked:border-accent peer-checked:[&>svg]:opacity-100 peer-checked:[&>svg]:scale-100 text-card-foreground">
                     <Check
                         strokeWidth={3.5}
                         className="opacity-0 scale-75 transition-all duration-200 size-3 sm:size-3.5"
                     />
                 </span>
 
-                <p className="text-secondary select-none transition-colors duration-200 group-hover:text-primary text-sm break-all">
+                <p className="text-card-foreground select-none transition-colors duration-200 group-hover:text-primary text-sm break-all">
                     {label}
                 </p>
             </label>
