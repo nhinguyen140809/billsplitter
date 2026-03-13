@@ -41,7 +41,7 @@ export default function NameInput({
                     onChange={(e) => setName(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Enter participant name"
-                    className="rounded-full p-5 mr-2 font-medium text-md focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
+                    className="rounded-full p-5 mr-2 font-medium text-md"
                     aria-invalid={!!inputError}
                     aria-describedby={inputError ? "name-error" : undefined}
                 />

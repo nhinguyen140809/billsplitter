@@ -13,6 +13,7 @@ import { useMembers } from "@/features/participants/hooks/useMembers";
 import type { Bill, BillType } from "@/types";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useParams } from "react-router-dom";
 
 function BillFormFooterButtons({
     onClose,
@@ -71,7 +72,8 @@ export default function BillFormPopup({
     onSubmitBillForm: (bill: Bill) => void;
     onClose: () => void;
 }) {
-    const { members } = useMembers();
+    const { id: settlementId } = useParams();
+    const { members } = useMembers(settlementId);
     const billForm = useBillForm(members, onSubmitBillForm, onClose);
 
     useEffect(() => {

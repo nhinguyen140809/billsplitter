@@ -34,7 +34,7 @@ export interface Settlement {
     bills: Bill[];
     sendPayments: PaymentData;
     receivePayments: PaymentData;
-    updatedAt: string;
+    updatedAt: Date;
 }
 
 export type BillFormData = {

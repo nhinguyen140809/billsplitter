@@ -8,10 +8,12 @@ import {
 import { UserRound } from "lucide-react";
 import { useBillFormContext } from "../../../context/BillFormContext";
 import { useMembers } from "../../../../participants/hooks/useMembers";
+import { useParams } from "react-router-dom";
 
 function BillPayerSelector() {
     const { formData, updateFormField } = useBillFormContext();
-    const { members } = useMembers();
+    const { id: settlementId } = useParams();
+    const { members } = useMembers(settlementId);
     const handleSelectChange = (value: string) => {
         updateFormField("payer", value);
     };

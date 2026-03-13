@@ -1,3 +1,4 @@
+import { DEFAULT_SETTLEMENT } from "@/constants";
 import { settlementRepo } from "@/repositories/settlementRepo";
 import type { Settlement } from "@/types";
 import { useLiveQuery } from "dexie-react-hooks";
@@ -13,12 +14,13 @@ export function useSettlement(settlementId: string) {
     };
 
     const updateSettlementPartial = async (data: Partial<Settlement>) => {
-        const currentSettlement = await settlementRepo.getSettlement(settlementId);
+        const currentSettlement =
+            await settlementRepo.getSettlement(settlementId);
         if (currentSettlement) {
             await settlementRepo.updateSettlement(settlementId, {
                 ...currentSettlement,
                 ...data,
-                updatedAt: new Date().toISOString(),
+                updatedAt: new Date(),
             } as Settlement);
         }
     };
@@ -27,5 +29,31 @@ export function useSettlement(settlementId: string) {
         await settlementRepo.deleteSettlement(settlementId);
     };
 
-    return { settlement, updateSettlement, updateSettlementPartial, deleteSettlement };
+    const duplicateSettlement = async () => {
+        const newSettlementId =
+            await settlementRepo.duplicateSettlement(settlementId);
+        return newSettlementId;
+    };
+
+    const clearSettlement = async () => {
+        const currentSettlement =
+            await settlementRepo.getSettlement(settlementId);
+        if (currentSettlement) {
+            await settlementRepo.updateSettlement(settlementId, {
+                ...currentSettlement,
+                ...DEFAULT_SETTLEMENT,
+                id: settlementId,
+                updatedAt: new Date(),
+            } as Settlement);
+        }
+    };
+
+    return {
+        settlement,
+        updateSettlement,
+        updateSettlementPartial,
+        clearSettlement,
+        deleteSettlement,
+        duplicateSettlement,
+    };
 }

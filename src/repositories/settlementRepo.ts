@@ -5,7 +5,7 @@ export const settlementRepo = {
     async getDraft() {
         const draft = await db.draftSettlement.get("draft");
         return draft?.data || null;
-    },
+    }, 
 
     async saveDraft(settlement: Settlement) {
         await db.draftSettlement.put({ id: "draft", data: settlement });
@@ -22,7 +22,7 @@ export const settlementRepo = {
             data: {
                 ...currentDraft?.data,
                 ...settlement,
-                updatedAt: new Date().toISOString(),
+                updatedAt: new Date(),
             } as Settlement,
         });
     },
@@ -32,7 +32,7 @@ export const settlementRepo = {
         await db.settlements.add({
             ...settlement,
             id,
-            updatedAt: new Date().toISOString(),
+            updatedAt: new Date(),
         });
         return id;
     },
@@ -40,7 +40,7 @@ export const settlementRepo = {
     async updateSettlement(id: string, settlement: Settlement) {
         await db.settlements.update(id, {
             ...settlement,
-            updatedAt: new Date().toISOString(),
+            updatedAt: new Date(),
         });
     },
 
@@ -61,13 +61,14 @@ export const settlementRepo = {
         if (!settlementToDuplicate) {
             throw new Error("Settlement not found");
         }
+        const newId = crypto.randomUUID();
         const newSettlement = {
             ...settlementToDuplicate,
-            id: crypto.randomUUID(),
-            name: "Copy of " + settlementToDuplicate.name,
-            updatedAt: new Date().toISOString(),
+            id: newId,
+            name: "Copy of " + (settlementToDuplicate.name || "Untitled Settlement"),
+            updatedAt: new Date(),
         };
         await db.settlements.add(newSettlement);
-        return newSettlement.id;
+        return newId;
     },
 };

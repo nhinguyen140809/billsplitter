@@ -34,9 +34,9 @@ export function useDraftSettlement() {
         await settlementRepo.clearDraft();
     };
 
-    const createSettlementFromDraft = async () => {
+    const createSettlementFromDraft = async (settlement: Settlement) => {
         const newSettlementId =
-            await settlementRepo.createSettlement(draft);
+            await settlementRepo.createSettlement(settlement);
         clearDraft();
         return newSettlementId;
     };

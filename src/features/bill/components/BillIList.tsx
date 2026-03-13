@@ -76,7 +76,9 @@ function EqualBillContent({ bill }: { bill: Bill }) {
         return (
             <div className="flex gap-2 mt-2">
                 <p className="text-muted-foreground">Amount:</p>
-                <p className="text-primary font-medium">{formatCurrency(amount)}</p>
+                <p className="text-primary font-medium">
+                    {formatCurrency(amount)}
+                </p>
             </div>
         );
     }
@@ -109,7 +111,9 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
         return (
             <div className="flex gap-2 mt-2">
                 <p className="text-muted-foreground">Amount:</p>
-                <p className="text-primary font-medium">{formatCurrency(amount)}</p>
+                <p className="text-primary font-medium">
+                    {formatCurrency(amount)}
+                </p>
             </div>
         );
     }
@@ -129,7 +133,7 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
                             </span>
                             <span
                                 className="text-primary font-medium text-right"
-                                key={`${member}_${share}"`}
+                                key={`${member}_${share}`}
                             >
                                 {formatCurrency(share)}
                             </span>
@@ -142,8 +146,8 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
 
     return (
         <>
-            <BillAmount amount={bill.amount} />
-            <BillShares shares={bill.shares} />
+            <BillAmount key={`amount-${bill.id}`} amount={bill.amount} />
+            <BillShares key={`shares-${bill.id}`} shares={bill.shares} />
         </>
     );
 }
@@ -179,8 +183,8 @@ function BillItem({
             </div>
             <div className="flex-col flex mt-2 text-sm">
                 <BillItemPayer bill={bill}></BillItemPayer>
-                {bill.type === "equal" && <EqualBillContent bill={bill} />}
-                {bill.type === "unequal" && <UnequalBillContent bill={bill} />}
+                {bill.type === "equal" && <EqualBillContent key={bill.id} bill={bill} />}
+                {bill.type === "unequal" && <UnequalBillContent key={bill.id} bill={bill} />}
             </div>
         </BillItemContainer>
     );

@@ -6,16 +6,16 @@ import NameInput from "./components/NameInput";
 import ParticipantList from "./components/ParticipantList";
 import { useMembers } from "./hooks/useMembers";
 import type { SectionStatus } from "@/types";
+import { useParams } from "react-router-dom";
 
 function SectionParticipant({
     onDone,
-    settlementId,
     status,
 }: {
     onDone: () => void;
-    settlementId?: string;
     status: SectionStatus;
 }) {
+    const { id: settlementId } = useParams();
     const { members, addMember, removeMember } = useMembers(settlementId);
 
     const [name, setName] = useState<string>("");

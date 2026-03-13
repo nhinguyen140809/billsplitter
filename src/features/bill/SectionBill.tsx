@@ -6,16 +6,16 @@ import Section from "@/components/shared/Section";
 import { Button } from "@/components/ui/button";
 import { useBills } from "./hooks/useBills";
 import type { Bill, SectionStatus } from "@/types";
+import { useParams } from "react-router-dom";
 
 function SectionBill({
     onDone,
     status,
-    settlementId,
 }: {
     onDone: () => void;
     status?: SectionStatus;
-    settlementId?: string;
 }) {
+    const { id: settlementId } = useParams();
     const { bills, onSubmitBillForm, removeBill, duplicateBill } =
         useBills(settlementId);
 

@@ -6,7 +6,7 @@ export function useMembers(settlementId?: string) {
     const { draft, updateDraft } = useDraftSettlement();
     const { settlement, updateSettlementPartial } = settlementId
         ? useSettlement(settlementId)
-        : { settlement: undefined, updateSettlementPartial: () => {} };
+        : { settlement: undefined, updateSettlementPartial: () => {}};
 
     const members = settlement ? settlement.members : draft.members;
 

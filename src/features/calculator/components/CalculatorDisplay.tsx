@@ -14,7 +14,7 @@ export default function CalculatorDisplay({
         >
             <Input
                 type="text"
-                className="rounded-full p-5 mr-2 text-right font-medium text-md focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
+                className="rounded-full p-5 text-right font-medium text-md"
                 value={expression}
                 aria-invalid={!!errorMessage}
                 aria-describedby={errorMessage ? "expression-error" : undefined}

@@ -8,5 +8,5 @@ export const DEFAULT_SETTLEMENT: Settlement = {
     bills: [],
     sendPayments: {},
     receivePayments: {},
-    updatedAt: new Date().toISOString(),
+    updatedAt: new Date(),
 };

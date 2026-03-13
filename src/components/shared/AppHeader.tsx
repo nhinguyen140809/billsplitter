@@ -1,6 +1,7 @@
 import { Github } from "lucide-react";
 import Section from "./Section";
 import { ModeToggle } from "../mode-toggle";
+import { Separator } from "@/components/ui/separator";
 
 function GithubButton() {
     return (
@@ -26,6 +27,7 @@ function AppHeader({ children }: { children?: React.ReactNode }) {
                 <ModeToggle />
                 <GithubButton />
             </div>
+            <Separator className="my-6"/>
             {children}
         </Section>
     );
