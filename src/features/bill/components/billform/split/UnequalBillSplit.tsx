@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useBillFormContext } from "../../../context/BillFormContext";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { useMembers } from "../../../../participants/hooks/useMembers";
+import { useMembers } from "@/features/participants";
 import type { Member } from "@/types";
 import { useParams } from "react-router-dom";
 

@@ -79,4 +79,4 @@ function SectionParticipant({
     );
 }
 
-export default SectionParticipant;
+export { SectionParticipant };

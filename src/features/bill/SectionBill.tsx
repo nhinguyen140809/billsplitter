@@ -86,4 +86,4 @@ function SectionBill({
     );
 }
 
-export default SectionBill;
+export { SectionBill };

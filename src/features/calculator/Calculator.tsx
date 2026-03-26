@@ -61,4 +61,4 @@ function Calculator({
     );
 }
 
-export default Calculator;
+export { Calculator };

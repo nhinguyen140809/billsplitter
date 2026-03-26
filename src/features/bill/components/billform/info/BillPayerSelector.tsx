@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/select";
 import { UserRound } from "lucide-react";
 import { useBillFormContext } from "../../../context/BillFormContext";
-import { useMembers } from "../../../../participants/hooks/useMembers";
+import { useMembers } from "@/features/participants";
 import { useParams } from "react-router-dom";
 
 function BillPayerSelector() {

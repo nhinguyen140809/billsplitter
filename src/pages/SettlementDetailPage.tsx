@@ -1,6 +1,6 @@
-import SectionBill from "@/features/bill/SectionBill";
-import SectionParticipant from "@/features/participants/SectionParticipant";
-import SectionPayments from "@/features/payments/SectionPayments";
+import { SectionBill } from "@/features/bill";
+import { SectionParticipant} from "@/features/participants";
+import { SectionPayments } from "@/features/payments";
 import AppHeader from "@/components/shared/AppHeader";
 import AppFooter from "@/components/shared/AppFooter";
 import { useSettlement } from "@/hooks/useSettlement";

@@ -5,7 +5,7 @@ import { useBillFormContext } from "../../../context/BillFormContext";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useMembers } from "../../../../participants/hooks/useMembers";
+import { useMembers } from "@/features/participants";
 import { useParams } from "react-router-dom";
 
 function AmountInput({

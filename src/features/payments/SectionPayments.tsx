@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { calculateSettlement } from "@/lib/calculateSettlement";
 import { usePayments } from "./hooks/usePayments";
-import { useMembers } from "../participants/hooks/useMembers";
-import { useBills } from "../bill/hooks/useBills";
+import { useMembers } from "@/features/participants";
+import { useBills } from "@/features/bill";
 import type { SectionStatus } from "@/types";
 import Section from "@/components/shared/Section";
 import PaymentItem from "./components/PaymentItem";
@@ -103,4 +103,4 @@ function SectionPayments({
     );
 }
 
-export default SectionPayments;
+export { SectionPayments };
