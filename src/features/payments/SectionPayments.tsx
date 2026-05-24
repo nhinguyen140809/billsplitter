@@ -1,7 +1,7 @@
 import { usePayments } from './hooks/usePayments'
 import { useMembers } from '@/features/participants'
 import { useBills } from '@/features/bill'
-import { useCalculationWorker } from '@/workers/useCalculationWorker'
+import { useCalculationWorker } from '@/hooks/useCalculationWorker'
 import Section from '@/components/shared/Section'
 import PaymentItem from './components/PaymentItem'
 import Overlay from '@/components/shared/Overlay'
