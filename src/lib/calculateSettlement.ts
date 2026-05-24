@@ -1,5 +1,5 @@
 import solver from 'javascript-lp-solver'
-import type { Member, Bill, PaymentData } from '@/types'
+import type { StoredMember, Member, Bill, PaymentData } from '@/types'
 import { formatCurrency } from './utils'
 
 type DebtParty = {
@@ -23,8 +23,8 @@ type LPSolution = {
   [variable: string]: number | boolean
 }
 
-const shareBillList = ({ members, bills }: { members: Member[]; bills: Bill[] }) => {
-  const updatedMembers = members.map((member) => ({ ...member }))
+const shareBillList = ({ members, bills }: { members: StoredMember[]; bills: Bill[] }) => {
+  const updatedMembers: Member[] = members.map((member) => ({ ...member, paid: 0, spent: 0 }))
 
   for (const bill of bills) {
     const { payer, amount, shares } = bill
@@ -181,33 +181,17 @@ const createPaymentData = (
   return { sendPayments: send, receivePayments: receive }
 }
 
-export const calculateSettlement = (members: Member[], bills: Bill[]) => {
-  const resetMembers = members.map((member) => ({
-    ...member,
-    paid: 0,
-    spent: 0,
-  }))
+export const calculateSettlement = (members: StoredMember[], bills: Bill[]) => {
+  const membersWithBills = shareBillList({ members, bills })
 
-  const membersWithAllBills = shareBillList({
-    members: resetMembers,
-    bills: bills,
-  })
-
-  const { senders, receivers } = createSendersAndReceivers(membersWithAllBills)
-
-  // console.log('Senders:', senders)
-  // console.log('Receivers:', receivers)
+  const { senders, receivers } = createSendersAndReceivers(membersWithBills)
 
   if (senders.length === 0 || receivers.length === 0) {
-    return { membersWithAllBills, sendPayments: {}, receivePayments: {} }
+    return { sendPayments: {} as PaymentData, receivePayments: {} as PaymentData }
   }
 
   const model = createModel(senders, receivers)
   const results = solveModel(model)
 
-  // console.log('Settlement results:', results)
-
-  const { sendPayments, receivePayments } = createPaymentData(senders, receivers, results)
-
-  return { membersWithAllBills, sendPayments, receivePayments }
+  return createPaymentData(senders, receivers, results)
 }

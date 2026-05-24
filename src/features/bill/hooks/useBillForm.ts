@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react'
-import type { Bill, BillFormData, Member } from '@/types'
+import type { Bill, BillFormData, StoredMember } from '@/types'
 
 export function useBillForm(
-  members: Member[],
+  members: StoredMember[],
   onSubmitBillForm: (bill: Bill) => void,
   onClose: () => void
 ) {

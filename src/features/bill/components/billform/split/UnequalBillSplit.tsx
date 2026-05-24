@@ -4,7 +4,7 @@ import { useBillFormContext } from '../../../context/BillFormContext'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { useMembers } from '@/features/participants'
-import type { Member } from '@/types'
+import type { StoredMember } from '@/types'
 import { useParams } from 'react-router-dom'
 
 function UnequalShareInput({
@@ -12,7 +12,7 @@ function UnequalShareInput({
   value,
   onChange,
 }: {
-  member: Member
+  member: StoredMember
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {

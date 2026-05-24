@@ -32,6 +32,30 @@ export class BillSplitterDB extends Dexie {
           await tx.table('draftSettlement').put(draft)
         }
       })
+    // v3: remove computed paid/spent fields from stored members
+    this.version(3)
+      .stores({
+        settlements: 'id, updatedAt',
+        draftSettlement: 'id',
+      })
+      .upgrade(async (tx) => {
+        type RawMember = { paid?: unknown; spent?: unknown }
+        const stripMember = (m: RawMember) => {
+          delete m.paid
+          delete m.spent
+        }
+        await tx
+          .table('settlements')
+          .toCollection()
+          .modify((s: { members?: RawMember[] }) => {
+            s.members?.forEach(stripMember)
+          })
+        const draft = await tx.table('draftSettlement').get('draft')
+        if (draft?.data?.members) {
+          draft.data.members.forEach(stripMember)
+          await tx.table('draftSettlement').put(draft)
+        }
+      })
   }
 }
 

@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom'
 function SectionPayments() {
   const { id: settlementId } = useParams()
   const { sendPayments, receivePayments, updatePayments } = usePayments(settlementId)
-  const { members, updateMembers } = useMembers(settlementId)
+  const { members } = useMembers(settlementId)
   const { bills } = useBills(settlementId)
 
   const [calculationError, setCalculationError] = useState<string>('')
@@ -23,9 +23,7 @@ function SectionPayments() {
       return
     }
     try {
-      const { membersWithAllBills, sendPayments: send, receivePayments: receive } =
-        calculateSettlement(members, bills)
-      updateMembers(membersWithAllBills)
+      const { sendPayments: send, receivePayments: receive } = calculateSettlement(members, bills)
       updatePayments(send, receive)
       setCalculationError('')
     } catch (error) {

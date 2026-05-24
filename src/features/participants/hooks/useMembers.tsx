@@ -1,6 +1,6 @@
 import { useDraftSettlement } from '@/hooks/useDraftSettlement'
 import { useSettlement } from '@/hooks/useSettlement'
-import type { Member } from '@/types'
+import type { StoredMember } from '@/types'
 
 export function useMembers(settlementId?: string) {
   const { draft, updateDraft } = useDraftSettlement()
@@ -15,14 +15,9 @@ export function useMembers(settlementId?: string) {
     if (members.some((member) => member.name === name)) {
       throw new Error('Name already exists')
     }
-    const newMembers = [
+    const newMembers: StoredMember[] = [
       ...members,
-      {
-        id: crypto.randomUUID(),
-        name: name,
-        paid: 0,
-        spent: 0,
-      } as Member,
+      { id: crypto.randomUUID(), name },
     ]
     if (settlement) {
       updateSettlementPartial({ members: newMembers })
@@ -40,13 +35,5 @@ export function useMembers(settlementId?: string) {
     }
   }
 
-  const updateMembers = (newMembers: Member[]) => {
-    if (settlement) {
-      updateSettlementPartial({ members: newMembers })
-    } else {
-      updateDraft({ members: newMembers })
-    }
-  }
-
-  return { members, addMember, removeMember, updateMembers }
+  return { members, addMember, removeMember }
 }
