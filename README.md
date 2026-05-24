@@ -30,7 +30,7 @@ Everything runs in the browser. No server, no sign-up, no data leaves the device
 | ✔️ **Dark / light theme**            | System-aware theme with manual toggle                                                                     |
 | ✔️ **No server required**            | Zero network requests at runtime — all logic and data are local                                           |
 | ✔️ **Unit tested**                   | Calculation pipeline verified with Vitest — equal/unequal splits, netting, and output validity invariants |
-| ✔️ **E2E tested**                    | Full user-journey coverage with Playwright — participants, bills, payment calculation, and settlements     |
+| ✔️ **E2E tested**                    | Full user-journey coverage with Playwright — participants, bills, payment calculation, and settlements    |
 | ✔️ **CI on every PR**                | GitHub Actions runs ESLint, Prettier, TypeScript build, and tests before merge                            |
 | ✔️ **Error recovery**                | React Error Boundary catches render crashes; persistent feedback button for bug reports                   |
 
@@ -188,16 +188,16 @@ npm run dev
 
 Other scripts:
 
-| Command                      | Description                                     |
-| ---------------------------- | ----------------------------------------------- |
-| `npm run build`              | Type-check and build for production             |
-| `npm run lint`               | Run ESLint                                      |
-| `npm run format`             | Format all files with Prettier                  |
-| `npm run unit-test:run`      | Run all unit tests (single pass, no watch)      |
-| `npm run unit-test:coverage` | Run unit tests with V8 coverage report          |
-| `npm run test:run`           | Run all Playwright e2e tests (headless)         |
-| `npm run test:run:ui`        | Run Playwright tests with interactive UI        |
-| `npm run release`            | Lint → build → deploy to GitHub Pages (manual)  |
+| Command                      | Description                                    |
+| ---------------------------- | ---------------------------------------------- |
+| `npm run build`              | Type-check and build for production            |
+| `npm run lint`               | Run ESLint                                     |
+| `npm run format`             | Format all files with Prettier                 |
+| `npm run unit-test:run`      | Run all unit tests (single pass, no watch)     |
+| `npm run unit-test:coverage` | Run unit tests with V8 coverage report         |
+| `npm run test:run`           | Run all Playwright e2e tests (headless)        |
+| `npm run test:run:ui`        | Run Playwright tests with interactive UI       |
+| `npm run release`            | Lint → build → deploy to GitHub Pages (manual) |
 
 ---
 
