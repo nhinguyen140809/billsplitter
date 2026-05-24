@@ -27,6 +27,7 @@ function UnequalShareInput({
           type="number"
           name={`unequal-share-${member.name}`}
           autoComplete="off"
+          data-testid={`bill-share-${member.name}`}
           className="ml-2"
           min="0"
           onChange={onChange}
@@ -43,7 +44,9 @@ function UnequalBillShares() {
   const { formData, updateFormFieldWrapper } = useBillFormContext()
   const { members } = useMembers()
 
-  const participantCount = members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length
+  const participantCount = members.filter(
+    (m) => (parseFloat(formData.shares[m.name]) || 0) > 0
+  ).length
 
   return (
     <div className="mt-2 mb-2">

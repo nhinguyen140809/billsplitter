@@ -34,6 +34,7 @@ function SectionPayments() {
               variant="default"
               className="ml-auto"
               disabled={isCalculating || members.length === 0 || bills.length === 0}
+              data-testid="calculate-btn"
             >
               <Calculator data-icon="inline-start" />
               Calculate payments

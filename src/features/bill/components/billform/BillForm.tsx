@@ -31,6 +31,7 @@ function BillNameInput() {
       name="name"
       placeholder="Bill name"
       autoComplete="off"
+      data-testid="bill-name-input"
       className="mb-3 font-bold sm:mb-4 sm:text-xl"
       value={formData.name}
       onChange={updateFormFieldWrapper}
@@ -52,7 +53,10 @@ function BillPayerSelector() {
         defaultValue="Select payer"
         onValueChange={(value) => updateFormField('payer', value)}
       >
-        <SelectTrigger className="text-card-foreground focus:border-primary mb-1 w-full border-0 transition duration-200 outline-none">
+        <SelectTrigger
+          className="text-card-foreground focus:border-primary mb-1 w-full border-0 transition duration-200 outline-none"
+          data-testid="bill-payer-select"
+        >
           <SelectValue placeholder="Paid by..." className="text-muted" />
         </SelectTrigger>
         <SelectContent side="bottom" position="popper" className="w-(--radix-select-trigger-width)">
@@ -81,6 +85,7 @@ function BillTypeButtons() {
           variant={isEqual === (label === 'Equal') ? 'default' : 'outline'}
           onClick={() => updateFormField('type', label === 'Equal' ? 'equal' : 'unequal')}
           size="sm"
+          data-testid={`bill-type-${label.toLowerCase()}`}
         >
           {label}
         </Button>
@@ -92,10 +97,10 @@ function BillTypeButtons() {
 function BillFormFooterButtons({ onClose, onSave }: { onClose: () => void; onSave: () => void }) {
   return (
     <div className="mt-2 flex justify-end gap-4">
-      <Button onClick={onClose} variant="outline" size="sm">
+      <Button onClick={onClose} variant="outline" size="sm" data-testid="bill-cancel-btn">
         Cancel
       </Button>
-      <Button onClick={onSave} variant="default" size="sm">
+      <Button onClick={onSave} variant="default" size="sm" data-testid="bill-save-btn">
         Save
       </Button>
     </div>
@@ -145,7 +150,7 @@ export default function BillFormPopup({
 
   return (
     <BillFormContext.Provider value={billForm}>
-      <Overlay>
+      <Overlay data-testid="bill-form">
         <Popup title="Bill Details">
           <BillNameInput />
           <BillTypeButtons />

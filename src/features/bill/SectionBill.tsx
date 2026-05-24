@@ -24,6 +24,7 @@ function SectionBill() {
         <div className="flex justify-end py-2">
           <Button
             variant="outline"
+            data-testid="bill-add-btn"
             onClick={() => {
               setShowForm(true)
               setSelectedBill(null)

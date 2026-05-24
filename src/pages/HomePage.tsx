@@ -41,7 +41,7 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button data-testid="save-settlement-btn">
           <Save data-icon="inline-start" /> Save
         </Button>
       </DialogTrigger>
@@ -53,6 +53,7 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
           <Input
             placeholder="Settlement name"
             ref={inputRef}
+            data-testid="settlement-name-input"
             className="focus-visible:ring-primary/50 focus-visible:ring-offset-background my-2 text-sm font-medium focus-visible:ring-1 focus-visible:ring-offset-0"
           />
         </Field>
@@ -62,7 +63,7 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={handleSaveClick} size="sm">
+          <Button onClick={handleSaveClick} size="sm" data-testid="settlement-save-confirm-btn">
             Save
           </Button>
         </DialogFooter>
@@ -87,6 +88,7 @@ export default function HomePage() {
           <Button
             variant="ghost"
             className="transition-all duration-200 hover:gap-3"
+            data-testid="nav-settlements"
             onClick={() => navigate('/settlements')}
           >
             Settlements
@@ -96,7 +98,7 @@ export default function HomePage() {
       </AppHeader>
       <Section className="border-border py-6!">
         <div className="flex flex-row items-center justify-between gap-4">
-          <Button variant="secondary" onClick={clearDraft}>
+          <Button variant="secondary" onClick={clearDraft} data-testid="clear-btn">
             <RotateCcw data-icon="inline-start" strokeWidth={2.5} /> Clear
           </Button>
           <SaveSettlementDialog onSave={handleCreatSettlementFromDraft} />

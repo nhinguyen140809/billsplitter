@@ -20,14 +20,19 @@ function CheckboxItem({
   name,
   checked,
   onChange,
+  testId,
 }: {
   label: string
   name: string
   checked: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  testId?: string
 }) {
   return (
-    <label className="group relative flex cursor-pointer items-center gap-3 px-4 transition-all">
+    <label
+      data-testid={testId}
+      className="group relative flex cursor-pointer items-center gap-3 px-4 transition-all"
+    >
       <input
         type="checkbox"
         name={name}
@@ -63,6 +68,7 @@ function SelectAllCheckbox({
       checked={checked}
       label="All"
       onChange={onChange}
+      testId="bill-participant-all"
     />
   )
 }
@@ -81,6 +87,7 @@ function EqualBillAmount() {
         name="amount"
         placeholder="Total amount"
         autoComplete="off"
+        data-testid="bill-amount-input"
         className="mr-4 mb-2 flex-1"
         value={formData.amount}
         onChange={updateFormFieldWrapper}
@@ -95,7 +102,9 @@ function EqualBillParticipants() {
   const { formData, updateFormField, updateFormFieldWrapper, selectAll } = useBillFormContext()
   const { members } = useMembers()
 
-  const participantCount = members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length
+  const participantCount = members.filter(
+    (m) => (parseFloat(formData.shares[m.name]) || 0) > 0
+  ).length
 
   const toggleAllShares = useCallback(
     (checked: boolean) => {
@@ -129,6 +138,7 @@ function EqualBillParticipants() {
               checked={Number(formData.shares[member.name]) > 0}
               label={member.name}
               onChange={updateFormFieldWrapper}
+              testId={`bill-participant-${member.name}`}
             />
           ))}
         </div>

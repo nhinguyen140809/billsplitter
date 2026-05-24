@@ -42,8 +42,9 @@ export default function NameInput({
           className="mr-2 p-4 py-4.5 font-medium sm:p-5"
           aria-invalid={!!inputError}
           aria-describedby={inputError ? 'name-error' : undefined}
+          data-testid="participant-name-input"
         />
-        <Button variant="outline" size="icon-lg" onClick={onAdd}>
+        <Button variant="outline" size="icon-lg" onClick={onAdd} data-testid="participant-add-btn">
           <Plus className="size-4 sm:size-5" />
         </Button>
       </div>

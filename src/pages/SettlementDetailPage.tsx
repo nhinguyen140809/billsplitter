@@ -27,6 +27,7 @@ function ButtonsSection({
     label: string
     onClick: () => void
     variant: 'outline' | 'ghost' | 'destructive' | 'secondary'
+    testId: string
   }
   const buttonLeft: ButtonInfo[] = [
     {
@@ -34,12 +35,14 @@ function ButtonsSection({
       label: 'Clear',
       onClick: onClear,
       variant: 'secondary',
+      testId: 'settlement-clear-detail-btn',
     },
     {
       icon: <Copy data-icon="inline-start" />,
       label: 'Duplicate',
       onClick: onDuplicate,
       variant: 'secondary',
+      testId: 'settlement-duplicate-detail-btn',
     },
   ]
   const buttonRight: ButtonInfo[] = [
@@ -48,22 +51,35 @@ function ButtonsSection({
       label: 'Delete',
       onClick: onDelete,
       variant: 'destructive',
+      testId: 'settlement-delete-detail-btn',
     },
   ]
   return (
     <Section className="border-border py-6!">
       <div className="flex justify-between">
         <div className="flex items-start gap-2">
-          {buttonLeft.map((button, index) => (
-            <Button key={index} variant={button.variant} onClick={button.onClick} size="sm">
+          {buttonLeft.map((button) => (
+            <Button
+              key={button.testId}
+              variant={button.variant}
+              onClick={button.onClick}
+              size="sm"
+              data-testid={button.testId}
+            >
               {button.icon}
               {button.label}
             </Button>
           ))}
         </div>
         <div className="flex items-end gap-2">
-          {buttonRight.map((button, index) => (
-            <Button key={index} variant={button.variant} onClick={button.onClick} size="sm">
+          {buttonRight.map((button) => (
+            <Button
+              key={button.testId}
+              variant={button.variant}
+              onClick={button.onClick}
+              size="sm"
+              data-testid={button.testId}
+            >
               {button.icon}
               {button.label}
             </Button>
@@ -86,6 +102,7 @@ function NameSection() {
             type="text"
             placeholder="Untitled settlement"
             id="input-settlement-name"
+            data-testid="settlement-detail-name"
             value={data.name}
             onChange={(e) => update({ name: e.target.value })}
             className="text-primary focus:border-b-primary border-b-accent w-full border-b-2 p-2 text-lg font-bold transition duration-200 outline-none md:text-xl"
@@ -118,6 +135,7 @@ export default function SettlementDetailPage() {
           <Button
             variant="ghost"
             className="transition-all duration-200 hover:gap-3"
+            data-testid="nav-home"
             onClick={() => navigate('/')}
           >
             <ChevronLeft data-icon="inline-start" className="size-6 sm:size-7" />
