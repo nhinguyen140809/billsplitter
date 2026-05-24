@@ -1,5 +1,5 @@
 import { Banknote } from 'lucide-react'
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { Check } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -80,6 +80,7 @@ function EqualBillAmount() {
         type="text"
         name="amount"
         placeholder="Total amount"
+        autoComplete="off"
         className="mr-4 mb-2 flex-1"
         value={formData.amount}
         onChange={updateFormFieldWrapper}
@@ -94,10 +95,7 @@ function EqualBillParticipants() {
   const { formData, updateFormField, updateFormFieldWrapper, selectAll } = useBillFormContext()
   const { members } = useMembers()
 
-  const participantCount = useMemo(
-    () => members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length,
-    [formData.shares, members]
-  )
+  const participantCount = members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length
 
   const toggleAllShares = useCallback(
     (checked: boolean) => {

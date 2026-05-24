@@ -30,6 +30,7 @@ function BillNameInput() {
       type="text"
       name="name"
       placeholder="Bill name"
+      autoComplete="off"
       className="mb-3 font-bold sm:mb-4 sm:text-xl"
       value={formData.name}
       onChange={updateFormFieldWrapper}

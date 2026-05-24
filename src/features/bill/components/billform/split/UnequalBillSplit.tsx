@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Input } from '@/components/ui/input'
@@ -26,6 +26,7 @@ function UnequalShareInput({
           size="sm"
           type="number"
           name={`unequal-share-${member.name}`}
+          autoComplete="off"
           className="ml-2"
           min="0"
           onChange={onChange}
@@ -42,10 +43,7 @@ function UnequalBillShares() {
   const { formData, updateFormFieldWrapper } = useBillFormContext()
   const { members } = useMembers()
 
-  const participantCount = useMemo(
-    () => members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length,
-    [formData.shares, members]
-  )
+  const participantCount = members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length
 
   return (
     <div className="mt-2 mb-2">
