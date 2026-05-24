@@ -1,137 +1,134 @@
-import { SectionBill } from "@/features/bill";
-import { SectionParticipant } from "@/features/participants";
-import { SectionPayments } from "@/features/payments";
-import AppHeader from "@/components/shared/AppHeader";
-import AppFooter from "@/components/shared/AppFooter";
-import { useDraftSettlement } from "@/hooks/useDraftSettlement";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, RotateCcw, Save } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import Section from "@/components/shared/Section";
+import { SectionBill } from '@/features/bill'
+import { SectionParticipant } from '@/features/participants'
+import { SectionPayments } from '@/features/payments'
+import AppHeader from '@/components/shared/AppHeader'
+import AppFooter from '@/components/shared/AppFooter'
+import { useDraftSettlement } from '@/hooks/useDraftSettlement'
+import { Button } from '@/components/ui/button'
+import { ChevronRight, RotateCcw, Save } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import Section from '@/components/shared/Section'
 import {
-    Dialog,
-    DialogTrigger,
-    DialogContent,
-    DialogTitle,
-    DialogHeader,
-    DialogFooter,
-    DialogClose,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Field } from "@/components/ui/field";
-import type { Settlement } from "@/types";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogHeader,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Field } from '@/components/ui/field'
+import type { Settlement } from '@/types'
 
 function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
-    const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null)
 
-    useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-        }
-    }, []);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [])
 
-    const handleSaveClick = () => {
-        if (inputRef.current) {
-            const name = inputRef.current.value;
-            onSave(name);
-        }
-    };
+  const handleSaveClick = () => {
+    if (inputRef.current) {
+      const name = inputRef.current.value
+      onSave(name)
+    }
+  }
 
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button>
-                    <Save /> Save
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle className="text-left">Save settlement</DialogTitle>
-                </DialogHeader>
-                <Field>
-                    <Input
-                        placeholder="Settlement name"
-                        ref={inputRef}
-                        className="text-sm my-2 font-medium focus-visible:ring-1 focus-visible:ring-primary/50 focus-visible:ring-offset-0 focus-visible:ring-offset-background"
-                    />
-                </Field>
-                <DialogFooter className="flex flex-row justify-end">
-                    <DialogClose asChild>
-                        <Button variant="outline" size="sm">
-                            Cancel
-                        </Button>
-                    </DialogClose>
-                    <Button onClick={handleSaveClick} size="sm">
-                        Save
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>
+          <Save /> Save
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="text-left">Save settlement</DialogTitle>
+        </DialogHeader>
+        <Field>
+          <Input
+            placeholder="Settlement name"
+            ref={inputRef}
+            className="focus-visible:ring-primary/50 focus-visible:ring-offset-background my-2 text-sm font-medium focus-visible:ring-1 focus-visible:ring-offset-0"
+          />
+        </Field>
+        <DialogFooter className="flex flex-row justify-end">
+          <DialogClose asChild>
+            <Button variant="outline" size="sm">
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button onClick={handleSaveClick} size="sm">
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
 }
 
 export default function HomePage() {
-    const { draft, saveDraft, clearDraft, createSettlementFromDraft } =
-        useDraftSettlement();
+  const { draft, saveDraft, clearDraft, createSettlementFromDraft } = useDraftSettlement()
 
-    const [calculationState, setCalculationState] = useState<number>(0);
-    const navigate = useNavigate();
+  const [calculationState, setCalculationState] = useState<number>(0)
+  const navigate = useNavigate()
 
-    const handleCreatSettlementFromDraft = async (name: string) => {
-        const updatedDraft: Settlement = { ...draft, name: name };
+  const handleCreatSettlementFromDraft = async (name: string) => {
+    const updatedDraft: Settlement = { ...draft, name: name }
 
-        const newSettlementId = await createSettlementFromDraft(updatedDraft);
+    const newSettlementId = await createSettlementFromDraft(updatedDraft)
 
-        navigate("/settlements/" + newSettlementId);
-    };
+    navigate('/settlements/' + newSettlementId)
+  }
 
-    return (
-        <>
-            <AppHeader>
-                <div className="flex justify-end items-end">
-                    <Button
-                        variant="ghost"
-                        className="pl-6! pr-2! hover:gap-3 transition-all duration-200"
-                        onClick={() => navigate("/settlements")}
-                    >
-                        Settlements
-                        <ChevronRight className="size-6 sm:size-7" />
-                    </Button>
-                </div>
-            </AppHeader>
-            <Section className="border-border py-6!">
-                <div className="flex flex-row justify-between items-center gap-4">
-                    <Button variant="secondary" onClick={clearDraft}>
-                        <RotateCcw strokeWidth={2.5} /> Clear
-                    </Button>
-                    <SaveSettlementDialog
-                        onSave={handleCreatSettlementFromDraft}
-                    />
-                </div>
-            </Section>
+  return (
+    <>
+      <AppHeader>
+        <div className="flex items-end justify-end">
+          <Button
+            variant="ghost"
+            className="pr-2! pl-6! transition-all duration-200 hover:gap-3"
+            onClick={() => navigate('/settlements')}
+          >
+            Settlements
+            <ChevronRight className="size-6 sm:size-7" />
+          </Button>
+        </div>
+      </AppHeader>
+      <Section className="border-border py-6!">
+        <div className="flex flex-row items-center justify-between gap-4">
+          <Button variant="secondary" onClick={clearDraft}>
+            <RotateCcw strokeWidth={2.5} /> Clear
+          </Button>
+          <SaveSettlementDialog onSave={handleCreatSettlementFromDraft} />
+        </div>
+      </Section>
 
-            <SectionParticipant
-                onDone={async () => {
-                    await saveDraft({ ...draft, status: "bill" } as Settlement);
-                }}
-                status={draft.status === "member" ? "enabled" : "disabled"}
-            />
+      <SectionParticipant
+        onDone={async () => {
+          await saveDraft({ ...draft, status: 'bill' } as Settlement)
+        }}
+        status={draft.status === 'member' ? 'enabled' : 'disabled'}
+      />
 
-            <SectionBill
-                onDone={async () => {
-                    await saveDraft({ ...draft, status: "payment" } as Settlement);
-                    setCalculationState((prev) => prev + 1); // trigger tính toán khi hoàn thành phần bill
-                }}
-                status={draft.status !== "member" ? "enabled" : "disabled"}
-            />
+      <SectionBill
+        onDone={async () => {
+          await saveDraft({ ...draft, status: 'payment' } as Settlement)
+          setCalculationState((prev) => prev + 1) // trigger tính toán khi hoàn thành phần bill
+        }}
+        status={draft.status !== 'member' ? 'enabled' : 'disabled'}
+      />
 
-            <SectionPayments
-                status={draft.status === "payment" ? "enabled" : "disabled"}
-                calculationState={calculationState}
-            />
+      <SectionPayments
+        status={draft.status === 'payment' ? 'enabled' : 'disabled'}
+        calculationState={calculationState}
+      />
 
-            <AppFooter />
-        </>
-    );
+      <AppFooter />
+    </>
+  )
 }

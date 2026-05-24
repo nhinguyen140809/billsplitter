@@ -1,221 +1,213 @@
-import solver from "javascript-lp-solver";
-import type { Member, Bill, PaymentData } from "@/types";
-import { formatCurrency } from "./utils";
+import solver from 'javascript-lp-solver'
+import type { Member, Bill, PaymentData } from '@/types'
+import { formatCurrency } from './utils'
 
 type DebtParty = {
-    name: string;
-    amount: number;
-};
+  name: string
+  amount: number
+}
+
+type LPConstraint = { equal?: number; min?: number; max?: number }
+
+type LPModel = {
+  optimize: string
+  opType: 'min' | 'max'
+  constraints: Record<string, LPConstraint>
+  variables: Record<string, Record<string, number>>
+  ints: Record<string, 0 | 1>
+}
 
 type LPSolution = {
-    feasible: boolean;
-    result: number;
-    [variable: string]: number | boolean;
-};
+  feasible: boolean
+  result: number
+  [variable: string]: number | boolean
+}
 
-const shareBillList = ({
-    members,
-    bills,
-}: {
-    members: Member[];
-    bills: Bill[];
-}) => {
-    const updatedMembers = members.map((member) => ({ ...member }));
+const shareBillList = ({ members, bills }: { members: Member[]; bills: Bill[] }) => {
+  const updatedMembers = members.map((member) => ({ ...member }))
 
-    for (const bill of bills) {
-        const { payer, amount, shares } = bill;
+  for (const bill of bills) {
+    const { payer, amount, shares } = bill
 
-        if (bill.type === "equal") {
-            const shareCount = Object.values(shares).filter((share) => share > 0).length;
-            const shareAmount = amount / shareCount;
-            for (const memberName of Object.keys(shares)) {
-                const member = updatedMembers.find(
-                    (m) => m.name === memberName,
-                );
-                if (member && shares[memberName] > 0) {
-                    member.spent += shareAmount;
-                }
-            }
-            const memberPaid = updatedMembers.find((m) => m.name === payer);
-            if (memberPaid) {
-                memberPaid.paid += amount;
-            }
-        } else if (bill.type === "unequal") {
-            for (const memberName of Object.keys(shares)) {
-                const member = updatedMembers.find(
-                    (m) => m.name === memberName,
-                );
-                if (member && shares[memberName] > 0) {
-                    member.spent += shares[memberName];
-                }
-            }
-            const memberPaid = updatedMembers.find((m) => m.name === payer);
-            if (memberPaid) {
-                memberPaid.paid += amount;
-            }
+    if (bill.type === 'equal') {
+      const shareCount = Object.values(shares).filter((share) => share > 0).length
+      const shareAmount = amount / shareCount
+      for (const memberName of Object.keys(shares)) {
+        const member = updatedMembers.find((m) => m.name === memberName)
+        if (member && shares[memberName] > 0) {
+          member.spent += shareAmount
         }
+      }
+      const memberPaid = updatedMembers.find((m) => m.name === payer)
+      if (memberPaid) {
+        memberPaid.paid += amount
+      }
+    } else if (bill.type === 'unequal') {
+      for (const memberName of Object.keys(shares)) {
+        const member = updatedMembers.find((m) => m.name === memberName)
+        if (member && shares[memberName] > 0) {
+          member.spent += shares[memberName]
+        }
+      }
+      const memberPaid = updatedMembers.find((m) => m.name === payer)
+      if (memberPaid) {
+        memberPaid.paid += amount
+      }
     }
-    return updatedMembers;
-};
+  }
+  return updatedMembers
+}
 
 const createSendersAndReceivers = (members: Member[]) => {
-    const senders: DebtParty[] = [];
-    const receivers: DebtParty[] = [];
+  const senders: DebtParty[] = []
+  const receivers: DebtParty[] = []
 
-    for (const member of members) {
-        const diff = member.paid - member.spent;
-        if (diff > 0) {
-            receivers.push({ name: member.name, amount: Math.abs(diff) });
-        } else if (diff < 0) {
-            senders.push({ name: member.name, amount: Math.abs(diff) });
-        }
+  for (const member of members) {
+    const diff = member.paid - member.spent
+    if (diff > 0) {
+      receivers.push({ name: member.name, amount: Math.abs(diff) })
+    } else if (diff < 0) {
+      senders.push({ name: member.name, amount: Math.abs(diff) })
     }
+  }
 
-    return { senders, receivers };
-};
+  return { senders, receivers }
+}
 
 const getMaxSendAmount = (senders: DebtParty[]) => {
-    if (senders.length == 0) return 0;
-    return Math.max(...senders.map((s) => s.amount));
-};
+  if (senders.length == 0) return 0
+  return Math.max(...senders.map((s) => s.amount))
+}
 
 const createModel = (senders: DebtParty[], receivers: DebtParty[]) => {
-    const model: any = {
-        optimize: "total_transactions",
-        opType: "min",
-        constraints: {},
-        variables: {
-            max_number_of_transactions: {
-                total_transactions: 1000,
-            },
-        },
-        ints: {},
-    };
+  const model: LPModel = {
+    optimize: 'total_transactions',
+    opType: 'min',
+    constraints: {},
+    variables: {
+      max_number_of_transactions: {
+        total_transactions: 1000,
+      },
+    },
+    ints: {},
+  }
 
-    const maxSendAmount = getMaxSendAmount(senders);
+  const maxSendAmount = getMaxSendAmount(senders)
 
-    for (const sender of senders) {
-        const senderName = sender.name;
+  for (const sender of senders) {
+    const senderName = sender.name
 
-        // Amount of money that sender must send
-        model.constraints[senderName] = { equal: sender.amount };
+    // Amount of money that sender must send
+    model.constraints[senderName] = { equal: sender.amount }
 
-        // Number of transaction of sender
-        model.constraints[`${senderName}_transactions`] = { max: 0 };
+    // Number of transaction of sender
+    model.constraints[`${senderName}_transactions`] = { max: 0 }
 
-        for (const receiver of receivers) {
-            const receiverName = receiver.name;
+    for (const receiver of receivers) {
+      const receiverName = receiver.name
 
-            // Amount of money that receiver must receive
-            model.constraints[receiverName] = model.constraints[
-                receiverName
-            ] || { equal: receiver.amount };
+      // Amount of money that receiver must receive
+      model.constraints[receiverName] = model.constraints[receiverName] || {
+        equal: receiver.amount,
+      }
 
-            // Amount of money in a transaction must be non-negative
-            model.constraints[`${senderName}_send_${receiverName}`] = {
-                min: 0,
-            };
+      // Amount of money in a transaction must be non-negative
+      model.constraints[`${senderName}_send_${receiverName}`] = {
+        min: 0,
+      }
 
-            // Constraint binary (x_ij - M*w_ij <= 0)
-            model.constraints[`${senderName}_${receiverName}`] = { max: 0 };
+      // Constraint binary (x_ij - M*w_ij <= 0)
+      model.constraints[`${senderName}_${receiverName}`] = { max: 0 }
 
-            // x_ij variable, which represents the amount of money that sender i sends to receiver j
-            model.variables[`${senderName}_send_${receiverName}`] = {
-                [senderName]: 1, // Coefficient of x_ij in sum of money sent by sender i
-                [receiverName]: 1, // Coefficient of x_ij in sum of money received by receiver j
-                [`${senderName}_${receiverName}`]: 1, // Coefficient of x_ij in binary constraint
-            };
+      // x_ij variable, which represents the amount of money that sender i sends to receiver j
+      model.variables[`${senderName}_send_${receiverName}`] = {
+        [senderName]: 1, // Coefficient of x_ij in sum of money sent by sender i
+        [receiverName]: 1, // Coefficient of x_ij in sum of money received by receiver j
+        [`${senderName}_${receiverName}`]: 1, // Coefficient of x_ij in binary constraint
+      }
 
-            // w_ij variable, which is 1 if sender i sends money to receiver j, and 0 otherwise
-            model.variables[`${senderName}_${receiverName}_bin`] = {
-                [`${senderName}_${receiverName}`]: -maxSendAmount, // Coefficient of w_ij in binary constraint
-                [`${senderName}_total`]: 1, // Coefficient of w_ij in total transactions for sender i
-                total_transactions: 1, // Coefficient of w_ij in total transactions
-            };
-            model.ints[`${senderName}_${receiverName}_bin`] = 1;
-        }
-
-        // Constraint total transactions for sender i
-        model.variables.max_number_of_transactions[`${senderName}_total`] = -1; // Coefficient of total transactions for sender i in max_number_of_transactions variable
+      // w_ij variable, which is 1 if sender i sends money to receiver j, and 0 otherwise
+      model.variables[`${senderName}_${receiverName}_bin`] = {
+        [`${senderName}_${receiverName}`]: -maxSendAmount, // Coefficient of w_ij in binary constraint
+        [`${senderName}_total`]: 1, // Coefficient of w_ij in total transactions for sender i
+        total_transactions: 1, // Coefficient of w_ij in total transactions
+      }
+      model.ints[`${senderName}_${receiverName}_bin`] = 1
     }
 
-    return model;
-};
+    // Constraint total transactions for sender i
+    model.variables.max_number_of_transactions[`${senderName}_total`] = -1 // Coefficient of total transactions for sender i in max_number_of_transactions variable
+  }
 
-const solveModel = (model: any) => {
-    const results: LPSolution = solver.Solve(model) as LPSolution;
-    if (!results.feasible) {
-        throw new Error("No feasible solution found");
-    }
-    console.log("LP Solver Results:", results);
-    return results;
-};
+  return model
+}
+
+const solveModel = (model: LPModel) => {
+  const results: LPSolution = solver.Solve(model) as LPSolution
+  if (!results.feasible) {
+    throw new Error('No feasible solution found')
+  }
+  // console.log('LP Solver Results:', results)
+  return results
+}
 
 const createPaymentData = (
-    senders: DebtParty[],
-    receivers: DebtParty[],
-    solverResult: LPSolution,
+  senders: DebtParty[],
+  receivers: DebtParty[],
+  solverResult: LPSolution
 ) => {
-    const send: PaymentData = {};
-    const receive: PaymentData = {};
+  const send: PaymentData = {}
+  const receive: PaymentData = {}
 
-    for (let sender of senders) {
-        send[sender.name] = {};
+  for (const sender of senders) {
+    send[sender.name] = {}
+  }
+  for (const receiver of receivers) {
+    receive[receiver.name] = {}
+  }
+
+  for (const sender of senders) {
+    for (const receiver of receivers) {
+      const key = `${sender.name}_send_${receiver.name}`
+      const amount = Number(solverResult[key] || 0)
+
+      if (amount > 0) {
+        send[sender.name][receiver.name] = formatCurrency(amount)
+        receive[receiver.name][sender.name] = formatCurrency(amount)
+      }
     }
-    for (let receiver of receivers) {
-        receive[receiver.name] = {};
-    }
+  }
 
-    for (let sender of senders) {
-        for (let receiver of receivers) {
-            const key = `${sender.name}_send_${receiver.name}`;
-            const amount = Number(solverResult[key] || 0);
+  return { sendPayments: send, receivePayments: receive }
+}
 
-            if (amount > 0) {
-                send[sender.name][receiver.name] = formatCurrency(amount);
-                receive[receiver.name][sender.name] = formatCurrency(amount);
-            }
-        }
-    }
+export const calculateSettlement = (members: Member[], bills: Bill[]) => {
+  const resetMembers = members.map((member) => ({
+    ...member,
+    paid: 0,
+    spent: 0,
+  }))
 
-    return { sendPayments: send, receivePayments: receive };
-};
+  const membersWithAllBills = shareBillList({
+    members: resetMembers,
+    bills: bills,
+  })
 
-export const calculateSettlement = (
-    members: Member[],
-    bills: Bill[],
-) => {
-    const resetMembers = members.map((member) => ({
-        ...member,
-        paid: 0,
-        spent: 0,
-    }));
+  const { senders, receivers } = createSendersAndReceivers(membersWithAllBills)
 
-    const membersWithAllBills = shareBillList({
-        members: resetMembers,
-        bills: bills,
-    });
+  // console.log('Senders:', senders)
+  // console.log('Receivers:', receivers)
 
-    const { senders, receivers } =
-        createSendersAndReceivers(membersWithAllBills);
+  if (senders.length === 0 || receivers.length === 0) {
+    return { membersWithAllBills, sendPayments: {}, receivePayments: {} }
+  }
 
-    console.log("Senders:", senders);
-    console.log("Receivers:", receivers);
+  const model = createModel(senders, receivers)
+  const results = solveModel(model)
 
-    if (senders.length === 0 || receivers.length === 0) {
-        return { membersWithAllBills, sendPayments: {}, receivePayments: {} };
-    }
+  // console.log('Settlement results:', results)
 
-    const model = createModel(senders, receivers);
-    const results = solveModel(model);
+  const { sendPayments, receivePayments } = createPaymentData(senders, receivers, results)
 
-    console.log("Settlement results:", results);
-
-    const { sendPayments, receivePayments } = createPaymentData(
-        senders,
-        receivers,
-        results,
-    );
-
-    return { membersWithAllBills, sendPayments, receivePayments };
-};
+  return { membersWithAllBills, sendPayments, receivePayments }
+}
