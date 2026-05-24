@@ -16,7 +16,7 @@ function UnequalShareInput({
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  let inputRef = useRef(null)
+  const inputRef = useRef(null)
   const { openCalculator } = useBillFormContext()
   return (
     <div key={member.id} className="mt-1 flex items-end justify-between gap-2 pr-3 sm:gap-4">

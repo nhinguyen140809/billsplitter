@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { useBillForm } from '../hooks/useBillForm'
+import { type useBillForm } from '../hooks/useBillForm'
 
 type BillFormContextType = ReturnType<typeof useBillForm>
 

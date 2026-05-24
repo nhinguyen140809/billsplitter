@@ -149,15 +149,15 @@ const createPaymentData = (
   const send: PaymentData = {}
   const receive: PaymentData = {}
 
-  for (let sender of senders) {
+  for (const sender of senders) {
     send[sender.name] = {}
   }
-  for (let receiver of receivers) {
+  for (const receiver of receivers) {
     receive[receiver.name] = {}
   }
 
-  for (let sender of senders) {
-    for (let receiver of receivers) {
+  for (const sender of senders) {
+    for (const receiver of receivers) {
       const key = `${sender.name}_send_${receiver.name}`
       const amount = Number(solverResult[key] || 0)
 

@@ -23,7 +23,7 @@ function SectionPayments({
   const { bills } = useBills(settlementId)
 
   const [calculationError, setCalculationError] = useState<string>('')
-  const [isCalculating, setIsCalculating] = useState<Boolean>(false)
+  const [isCalculating, setIsCalculating] = useState<boolean>(false)
 
   useEffect(() => {
     if (members.length === 0 || bills.length === 0) {

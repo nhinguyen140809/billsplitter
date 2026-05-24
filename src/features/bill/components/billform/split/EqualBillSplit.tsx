@@ -33,7 +33,7 @@ function AmountInput({
 
 function EqualBillAmount() {
   const { formData, updateFormFieldWrapper, openCalculator } = useBillFormContext()
-  let inputRef = useRef<HTMLInputElement | null>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
 
   function BanknoteIcon() {
     return (
