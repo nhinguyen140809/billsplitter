@@ -5,6 +5,7 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue?style=flat-square)](https://nhinguyen140809.github.io/BillSplitting/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org)
+[![CI](https://github.com/nhinguyen140809/BillSplitting/actions/workflows/ci.yml/badge.svg)](https://github.com/nhinguyen140809/BillSplitting/actions/workflows/ci.yml)
 
 ---
 
@@ -28,6 +29,9 @@ Everything runs in the browser. No server, no sign-up, no data leaves the device
 | ✔️ **Schema migrations** | Dexie versioned upgrades keep old local data intact across app updates |
 | ✔️ **Dark / light theme** | System-aware theme with manual toggle |
 | ✔️ **No server required** | Zero network requests at runtime — all logic and data are local |
+| ✔️ **Unit tested** | Calculation pipeline verified with Vitest — equal/unequal splits, netting, and output validity invariants |
+| ✔️ **CI on every PR** | GitHub Actions runs ESLint, Prettier, TypeScript build, and tests before merge |
+| ✔️ **Error recovery** | React Error Boundary catches render crashes; persistent feedback button for bug reports |
 
 ---
 
@@ -63,6 +67,8 @@ Everything runs in the browser. No server, no sign-up, no data leaves the device
 | **Theme** | next-themes | — |
 | **Linting** | ESLint 9 (flat config) + typescript-eslint | 9 |
 | **Formatting** | Prettier + prettier-plugin-tailwindcss | 3 |
+| **Testing** | Vitest + @vitest/coverage-v8 | 4 |
+| **CI/CD** | GitHub Actions | — |
 
 ---
 
@@ -169,7 +175,9 @@ Other scripts:
 | `npm run build` | Type-check and build for production |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format all files with Prettier |
-| `npm run release` | Lint → build → deploy to GitHub Pages |
+| `npm run test:run` | Run all unit tests (single pass) |
+| `npm run test:coverage` | Run tests with coverage report |
+| `npm run release` | Lint → build → deploy to GitHub Pages (manual) |
 
 ---
 
