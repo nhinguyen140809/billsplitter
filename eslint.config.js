@@ -38,4 +38,15 @@ export default defineConfig([
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
+  {
+    // shadcn UI files and context files intentionally export non-components alongside components
+    files: [
+      'src/components/ui/**/*.{ts,tsx}',
+      'src/components/theme-provider.tsx',
+      'src/features/**/context/**/*.{ts,tsx}',
+    ],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

@@ -95,7 +95,7 @@ export function useBillForm(
     const parsedValue =
       type === 'checkbox' ? checked : type === 'number' ? parseFloat(value) : value
 
-    updateFormField(name as keyof Bill, parsedValue as any)
+    updateFormField(name as keyof Bill, parsedValue as Bill[keyof Bill])
   }
 
   const updateShare = (member: string, value: number) => {

@@ -3,9 +3,7 @@ import { useDraftSettlement } from '@/hooks/useDraftSettlement'
 import type { PaymentData } from '@/types'
 
 export function usePayments(settlementId?: string) {
-  const { settlement, updateSettlementPartial } = settlementId
-    ? useSettlement(settlementId)
-    : { settlement: undefined, updateSettlementPartial: () => {} }
+  const { settlement, updateSettlementPartial } = useSettlement(settlementId ?? '')
   const { draft, updateDraft } = useDraftSettlement()
   const sendPayments = settlement ? settlement.sendPayments : draft.sendPayments
   const receivePayments = settlement ? settlement.receivePayments : draft.receivePayments

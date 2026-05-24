@@ -4,9 +4,7 @@ import type { Bill } from '@/types'
 
 export const useBills = (settlementId?: string) => {
   const { draft, updateDraft } = useDraftSettlement()
-  const { settlement, updateSettlementPartial } = settlementId
-    ? useSettlement(settlementId)
-    : { settlement: undefined, updateSettlementPartial: () => {} }
+  const { settlement, updateSettlementPartial } = useSettlement(settlementId ?? '')
 
   const bills = settlement ? settlement.bills : draft.bills
 

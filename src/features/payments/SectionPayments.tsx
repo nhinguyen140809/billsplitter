@@ -32,7 +32,7 @@ function SectionPayments({
 
     const calculate = async () => {
       setIsCalculating(true)
-      console.log('Calculating settlements...')
+      // console.log('Calculating settlements...')
 
       try {
         const {

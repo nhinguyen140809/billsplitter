@@ -7,7 +7,7 @@ import { useSettlement } from '@/hooks/useSettlement'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, RotateCcw, Copy, Trash, Home } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Section from '@/components/shared/Section'
 import { Field, FieldLabel } from '@/components/ui/field'
 import Overlay from '@/components/shared/Overlay'
@@ -75,10 +75,8 @@ function ButtonsSection({
 }
 
 function NameSection() {
-  const { id: settlementId } = useParams()
-  const { settlement, updateSettlementPartial } = settlementId
-    ? useSettlement(settlementId)
-    : { settlement: undefined, updateSettlementPartial: () => {} }
+  const { id: settlementId = '' } = useParams()
+  const { settlement, updateSettlementPartial } = useSettlement(settlementId)
 
   return (
     <Section>
@@ -109,15 +107,7 @@ export default function SettlementDetailPage() {
     deleteSettlement,
     duplicateSettlement,
     clearSettlement,
-  } = settlementId
-    ? useSettlement(settlementId)
-    : {
-        settlement: undefined,
-        updateSettlementPartial: () => {},
-        deleteSettlement: () => {},
-        duplicateSettlement: () => {},
-        clearSettlement: () => {},
-      }
+  } = useSettlement(settlementId ?? '')
 
   const [calculationState, setCalculationState] = useState<number>(0)
 
@@ -126,13 +116,7 @@ export default function SettlementDetailPage() {
     navigate(`/settlements/${newSettlementId}`)
   }
 
-  const [isLoading, setIsLoading] = useState(settlement === undefined)
-
-  useEffect(() => {
-    if (settlement || settlement === null) {
-      setIsLoading(false)
-    }
-  }, [settlement])
+  const isLoading = settlement === undefined
 
   return (
     <>

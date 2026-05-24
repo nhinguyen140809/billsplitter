@@ -7,6 +7,16 @@ type DebtParty = {
   amount: number
 }
 
+type LPConstraint = { equal?: number; min?: number; max?: number }
+
+type LPModel = {
+  optimize: string
+  opType: 'min' | 'max'
+  constraints: Record<string, LPConstraint>
+  variables: Record<string, Record<string, number>>
+  ints: Record<string, 0 | 1>
+}
+
 type LPSolution = {
   feasible: boolean
   result: number
@@ -70,7 +80,7 @@ const getMaxSendAmount = (senders: DebtParty[]) => {
 }
 
 const createModel = (senders: DebtParty[], receivers: DebtParty[]) => {
-  const model: any = {
+  const model: LPModel = {
     optimize: 'total_transactions',
     opType: 'min',
     constraints: {},
@@ -132,12 +142,12 @@ const createModel = (senders: DebtParty[], receivers: DebtParty[]) => {
   return model
 }
 
-const solveModel = (model: any) => {
+const solveModel = (model: LPModel) => {
   const results: LPSolution = solver.Solve(model) as LPSolution
   if (!results.feasible) {
     throw new Error('No feasible solution found')
   }
-  console.log('LP Solver Results:', results)
+  // console.log('LP Solver Results:', results)
   return results
 }
 
@@ -185,8 +195,8 @@ export const calculateSettlement = (members: Member[], bills: Bill[]) => {
 
   const { senders, receivers } = createSendersAndReceivers(membersWithAllBills)
 
-  console.log('Senders:', senders)
-  console.log('Receivers:', receivers)
+  // console.log('Senders:', senders)
+  // console.log('Receivers:', receivers)
 
   if (senders.length === 0 || receivers.length === 0) {
     return { membersWithAllBills, sendPayments: {}, receivePayments: {} }
@@ -195,7 +205,7 @@ export const calculateSettlement = (members: Member[], bills: Bill[]) => {
   const model = createModel(senders, receivers)
   const results = solveModel(model)
 
-  console.log('Settlement results:', results)
+  // console.log('Settlement results:', results)
 
   const { sendPayments, receivePayments } = createPaymentData(senders, receivers, results)
 

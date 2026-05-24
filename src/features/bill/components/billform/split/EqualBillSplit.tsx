@@ -31,25 +31,78 @@ function AmountInput({
   )
 }
 
+function BanknoteIcon() {
+  return (
+    <div className="text-primary mr-3.5 flex h-7 w-6 items-center justify-center rounded-full sm:w-10">
+      <Banknote size={20} />
+    </div>
+  )
+}
+
+function CalculatorButton({ handleClick }: { handleClick: () => void }) {
+  return (
+    <Button className="rounded-full" variant="ghost" size="icon-lg" onClick={handleClick}>
+      <CalculatorIcon className="size-5" />
+    </Button>
+  )
+}
+
+function CheckboxItem({
+  label,
+  name,
+  checked,
+  onChange,
+}: {
+  label: string
+  name: string
+  checked: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}) {
+  return (
+    <label className="group relative flex cursor-pointer items-center gap-3 px-4 transition-all">
+      <input
+        type="checkbox"
+        name={name}
+        className="accent-primary peer hidden size-3.5 cursor-pointer rounded-lg transition-all group-hover:scale-120 focus:ring-0 sm:h-4 sm:w-4"
+        onChange={onChange}
+        checked={checked}
+      />
+      <span className="border-accent peer-checked:bg-accent peer-checked:border-accent text-card-foreground flex size-4 items-center justify-center rounded-full border-2 transition-all duration-200 sm:size-5 peer-checked:[&>svg]:scale-100 peer-checked:[&>svg]:opacity-100">
+        <Check
+          strokeWidth={3.5}
+          className="size-3 scale-75 opacity-0 transition-all duration-200 sm:size-3.5"
+        />
+      </span>
+
+      <p className="text-card-foreground group-hover:text-primary text-sm break-all transition-colors duration-200 select-none">
+        {label}
+      </p>
+    </label>
+  )
+}
+
+function SelectAllCheckbox({
+  checked,
+  onChange,
+}: {
+  checked: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}) {
+  return (
+    <CheckboxItem
+      key="select-all"
+      name="select-all"
+      checked={checked}
+      label="All"
+      onChange={onChange}
+    />
+  )
+}
+
 function EqualBillAmount() {
   const { formData, updateFormFieldWrapper, openCalculator } = useBillFormContext()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  function BanknoteIcon() {
-    return (
-      <div className="text-primary mr-3.5 flex h-7 w-6 items-center justify-center rounded-full sm:w-10">
-        <Banknote size={20} />
-      </div>
-    )
-  }
-
-  function CalculatorButton({ handleClick }: { handleClick: () => void }) {
-    return (
-      <Button className="rounded-full" variant="ghost" size="icon-lg" onClick={handleClick}>
-        <CalculatorIcon className="size-5" />
-      </Button>
-    )
-  }
   return (
     <div className="mb-2 flex w-full items-center justify-between">
       <BanknoteIcon />
@@ -69,72 +122,11 @@ function EqualBillParticipants() {
   ).length
 
   const toggleAllShares = (checked: boolean) => {
-    // For "Select All" checkbox
-    if (checked) {
-      const newShares: BillShareValue = {}
-      members.forEach((member) => {
-        newShares[member.name] = checked ? 1 : 0
-      })
-      updateFormField('shares', newShares)
-    } else {
-      const newShares: BillShareValue = {}
-      members.forEach((member) => {
-        newShares[member.name] = 0
-      })
-      updateFormField('shares', newShares)
-    }
-  }
-
-  function SelectAllCheckbox({
-    checked,
-    onChange,
-  }: {
-    checked: boolean
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  }) {
-    return (
-      <CheckboxItem
-        key="select-all"
-        name="select-all"
-        checked={checked}
-        label="All"
-        onChange={onChange}
-      />
-    )
-  }
-
-  function CheckboxItem({
-    label,
-    name,
-    checked,
-    onChange,
-  }: {
-    label: string
-    name: string
-    checked: boolean
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  }) {
-    return (
-      <label className="group relative flex cursor-pointer items-center gap-3 px-4 transition-all">
-        <input
-          type="checkbox"
-          name={name}
-          className="accent-primary peer hidden size-3.5 cursor-pointer rounded-lg transition-all group-hover:scale-120 focus:ring-0 sm:h-4 sm:w-4"
-          onChange={onChange}
-          checked={checked}
-        />
-        <span className="border-accent peer-checked:bg-accent peer-checked:border-accent text-card-foreground flex size-4 items-center justify-center rounded-full border-2 transition-all duration-200 sm:size-5 peer-checked:[&>svg]:scale-100 peer-checked:[&>svg]:opacity-100">
-          <Check
-            strokeWidth={3.5}
-            className="size-3 scale-75 opacity-0 transition-all duration-200 sm:size-3.5"
-          />
-        </span>
-
-        <p className="text-card-foreground group-hover:text-primary text-sm break-all transition-colors duration-200 select-none">
-          {label}
-        </p>
-      </label>
-    )
+    const newShares: BillShareValue = {}
+    members.forEach((member) => {
+      newShares[member.name] = checked ? 1 : 0
+    })
+    updateFormField('shares', newShares)
   }
 
   return (

@@ -4,23 +4,23 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import { formatCurrency } from '@/lib/utils'
 
+function BillItemName({ name }: { name: string }) {
+  return <h3 className="text-primary py-1 text-base font-bold break-all sm:text-lg">{name}</h3>
+}
+
+function BillItemType({ type }: { type: BillType }) {
+  return (
+    <p
+      className={`text-sm font-bold ${
+        type === 'equal' ? 'bg-chart-2/20 text-chart-2' : 'bg-chart-3/20 text-chart-3'
+      } w-fit rounded-full px-3 py-1 sm:px-4`}
+    >
+      {type === 'equal' ? 'Equal' : 'Unequal'}
+    </p>
+  )
+}
+
 function BillItemHeader({ bill }: { bill: Bill }) {
-  function BillItemName({ name }: { name: string }) {
-    return <h3 className="text-primary py-1 text-base font-bold break-all sm:text-lg">{name}</h3>
-  }
-
-  function BillItemType({ type }: { type: BillType }) {
-    return (
-      <p
-        className={`text-sm font-bold ${
-          type === 'equal' ? 'bg-chart-2/20 text-chart-2' : 'bg-chart-3/20 text-chart-3'
-        } w-fit rounded-full px-3 py-1 sm:px-4`}
-      >
-        {type === 'equal' ? 'Equal' : 'Unequal'}
-      </p>
-    )
-  }
-
   return (
     <div className="justify-top mb-2 flex flex-col items-start gap-2">
       <BillItemName name={bill.name} />
@@ -69,27 +69,50 @@ function BillItemPayer({ bill }: { bill: Bill }) {
   )
 }
 
+function BillAmount({ amount }: { amount: number }) {
+  return (
+    <div className="mt-2 flex gap-2">
+      <p className="text-muted-foreground">Amount:</p>
+      <p className="text-primary font-medium">{formatCurrency(amount)}</p>
+    </div>
+  )
+}
+
+function BillParticipants({ shares }: { shares: BillShareValue }) {
+  const participants = Object.keys(shares).filter((member) => shares[member] > 0)
+
+  return (
+    <div className="mt-2 flex gap-2">
+      <p className="text-muted-foreground">Participants:</p>
+      <p className="text-primary font-medium break-all">{participants.join(', ')}</p>
+    </div>
+  )
+}
+
+function BillShares({ shares }: { shares: BillShareValue }) {
+  return (
+    <div className="mt-2">
+      <p className="text-muted-foreground mb-1">Shares:</p>
+      <div className="grid grid-cols-[max-content_max-content] gap-x-5 pl-4">
+        {Object.entries(shares).map(([member, share]) => (
+          <>
+            <span className="text-primary max-w-[60cqw] font-medium break-all" key={member}>
+              {member}
+            </span>
+            <span
+              className="text-primary max-w-[30cqw] text-right font-medium break-all"
+              key={`${member}_${share}`}
+            >
+              {formatCurrency(share)}
+            </span>
+          </>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function EqualBillContent({ bill }: { bill: Bill }) {
-  function BillAmount({ amount }: { amount: number }) {
-    return (
-      <div className="mt-2 flex gap-2">
-        <p className="text-muted-foreground">Amount:</p>
-        <p className="text-primary font-medium">{formatCurrency(amount)}</p>
-      </div>
-    )
-  }
-
-  function BillParticipants({ shares }: { shares: BillShareValue }) {
-    const participants = Object.keys(shares).filter((member) => shares[member] > 0)
-
-    return (
-      <div className="mt-2 flex gap-2">
-        <p className="text-muted-foreground">Participants:</p>
-        <p className="text-primary font-medium break-all">{participants.join(', ')}</p>
-      </div>
-    )
-  }
-
   return (
     <>
       <BillAmount amount={bill.amount} />
@@ -99,38 +122,6 @@ function EqualBillContent({ bill }: { bill: Bill }) {
 }
 
 function UnequalBillContent({ bill }: { bill: Bill }) {
-  function BillAmount({ amount }: { amount: number }) {
-    return (
-      <div className="mt-2 flex gap-2">
-        <p className="text-muted-foreground">Amount:</p>
-        <p className="text-primary font-medium">{formatCurrency(amount)}</p>
-      </div>
-    )
-  }
-
-  function BillShares({ shares }: { shares: BillShareValue }) {
-    return (
-      <div className="mt-2">
-        <p className="text-muted-foreground mb-1">Shares:</p>
-        <div className="grid grid-cols-[max-content_max-content] gap-x-5 pl-4">
-          {Object.entries(shares).map(([member, share]) => (
-            <>
-              <span className="text-primary max-w-[60cqw] font-medium break-all" key={member}>
-                {member}
-              </span>
-              <span
-                className="text-primary max-w-[30cqw] text-right font-medium break-all"
-                key={`${member}_${share}`}
-              >
-                {formatCurrency(share)}
-              </span>
-            </>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
       <BillAmount key={`amount-${bill.id}`} amount={bill.amount} />

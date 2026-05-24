@@ -10,6 +10,54 @@ import AppFooter from '@/components/shared/AppFooter'
 import Section from '@/components/shared/Section'
 import { ChevronLeft } from 'lucide-react'
 
+function SettlementItemHeader({ settlement }: { settlement: Settlement }) {
+  return (
+    <h3 className="text-primary py-1 text-base font-bold break-all hyphens-auto sm:text-lg">
+      {settlement.name || 'Untitled Settlement'}
+    </h3>
+  )
+}
+
+function SettlementItemContent({ settlement }: { settlement: Settlement }) {
+  return (
+    <div className="justify-top mb-2 flex flex-col items-start gap-2">
+      <p className="text-muted-foreground text-xs font-medium wrap-break-word sm:text-sm">
+        Updated at: {formatDate(settlement.updatedAt)}
+      </p>
+    </div>
+  )
+}
+
+function SettlementItemButtons({
+  onEdit,
+  onDelete,
+  onDuplicate,
+}: {
+  onEdit: () => void
+  onDelete: () => void
+  onDuplicate: () => void
+}) {
+  const buttonList: { icon: React.ReactNode; onClick: () => void }[] = [
+    { icon: <X />, onClick: onDelete },
+    { icon: <Copy />, onClick: onDuplicate },
+    { icon: <Pencil />, onClick: onEdit },
+  ]
+  return (
+    <div className="justify-top mb-4 flex flex-col items-center gap-1">
+      {buttonList.map((button, index) => (
+        <Button
+          key={index}
+          variant="ghost"
+          className="size-9 rounded-full sm:size-10"
+          onClick={button.onClick}
+        >
+          {button.icon}
+        </Button>
+      ))}
+    </div>
+  )
+}
+
 function SettlementItem({
   settlement,
   onEdit,
@@ -21,54 +69,6 @@ function SettlementItem({
   onDelete: () => void
   onDuplicate: () => void
 }) {
-  function SettlementItemHeader({ settlement }: { settlement: Settlement }) {
-    return (
-      <h3 className="text-primary py-1 text-base font-bold break-all hyphens-auto sm:text-lg">
-        {settlement.name || 'Untitled Settlement'}
-      </h3>
-    )
-  }
-
-  function SettlementItemButtons({
-    onEdit,
-    onDelete,
-    onDuplicate,
-  }: {
-    onEdit: () => void
-    onDelete: () => void
-    onDuplicate: () => void
-  }) {
-    const buttonList: { icon: React.ReactNode; onClick: () => void }[] = [
-      { icon: <X />, onClick: onDelete },
-      { icon: <Copy />, onClick: onDuplicate },
-      { icon: <Pencil />, onClick: onEdit },
-    ]
-    return (
-      <div className="justify-top mb-4 flex flex-col items-center gap-1">
-        {buttonList.map((button, index) => (
-          <Button
-            key={index}
-            variant="ghost"
-            className="size-9 rounded-full sm:size-10"
-            onClick={button.onClick}
-          >
-            {button.icon}
-          </Button>
-        ))}
-      </div>
-    )
-  }
-
-  function SettlementItemContent({ settlement }: { settlement: Settlement }) {
-    return (
-      <div className="justify-top mb-2 flex flex-col items-start gap-2">
-        <p className="text-muted-foreground text-xs font-medium wrap-break-word sm:text-sm">
-          Updated at: {formatDate(settlement.updatedAt)}
-        </p>
-      </div>
-    )
-  }
-
   return (
     <div className="border-primary hover:shadow-primary/40 flex h-full flex-row rounded-2xl border p-4 pl-6 transition duration-400 hover:scale-102 hover:shadow-lg">
       <div className="w-auto flex-1">

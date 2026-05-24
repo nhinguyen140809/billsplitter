@@ -4,9 +4,7 @@ import type { Member } from '@/types'
 
 export function useMembers(settlementId?: string) {
   const { draft, updateDraft } = useDraftSettlement()
-  const { settlement, updateSettlementPartial } = settlementId
-    ? useSettlement(settlementId)
-    : { settlement: undefined, updateSettlementPartial: () => {} }
+  const { settlement, updateSettlementPartial } = useSettlement(settlementId ?? '')
 
   const members = settlement ? settlement.members : draft.members
 
