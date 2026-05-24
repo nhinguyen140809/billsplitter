@@ -51,11 +51,7 @@ function BillPayerSelector() {
         <SelectTrigger className="text-card-foreground focus:border-primary mb-1 w-full border-0 p-2 text-sm transition duration-200 outline-none sm:text-base">
           <SelectValue placeholder="Paid by..." className="text-muted" />
         </SelectTrigger>
-        <SelectContent
-          side="bottom"
-          position="popper"
-          className="w-(--radix-select-trigger-width)"
-        >
+        <SelectContent side="bottom" position="popper" className="w-(--radix-select-trigger-width)">
           <option value="" disabled hidden>
             Paid by...
           </option>

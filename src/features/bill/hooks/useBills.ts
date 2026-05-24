@@ -26,7 +26,11 @@ export const useBills = () => {
   const duplicateBill = (billId: string) => {
     const billToDuplicate = bills.find((bill) => bill.id === billId)
     if (billToDuplicate) {
-      addBill({ ...billToDuplicate, id: crypto.randomUUID(), name: 'Copy of ' + billToDuplicate.name })
+      addBill({
+        ...billToDuplicate,
+        id: crypto.randomUUID(),
+        name: 'Copy of ' + billToDuplicate.name,
+      })
     }
   }
 

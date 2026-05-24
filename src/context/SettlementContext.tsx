@@ -14,7 +14,9 @@ const SettlementContext = createContext<SettlementContextValue | null>(null)
 export function DraftSettlementProvider({ children }: { children: React.ReactNode }) {
   const { draft, updateDraft } = useDraftSettlement()
   return (
-    <SettlementContext.Provider value={{ data: draft, update: updateDraft, settlementId: undefined }}>
+    <SettlementContext.Provider
+      value={{ data: draft, update: updateDraft, settlementId: undefined }}
+    >
       {children}
     </SettlementContext.Provider>
   )

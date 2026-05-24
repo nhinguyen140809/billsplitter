@@ -23,7 +23,12 @@ function SectionParticipant() {
 
   return (
     <Section title="Participants">
-      <NameInput name={name} setName={setName} onAdd={handleAddMember} inputError={inputNameError} />
+      <NameInput
+        name={name}
+        setName={setName}
+        onAdd={handleAddMember}
+        inputError={inputNameError}
+      />
       <ParticipantList members={members} onRemove={removeMember} />
     </Section>
   )

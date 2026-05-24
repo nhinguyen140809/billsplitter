@@ -100,8 +100,9 @@ export default function SettlementDetailPage() {
   const navigate = useNavigate()
   const { id: settlementId } = useParams()
 
-  const { settlement, deleteSettlement, duplicateSettlement, clearSettlement } =
-    useSettlement(settlementId ?? '')
+  const { settlement, deleteSettlement, duplicateSettlement, clearSettlement } = useSettlement(
+    settlementId ?? ''
+  )
 
   const handleDuplication = async () => {
     const newSettlementId = await duplicateSettlement()
