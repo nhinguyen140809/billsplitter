@@ -37,7 +37,7 @@ export class ErrorBoundary extends Component<Props, State> {
       <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-8 text-center">
         <p className="text-2xl font-bold">Something went wrong</p>
         {error && (
-          <p className="text-muted-foreground max-w-md break-all font-mono text-sm">
+          <p className="text-muted-foreground max-w-md font-mono text-sm break-all">
             {error.message}
           </p>
         )}

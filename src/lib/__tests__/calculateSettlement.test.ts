@@ -38,7 +38,9 @@ const getPayment = (data: PaymentData, from: string, to: string): number => {
 
 /** Sums all payment amounts across the entire PaymentData map. */
 const sumAllPayments = (data: PaymentData): number =>
-  Object.values(data).flatMap(Object.values).reduce((acc, v) => acc + parseAmount(v), 0)
+  Object.values(data)
+    .flatMap(Object.values)
+    .reduce((acc, v) => acc + parseAmount(v), 0)
 
 // --- Tests ---
 
@@ -46,7 +48,10 @@ describe('calculateSettlement', () => {
   describe('equal split', () => {
     it('two members: payer recovers half from the other', () => {
       const [A, B] = [member('Alice'), member('Bob')]
-      const { sendPayments, receivePayments } = calculateSettlement([A, B], [equalBill('Alice', 100, ['Alice', 'Bob'])])
+      const { sendPayments, receivePayments } = calculateSettlement(
+        [A, B],
+        [equalBill('Alice', 100, ['Alice', 'Bob'])]
+      )
 
       expect(getPayment(sendPayments, 'Bob', 'Alice')).toBeCloseTo(50)
       expect(getPayment(receivePayments, 'Alice', 'Bob')).toBeCloseTo(50)
@@ -64,14 +69,20 @@ describe('calculateSettlement', () => {
   describe('unequal split', () => {
     it('sender pays the exact share assigned to them', () => {
       const [A, B] = [member('A'), member('B')]
-      const { sendPayments } = calculateSettlement([A, B], [unequalBill('A', 100, { A: 20, B: 80 })])
+      const { sendPayments } = calculateSettlement(
+        [A, B],
+        [unequalBill('A', 100, { A: 20, B: 80 })]
+      )
 
       expect(getPayment(sendPayments, 'B', 'A')).toBeCloseTo(80)
     })
 
     it('member with zero share owes nothing', () => {
       const [A, B, C] = [member('A'), member('B'), member('C')]
-      const { sendPayments } = calculateSettlement([A, B, C], [unequalBill('A', 90, { A: 0, B: 90, C: 0 })])
+      const { sendPayments } = calculateSettlement(
+        [A, B, C],
+        [unequalBill('A', 90, { A: 0, B: 90, C: 0 })]
+      )
 
       expect(getPayment(sendPayments, 'B', 'A')).toBeCloseTo(90)
       expect(getPayment(sendPayments, 'C', 'A')).toBeCloseTo(0)
@@ -125,10 +136,7 @@ describe('calculateSettlement', () => {
     })
 
     it('returns empty maps when there are no bills', () => {
-      const { sendPayments, receivePayments } = calculateSettlement(
-        [member('A'), member('B')],
-        []
-      )
+      const { sendPayments, receivePayments } = calculateSettlement([member('A'), member('B')], [])
       expect(Object.keys(sendPayments)).toHaveLength(0)
       expect(Object.keys(receivePayments)).toHaveLength(0)
     })

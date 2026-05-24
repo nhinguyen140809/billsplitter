@@ -37,7 +37,11 @@ export const useBills = () => {
     (billId: string) => {
       const billToDuplicate = bills.find((bill) => bill.id === billId)
       if (billToDuplicate) {
-        const newBill = { ...billToDuplicate, id: crypto.randomUUID(), name: 'Copy of ' + billToDuplicate.name }
+        const newBill = {
+          ...billToDuplicate,
+          id: crypto.randomUUID(),
+          name: 'Copy of ' + billToDuplicate.name,
+        }
         update({ bills: [...bills, newBill] })
       }
     },

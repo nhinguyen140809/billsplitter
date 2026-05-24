@@ -31,8 +31,7 @@ export function SavedSettlementProvider({
 }) {
   const { settlement, updateSettlementPartial } = useSettlement(settlementId)
   const value = useMemo(
-    () =>
-      settlement ? { data: settlement, update: updateSettlementPartial, settlementId } : null,
+    () => (settlement ? { data: settlement, update: updateSettlementPartial, settlementId } : null),
     [settlement, updateSettlementPartial, settlementId]
   )
   if (!value) return <>{fallback}</>
