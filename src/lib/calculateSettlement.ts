@@ -1,5 +1,5 @@
 import solver from 'javascript-lp-solver'
-import type { Member, Bill, PaymentData } from '@/types'
+import type { StoredMember, Member, Bill, PaymentData } from '@/types'
 import { formatCurrency } from './utils'
 
 type DebtParty = {
@@ -23,8 +23,14 @@ type LPSolution = {
   [variable: string]: number | boolean
 }
 
-const shareBillList = ({ members, bills }: { members: Member[]; bills: Bill[] }) => {
-  const updatedMembers = members.map((member) => ({ ...member }))
+/**
+ * Accumulates each member's total `paid` and `spent` amounts across all bills.
+ * Equal-split bills divide the total evenly among participants with a positive share value;
+ * unequal-split bills use the per-member share amounts directly.
+ * @returns A new `Member[]` with `paid` and `spent` populated — originals are not mutated.
+ */
+const shareBillList = ({ members, bills }: { members: StoredMember[]; bills: Bill[] }) => {
+  const updatedMembers: Member[] = members.map((member) => ({ ...member, paid: 0, spent: 0 }))
 
   for (const bill of bills) {
     const { payer, amount, shares } = bill
@@ -58,6 +64,10 @@ const shareBillList = ({ members, bills }: { members: Member[]; bills: Bill[] })
   return updatedMembers
 }
 
+/**
+ * Splits members into senders (net debt > 0) and receivers (net credit > 0)
+ * based on `paid - spent`. Members who are exactly balanced are omitted.
+ */
 const createSendersAndReceivers = (members: Member[]) => {
   const senders: DebtParty[] = []
   const receivers: DebtParty[] = []
@@ -74,11 +84,25 @@ const createSendersAndReceivers = (members: Member[]) => {
   return { senders, receivers }
 }
 
+/**
+ * Returns the maximum debt amount across all senders.
+ * Used as the big-M coefficient in the LP binary constraints.
+ */
 const getMaxSendAmount = (senders: DebtParty[]) => {
   if (senders.length == 0) return 0
   return Math.max(...senders.map((s) => s.amount))
 }
 
+/**
+ * Builds a Mixed-Integer Linear Program (MILP) that minimises the total number
+ * of transactions required to settle all debts.
+ *
+ * Variables:
+ * - `x_ij` (`sender_send_receiver`): amount sender i pays receiver j.
+ * - `w_ij` (`sender_receiver_bin`): binary indicator, 1 if i pays j.
+ *
+ * The big-M constraint (`x_ij - M·w_ij ≤ 0`) links continuous and binary vars.
+ */
 const createModel = (senders: DebtParty[], receivers: DebtParty[]) => {
   const model: LPModel = {
     optimize: 'total_transactions',
@@ -142,6 +166,10 @@ const createModel = (senders: DebtParty[], receivers: DebtParty[]) => {
   return model
 }
 
+/**
+ * Runs the LP solver against the given model.
+ * @throws If the solver cannot find a feasible solution.
+ */
 const solveModel = (model: LPModel) => {
   const results: LPSolution = solver.Solve(model) as LPSolution
   if (!results.feasible) {
@@ -151,6 +179,11 @@ const solveModel = (model: LPModel) => {
   return results
 }
 
+/**
+ * Converts raw LP solver output into the `PaymentData` maps used by the UI.
+ * Only non-zero `x_ij` values are included; amounts are formatted via `formatCurrency`.
+ * @returns `sendPayments[sender][receiver]` and `receivePayments[receiver][sender]`.
+ */
 const createPaymentData = (
   senders: DebtParty[],
   receivers: DebtParty[],
@@ -181,33 +214,30 @@ const createPaymentData = (
   return { sendPayments: send, receivePayments: receive }
 }
 
-export const calculateSettlement = (members: Member[], bills: Bill[]) => {
-  const resetMembers = members.map((member) => ({
-    ...member,
-    paid: 0,
-    spent: 0,
-  }))
+/**
+ * Calculates the optimal payment plan that settles all debts with the fewest transactions.
+ *
+ * Pipeline:
+ * 1. `shareBillList` — compute each member's net paid/spent.
+ * 2. `createSendersAndReceivers` — split into debtors and creditors.
+ * 3. `createModel` / `solveModel` — solve the MILP via javascript-lp-solver.
+ * 4. `createPaymentData` — map solver variables back to named payments.
+ *
+ * @param members - Current settlement members (id + name only).
+ * @param bills   - All bills belonging to the settlement.
+ * @returns `sendPayments` and `receivePayments` maps, both empty when everyone is balanced.
+ */
+export const calculateSettlement = (members: StoredMember[], bills: Bill[]) => {
+  const membersWithBills = shareBillList({ members, bills })
 
-  const membersWithAllBills = shareBillList({
-    members: resetMembers,
-    bills: bills,
-  })
-
-  const { senders, receivers } = createSendersAndReceivers(membersWithAllBills)
-
-  // console.log('Senders:', senders)
-  // console.log('Receivers:', receivers)
+  const { senders, receivers } = createSendersAndReceivers(membersWithBills)
 
   if (senders.length === 0 || receivers.length === 0) {
-    return { membersWithAllBills, sendPayments: {}, receivePayments: {} }
+    return { sendPayments: {} as PaymentData, receivePayments: {} as PaymentData }
   }
 
   const model = createModel(senders, receivers)
   const results = solveModel(model)
 
-  // console.log('Settlement results:', results)
-
-  const { sendPayments, receivePayments } = createPaymentData(senders, receivers, results)
-
-  return { membersWithAllBills, sendPayments, receivePayments }
+  return createPaymentData(senders, receivers, results)
 }

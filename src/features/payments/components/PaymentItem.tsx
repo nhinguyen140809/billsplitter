@@ -64,7 +64,10 @@ function TransactionList({
 
 export default function PaymentItem({ name, transactions, type }: PaymentItemData) {
   return (
-    <div className="border-primary hover:shadow-primary/40 @container flex flex-wrap justify-start gap-4 rounded-2xl border p-4 transition duration-400 hover:scale-102 hover:shadow-lg sm:px-6">
+    <div
+      data-testid={`payment-${name}`}
+      className="border-primary hover:shadow-primary/40 @container flex flex-wrap justify-start gap-4 rounded-2xl border p-4 transition duration-400 hover:scale-102 hover:shadow-lg sm:px-6"
+    >
       <PaymentItemHeader name={name} type={type} />
       <TransactionList transactions={transactions} type={type} />
     </div>

@@ -1,35 +1,11 @@
-import { Banknote, CalculatorIcon } from 'lucide-react'
-import type { BillShareValue } from '@/types'
-import { useRef } from 'react'
+import { Banknote } from 'lucide-react'
+import { useCallback, useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useMembers } from '@/features/participants'
-import { useParams } from 'react-router-dom'
-
-function AmountInput({
-  value,
-  onChange,
-  inputRef,
-}: {
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  inputRef: React.RefObject<HTMLInputElement | null>
-}) {
-  return (
-    <input
-      type="string"
-      name="amount"
-      placeholder="Total amount"
-      className="text-card-foreground focus:border-b-primary border-b-accent mr-4 mb-2 flex-1 border-b-2 p-1 text-sm transition duration-200 outline-none sm:text-base"
-      value={value}
-      onChange={onChange}
-      min="0"
-      ref={inputRef}
-    />
-  )
-}
+import CalculatorButton from '../CalculatorButton'
 
 function BanknoteIcon() {
   return (
@@ -39,27 +15,24 @@ function BanknoteIcon() {
   )
 }
 
-function CalculatorButton({ handleClick }: { handleClick: () => void }) {
-  return (
-    <Button className="rounded-full" variant="ghost" size="icon-lg" onClick={handleClick}>
-      <CalculatorIcon className="size-5" />
-    </Button>
-  )
-}
-
 function CheckboxItem({
   label,
   name,
   checked,
   onChange,
+  testId,
 }: {
   label: string
   name: string
   checked: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  testId?: string
 }) {
   return (
-    <label className="group relative flex cursor-pointer items-center gap-3 px-4 transition-all">
+    <label
+      data-testid={testId}
+      className="group relative flex cursor-pointer items-center gap-3 px-4 transition-all"
+    >
       <input
         type="checkbox"
         name={name}
@@ -95,6 +68,7 @@ function SelectAllCheckbox({
       checked={checked}
       label="All"
       onChange={onChange}
+      testId="bill-participant-all"
     />
   )
 }
@@ -106,28 +80,42 @@ function EqualBillAmount() {
   return (
     <div className="mb-2 flex w-full items-center justify-between">
       <BanknoteIcon />
-      <AmountInput value={formData.amount} onChange={updateFormFieldWrapper} inputRef={inputRef} />
-      <CalculatorButton handleClick={() => openCalculator(inputRef.current)} />
+      <Input
+        variant="underline"
+        size="sm"
+        type="text"
+        name="amount"
+        placeholder="Total amount"
+        autoComplete="off"
+        data-testid="bill-amount-input"
+        className="mr-4 mb-2 flex-1"
+        value={formData.amount}
+        onChange={updateFormFieldWrapper}
+        ref={inputRef}
+      />
+      <CalculatorButton onClick={() => openCalculator(inputRef.current)} />
     </div>
   )
 }
 
 function EqualBillParticipants() {
   const { formData, updateFormField, updateFormFieldWrapper, selectAll } = useBillFormContext()
-  const { id: settlementId } = useParams()
-  const { members } = useMembers(settlementId)
+  const { members } = useMembers()
 
   const participantCount = members.filter(
     (m) => (parseFloat(formData.shares[m.name]) || 0) > 0
   ).length
 
-  const toggleAllShares = (checked: boolean) => {
-    const newShares: BillShareValue = {}
-    members.forEach((member) => {
-      newShares[member.name] = checked ? 1 : 0
-    })
-    updateFormField('shares', newShares)
-  }
+  const toggleAllShares = useCallback(
+    (checked: boolean) => {
+      const newShares: Record<string, string> = {}
+      members.forEach((member) => {
+        newShares[member.name] = checked ? '1' : '0'
+      })
+      updateFormField('shares', newShares)
+    },
+    [members, updateFormField]
+  )
 
   return (
     <div className="mb-2">
@@ -137,7 +125,7 @@ function EqualBillParticipants() {
           {participantCount} / {members.length} selected
         </p>
       </div>
-      <ScrollArea className="">
+      <ScrollArea>
         <div className="flex max-h-[30vh] min-h-0 flex-1 flex-col gap-3">
           <SelectAllCheckbox
             checked={selectAll}
@@ -150,6 +138,7 @@ function EqualBillParticipants() {
               checked={Number(formData.shares[member.name]) > 0}
               label={member.name}
               onChange={updateFormFieldWrapper}
+              testId={`bill-participant-${member.name}`}
             />
           ))}
         </div>
