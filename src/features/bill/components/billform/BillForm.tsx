@@ -1,18 +1,93 @@
 import { useBillForm } from '../../hooks/useBillForm'
-import BillPayerSelector from './info/BillPayerSelector'
 import BillFormContext from '../../context/BillFormContext'
-import BillNameInput from './info/BillNameInput'
-import BillTypeButtons from './info/BillTypeButtons'
 import UnequalBillShares from './split/UnequalBillSplit'
 import { EqualBillAmount, EqualBillParticipants } from './split/EqualBillSplit'
 import { Calculator } from '@/features/calculator'
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select'
+import { UserRound } from 'lucide-react'
 import Overlay from '@/components/shared/Overlay'
 import Popup from '@/components/shared/Popup'
 import { useMembers } from '@/features/participants'
+import { useBillFormContext } from '../../context/BillFormContext'
 import type { Bill, BillType } from '@/types'
 import { useEffect } from 'react'
 import { cn } from '@/lib/utils'
+
+function BillNameInput() {
+  const { formData, updateFormFieldWrapper } = useBillFormContext()
+  return (
+    <input
+      type="text"
+      name="name"
+      placeholder="Bill name"
+      className="text-card-foreground focus:border-b-primary border-b-accent mb-3 w-full border-b-2 p-2 pb-1 text-lg font-bold transition duration-200 outline-none sm:mb-4 sm:pb-2 sm:text-xl"
+      value={formData.name}
+      onChange={updateFormFieldWrapper}
+    />
+  )
+}
+
+function BillPayerSelector() {
+  const { formData, updateFormField } = useBillFormContext()
+  const { members } = useMembers()
+  return (
+    <div className="flex items-center justify-between">
+      <div className="text-primary mr-4 flex h-7 w-6 items-center justify-center rounded-full sm:w-10">
+        <UserRound className="size-5" />
+      </div>
+      <Select
+        name="payer"
+        value={formData.payer}
+        defaultValue="Select payer"
+        onValueChange={(value) => updateFormField('payer', value)}
+      >
+        <SelectTrigger className="text-card-foreground focus:border-primary mb-1 w-full border-0 p-2 text-sm transition duration-200 outline-none sm:text-base">
+          <SelectValue placeholder="Paid by..." className="text-muted" />
+        </SelectTrigger>
+        <SelectContent
+          side="bottom"
+          position="popper"
+          className="w-(--radix-select-trigger-width)"
+        >
+          <option value="" disabled hidden>
+            Paid by...
+          </option>
+          {members.map((member) => (
+            <SelectItem className="break-all" key={member.id} value={member.name}>
+              <span> {member.name} </span>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  )
+}
+
+function BillTypeButtons() {
+  const { formData, updateFormField } = useBillFormContext()
+  const isEqual = formData.type === 'equal'
+  return (
+    <div className="mb-4 flex gap-4 transition-colors duration-1000">
+      {(['Equal', 'Unequal'] as const).map((label) => (
+        <Button
+          key={label}
+          variant={isEqual === (label === 'Equal') ? 'default' : 'outline'}
+          onClick={() => updateFormField('type', label === 'Equal' ? 'equal' : 'unequal')}
+          size="sm"
+        >
+          {label}
+        </Button>
+      ))}
+    </div>
+  )
+}
 
 function BillFormFooterButtons({ onClose, onSave }: { onClose: () => void; onSave: () => void }) {
   return (
@@ -65,11 +140,7 @@ export default function BillFormPopup({
   const billForm = useBillForm(members, onSubmitBillForm, onClose)
 
   useEffect(() => {
-    if (selectedBill) {
-      billForm.setSelectedBillForm(selectedBill)
-    } else {
-      billForm.setSelectedBillForm(null)
-    }
+    billForm.setSelectedBillForm(selectedBill)
   }, [selectedBill])
 
   return (
