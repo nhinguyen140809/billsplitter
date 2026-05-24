@@ -1,47 +1,17 @@
-import { Banknote, CalculatorIcon } from 'lucide-react'
+import { Banknote } from 'lucide-react'
 import { useCallback, useMemo, useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useMembers } from '@/features/participants'
-
-function AmountInput({
-  value,
-  onChange,
-  inputRef,
-}: {
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  inputRef: React.RefObject<HTMLInputElement | null>
-}) {
-  return (
-    <input
-      type="string"
-      name="amount"
-      placeholder="Total amount"
-      className="text-card-foreground focus:border-b-primary border-b-accent mr-4 mb-2 flex-1 border-b-2 p-1 text-sm transition duration-200 outline-none sm:text-base"
-      value={value}
-      onChange={onChange}
-      min="0"
-      ref={inputRef}
-    />
-  )
-}
+import CalculatorButton from '../CalculatorButton'
 
 function BanknoteIcon() {
   return (
     <div className="text-primary mr-3.5 flex h-7 w-6 items-center justify-center rounded-full sm:w-10">
       <Banknote size={20} />
     </div>
-  )
-}
-
-function CalculatorButton({ handleClick }: { handleClick: () => void }) {
-  return (
-    <Button variant="ghost" size="icon-lg" onClick={handleClick}>
-      <CalculatorIcon className="size-5" />
-    </Button>
   )
 }
 
@@ -104,8 +74,18 @@ function EqualBillAmount() {
   return (
     <div className="mb-2 flex w-full items-center justify-between">
       <BanknoteIcon />
-      <AmountInput value={formData.amount} onChange={updateFormFieldWrapper} inputRef={inputRef} />
-      <CalculatorButton handleClick={() => openCalculator(inputRef.current)} />
+      <Input
+        variant="underline"
+        size="sm"
+        type="text"
+        name="amount"
+        placeholder="Total amount"
+        className="mr-4 mb-2 flex-1"
+        value={formData.amount}
+        onChange={updateFormFieldWrapper}
+        ref={inputRef}
+      />
+      <CalculatorButton onClick={() => openCalculator(inputRef.current)} />
     </div>
   )
 }

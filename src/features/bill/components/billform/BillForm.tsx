@@ -4,6 +4,7 @@ import UnequalBillShares from './split/UnequalBillSplit'
 import { EqualBillAmount, EqualBillParticipants } from './split/EqualBillSplit'
 import { Calculator } from '@/features/calculator'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -23,11 +24,13 @@ import { cn } from '@/lib/utils'
 function BillNameInput() {
   const { formData, updateFormFieldWrapper } = useBillFormContext()
   return (
-    <input
+    <Input
+      variant="underline"
+      size="lg"
       type="text"
       name="name"
       placeholder="Bill name"
-      className="text-card-foreground focus:border-b-primary border-b-accent mb-3 w-full border-b-2 p-2 pb-1 text-lg font-bold transition duration-200 outline-none sm:mb-4 sm:pb-2 sm:text-xl"
+      className="mb-3 font-bold sm:mb-4 sm:text-xl"
       value={formData.name}
       onChange={updateFormFieldWrapper}
     />
@@ -48,7 +51,7 @@ function BillPayerSelector() {
         defaultValue="Select payer"
         onValueChange={(value) => updateFormField('payer', value)}
       >
-        <SelectTrigger className="text-card-foreground focus:border-primary mb-1 w-full border-0 p-2 text-sm transition duration-200 outline-none sm:text-base">
+        <SelectTrigger className="text-card-foreground focus:border-primary mb-1 w-full border-0 transition duration-200 outline-none">
           <SelectValue placeholder="Paid by..." className="text-muted" />
         </SelectTrigger>
         <SelectContent side="bottom" position="popper" className="w-(--radix-select-trigger-width)">

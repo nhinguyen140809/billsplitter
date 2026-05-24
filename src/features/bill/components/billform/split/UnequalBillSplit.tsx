@@ -1,10 +1,10 @@
-import { CalculatorIcon } from 'lucide-react'
 import { useMemo, useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useMembers } from '@/features/participants'
 import type { StoredMember } from '@/types'
+import CalculatorButton from '../CalculatorButton'
 
 function UnequalShareInput({
   member,
@@ -15,29 +15,24 @@ function UnequalShareInput({
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }) {
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const { openCalculator } = useBillFormContext()
   return (
     <div key={member.id} className="mt-1 flex items-end justify-between gap-2 pr-3 sm:gap-4">
       <p className="text-card-foreground mb-2 w-1/2 break-all">{member.name}:</p>
       <div className="flex items-center justify-end gap-2 sm:gap-4">
-        <input
+        <Input
+          variant="underline"
+          size="sm"
           type="number"
           name={`unequal-share-${member.name}`}
-          className="text-card-foreground focus:border-b-primary border-b-accent ml-2 w-full border-b-2 p-1 transition duration-200 outline-none"
+          className="ml-2"
           min="0"
           onChange={onChange}
           value={value}
           ref={inputRef}
         />
-        <Button
-          tabIndex={-1}
-          variant="ghost"
-          size="icon-lg"
-          onClick={() => openCalculator(inputRef.current)}
-        >
-          <CalculatorIcon className="size-5" />
-        </Button>
+        <CalculatorButton onClick={() => openCalculator(inputRef.current)} />
       </div>
     </div>
   )
