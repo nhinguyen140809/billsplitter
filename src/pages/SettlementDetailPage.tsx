@@ -7,7 +7,6 @@ import { useSettlement } from '@/hooks/useSettlement'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, RotateCcw, Copy, Trash, Home } from 'lucide-react'
-import { useState } from 'react'
 import Section from '@/components/shared/Section'
 import { Field, FieldLabel } from '@/components/ui/field'
 import Overlay from '@/components/shared/Overlay'
@@ -101,15 +100,8 @@ export default function SettlementDetailPage() {
   const navigate = useNavigate()
   const { id: settlementId } = useParams()
 
-  const {
-    settlement,
-    updateSettlementPartial,
-    deleteSettlement,
-    duplicateSettlement,
-    clearSettlement,
-  } = useSettlement(settlementId ?? '')
-
-  const [calculationState, setCalculationState] = useState<number>(0)
+  const { settlement, deleteSettlement, duplicateSettlement, clearSettlement } =
+    useSettlement(settlementId ?? '')
 
   const handleDuplication = async () => {
     const newSettlementId = await duplicateSettlement()
@@ -152,26 +144,9 @@ export default function SettlementDetailPage() {
             onDuplicate={handleDuplication}
           />
           <NameSection />
-
-          <SectionParticipant
-            onDone={async () => await updateSettlementPartial({ status: 'bill' })}
-            status={settlement.status === 'member' ? 'enabled' : 'disabled'}
-          />
-
-          <SectionBill
-            onDone={async () => {
-              await updateSettlementPartial({
-                status: 'payment',
-              })
-              setCalculationState((prev) => prev + 1)
-            }}
-            status={settlement.status !== 'member' ? 'enabled' : 'disabled'}
-          />
-
-          <SectionPayments
-            status={settlement.status === 'payment' ? 'enabled' : 'disabled'}
-            calculationState={calculationState}
-          />
+          <SectionParticipant />
+          <SectionBill />
+          <SectionPayments />
         </>
       )}
 

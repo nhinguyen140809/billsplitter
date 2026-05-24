@@ -1,19 +1,18 @@
 import { useState } from 'react'
 import BillList from './components/BillIList'
 import BillFormPopup from './components/billform/BillForm'
-import { Check, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import Section from '@/components/shared/Section'
 import { Button } from '@/components/ui/button'
 import { useBills } from './hooks/useBills'
-import type { Bill, SectionStatus } from '@/types'
+import type { Bill } from '@/types'
 import { useParams } from 'react-router-dom'
 
-function SectionBill({ onDone, status }: { onDone: () => void; status?: SectionStatus }) {
+function SectionBill() {
   const { id: settlementId } = useParams()
   const { bills, onSubmitBillForm, removeBill, duplicateBill } = useBills(settlementId)
 
   const [showForm, setShowForm] = useState<boolean>(false)
-  const [errorMessage, setErrorMessage] = useState<string>('')
   const [selectedBill, setSelectedBill] = useState<Bill | null>(null)
 
   const handleEditBillClick = (bill: Bill) => {
@@ -21,18 +20,9 @@ function SectionBill({ onDone, status }: { onDone: () => void; status?: SectionS
     setShowForm(true)
   }
 
-  const handleDone = () => {
-    if (bills.length < 1) {
-      setErrorMessage('Please add at least one bill.')
-      return
-    }
-    setErrorMessage('')
-    onDone()
-  }
-
   return (
     <>
-      <Section title="Bills" status={status}>
+      <Section title="Bills">
         <div className="flex justify-end py-2">
           <Button
             variant="outline"
@@ -40,7 +30,6 @@ function SectionBill({ onDone, status }: { onDone: () => void; status?: SectionS
               setShowForm(true)
               setSelectedBill(null)
             }}
-            disabled={status === 'disabled'}
           >
             <Plus />
             New bill
@@ -53,16 +42,6 @@ function SectionBill({ onDone, status }: { onDone: () => void; status?: SectionS
           onEdit={handleEditBillClick}
           onDuplicate={duplicateBill}
         />
-
-        <div className="mt-8 flex items-center justify-between">
-          <div className="text-destructive text-xs sm:text-sm">
-            {errorMessage && <p>{errorMessage}</p>}
-          </div>
-          <Button onClick={handleDone} variant="default" disabled={status === 'disabled'}>
-            <Check />
-            Finish
-          </Button>
-        </div>
       </Section>
       {showForm && (
         <BillFormPopup

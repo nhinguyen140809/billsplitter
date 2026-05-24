@@ -29,7 +29,6 @@ export type PaymentItemData = {
 export interface Settlement {
   id: string
   name: string
-  status: SettlementStatus
   members: Member[]
   bills: Bill[]
   sendPayments: PaymentData
@@ -46,11 +45,7 @@ export type BillFormData = {
   shares: Record<string, string>
 }
 
-export type SettlementStatus = 'member' | 'bill' | 'payment'
-
 export type BillType = 'equal' | 'unequal'
-
-export type SectionStatus = 'enabled' | 'disabled'
 
 export type DebtPartyType = 'sender' | 'receiver'
 

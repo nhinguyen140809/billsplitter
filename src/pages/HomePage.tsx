@@ -7,7 +7,7 @@ import { useDraftSettlement } from '@/hooks/useDraftSettlement'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, RotateCcw, Save } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Section from '@/components/shared/Section'
 import {
   Dialog,
@@ -20,7 +20,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Field } from '@/components/ui/field'
-import type { Settlement } from '@/types'
 
 function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -72,16 +71,11 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
 }
 
 export default function HomePage() {
-  const { draft, saveDraft, clearDraft, createSettlementFromDraft } = useDraftSettlement()
-
-  const [calculationState, setCalculationState] = useState<number>(0)
+  const { draft, clearDraft, createSettlementFromDraft } = useDraftSettlement()
   const navigate = useNavigate()
 
   const handleCreatSettlementFromDraft = async (name: string) => {
-    const updatedDraft: Settlement = { ...draft, name: name }
-
-    const newSettlementId = await createSettlementFromDraft(updatedDraft)
-
+    const newSettlementId = await createSettlementFromDraft({ ...draft, name })
     navigate('/settlements/' + newSettlementId)
   }
 
@@ -108,25 +102,9 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <SectionParticipant
-        onDone={async () => {
-          await saveDraft({ ...draft, status: 'bill' } as Settlement)
-        }}
-        status={draft.status === 'member' ? 'enabled' : 'disabled'}
-      />
-
-      <SectionBill
-        onDone={async () => {
-          await saveDraft({ ...draft, status: 'payment' } as Settlement)
-          setCalculationState((prev) => prev + 1) // trigger tính toán khi hoàn thành phần bill
-        }}
-        status={draft.status !== 'member' ? 'enabled' : 'disabled'}
-      />
-
-      <SectionPayments
-        status={draft.status === 'payment' ? 'enabled' : 'disabled'}
-        calculationState={calculationState}
-      />
+      <SectionParticipant />
+      <SectionBill />
+      <SectionPayments />
 
       <AppFooter />
     </>
