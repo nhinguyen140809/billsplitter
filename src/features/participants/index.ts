@@ -1,4 +1,4 @@
 // Components
-export * from "./SectionParticipant";
+export * from './SectionParticipant'
 // Hooks
-export * from "./hooks/useMembers";
+export * from './hooks/useMembers'

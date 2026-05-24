@@ -1,5 +1,4 @@
 // Components
-export * from "./Calculator";
+export * from './Calculator'
 // Hooks
-export * from "./hooks/useCalculator";
-
+export * from './hooks/useCalculator'

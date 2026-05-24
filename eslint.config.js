@@ -23,10 +23,16 @@ export default defineConfig([
     },
     rules: {
       // Allow unused vars prefixed with _ (e.g. _unused, _event)
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
 
       // Enforce `import type` for type-only imports (pairs with verbatimModuleSyntax in tsconfig)
-      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports', fixStyle: 'inline-type-imports' }],
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+      ],
 
       // Warn on console.log left in code (use console.warn/error intentionally)
       'no-console': ['warn', { allow: ['warn', 'error'] }],

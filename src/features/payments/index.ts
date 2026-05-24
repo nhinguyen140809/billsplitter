@@ -1,4 +1,4 @@
 // Components
-export * from "./SectionPayments";
+export * from './SectionPayments'
 // Hooks
-export * from "./hooks/usePayments";
+export * from './hooks/usePayments'

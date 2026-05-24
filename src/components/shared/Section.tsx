@@ -1,33 +1,33 @@
-import { cn } from "@/lib/utils";
-import type { SectionStatus } from "@/types";
+import { cn } from '@/lib/utils'
+import type { SectionStatus } from '@/types'
 
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
-    title?: string;
-    status?: SectionStatus;
-    children: React.ReactNode;
+  title?: string
+  status?: SectionStatus
+  children: React.ReactNode
 }
 
 export default function Section({
-    title,
-    status = "enabled",
-    children,
-    className,
-    ...props
+  title,
+  status = 'enabled',
+  children,
+  className,
+  ...props
 }: SectionProps) {
-    return (
-        <section
-            className={cn(
-                `w-full h-fit bg-card/30 border border-primary rounded-2xl p-5 flex flex-col sm:px-10 sm:py-10 backdrop-blur-md isolate ${status === "disabled" ? "opacity-50 pointer-events-none" : ""}`,
-                className,
-            )}
-            {...props}
-        >
-            {title && (
-                <h2 className="text-xl mt-1 sm:mt-0 sm:text-3xl font-extrabold text-primary mb-3 sm:mb-4">
-                    {title}
-                </h2>
-            )}
-            {children}
-        </section>
-    );
+  return (
+    <section
+      className={cn(
+        `bg-card/30 border-primary isolate flex h-fit w-full flex-col rounded-2xl border p-5 backdrop-blur-md sm:px-10 sm:py-10 ${status === 'disabled' ? 'pointer-events-none opacity-50' : ''}`,
+        className
+      )}
+      {...props}
+    >
+      {title && (
+        <h2 className="text-primary mt-1 mb-3 text-xl font-extrabold sm:mt-0 sm:mb-4 sm:text-3xl">
+          {title}
+        </h2>
+      )}
+      {children}
+    </section>
+  )
 }
