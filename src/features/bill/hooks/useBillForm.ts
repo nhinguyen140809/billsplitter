@@ -103,10 +103,12 @@ export function useBillForm(
     })
   }
 
+  // Reactive snapshot — causes re-render on any field change (needed for type-switch, controlled inputs)
+  const formData = form.watch()
+
   // Derived: every current member has a share > 0
-  const shares = form.watch('shares')
   const selectAll =
-    members.length > 0 && members.every((m) => (parseFloat(shares[m.name]) || 0) > 0)
+    members.length > 0 && members.every((m) => (parseFloat(formData.shares[m.name]) || 0) > 0)
 
   // Surface first validation error for display
   const errors = form.formState.errors
@@ -118,7 +120,7 @@ export function useBillForm(
   const formErrorMessage = typeof rawError === 'string' ? rawError : ''
 
   return {
-    formData: form.getValues(),
+    formData,
     formErrorMessage,
     selectAll,
     calculatorOpened,

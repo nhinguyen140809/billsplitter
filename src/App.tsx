@@ -1,4 +1,3 @@
-import './App.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { BrowserRouter, useRoutes } from 'react-router-dom'
 import { AppRoutes } from './routes/AppRoutes'
