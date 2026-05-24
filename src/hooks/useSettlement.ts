@@ -14,14 +14,12 @@ export function useSettlement(settlementId: string) {
   }
 
   const updateSettlementPartial = async (data: Partial<Settlement>) => {
-    const currentSettlement = await settlementRepo.getSettlement(settlementId)
-    if (currentSettlement) {
-      await settlementRepo.updateSettlement(settlementId, {
-        ...currentSettlement,
-        ...data,
-        updatedAt: new Date(),
-      } as Settlement)
-    }
+    if (!settlement) return
+    await settlementRepo.updateSettlement(settlementId, {
+      ...settlement,
+      ...data,
+      updatedAt: new Date(),
+    })
   }
 
   const deleteSettlement = async () => {
@@ -34,15 +32,12 @@ export function useSettlement(settlementId: string) {
   }
 
   const clearSettlement = async () => {
-    const currentSettlement = await settlementRepo.getSettlement(settlementId)
-    if (currentSettlement) {
-      await settlementRepo.updateSettlement(settlementId, {
-        ...currentSettlement,
-        ...DEFAULT_SETTLEMENT,
-        id: settlementId,
-        updatedAt: new Date(),
-      } as Settlement)
-    }
+    if (!settlement) return
+    await settlementRepo.updateSettlement(settlementId, {
+      ...DEFAULT_SETTLEMENT,
+      id: settlementId,
+      updatedAt: new Date(),
+    })
   }
 
   return {
