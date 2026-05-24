@@ -48,7 +48,8 @@ function SettlementItemButtons({
         <Button
           key={index}
           variant="ghost"
-          className="size-9 rounded-full sm:size-10"
+          size="icon"
+          className="sm:size-10"
           onClick={button.onClick}
         >
           {button.icon}
@@ -90,10 +91,10 @@ export default function SettlementsPage() {
         <div className="flex flex-col items-start justify-start gap-4 sm:flex-row">
           <Button
             variant="ghost"
-            className="pr-6! pl-2! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
             onClick={() => navigate('/')}
           >
-            <ChevronLeft className="size-6 sm:size-7" />
+            <ChevronLeft data-icon="inline-start" className="size-6 sm:size-7" />
             <span className="hidden sm:inline">Home</span>
             <Home className="size-5 sm:hidden" />
           </Button>

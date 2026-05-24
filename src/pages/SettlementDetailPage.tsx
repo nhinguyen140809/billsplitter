@@ -30,13 +30,13 @@ function ButtonsSection({
   }
   const buttonLeft: ButtonInfo[] = [
     {
-      icon: <RotateCcw />,
+      icon: <RotateCcw data-icon="inline-start" />,
       label: 'Clear',
       onClick: onClear,
       variant: 'secondary',
     },
     {
-      icon: <Copy />,
+      icon: <Copy data-icon="inline-start" />,
       label: 'Duplicate',
       onClick: onDuplicate,
       variant: 'secondary',
@@ -44,7 +44,7 @@ function ButtonsSection({
   ]
   const buttonRight: ButtonInfo[] = [
     {
-      icon: <Trash />,
+      icon: <Trash data-icon="inline-start" />,
       label: 'Delete',
       onClick: onDelete,
       variant: 'destructive',
@@ -116,20 +116,20 @@ export default function SettlementDetailPage() {
         <div className="flex items-start justify-between">
           <Button
             variant="ghost"
-            className="pr-6! pl-2! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
             onClick={() => navigate('/')}
           >
-            <ChevronLeft className="size-6 sm:size-7" />
+            <ChevronLeft data-icon="inline-start" className="size-6 sm:size-7" />
             <span className="hidden sm:inline">Home</span>
             <Home className="size-5 sm:hidden" />
           </Button>
           <Button
             variant="ghost"
-            className="pr-2! pl-6! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
             onClick={() => navigate('/settlements')}
           >
             Settlements
-            <ChevronRight className="size-6 sm:size-7" />
+            <ChevronRight data-icon="inline-end" className="size-6 sm:size-7" />
           </Button>
         </div>
       </AppHeader>

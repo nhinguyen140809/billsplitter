@@ -42,7 +42,7 @@ function SaveSettlementDialog({ onSave }: { onSave: (name: string) => void }) {
     <Dialog>
       <DialogTrigger asChild>
         <Button>
-          <Save /> Save
+          <Save data-icon="inline-start" /> Save
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -86,18 +86,18 @@ export default function HomePage() {
         <div className="flex items-end justify-end">
           <Button
             variant="ghost"
-            className="pr-2! pl-6! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
             onClick={() => navigate('/settlements')}
           >
             Settlements
-            <ChevronRight className="size-6 sm:size-7" />
+            <ChevronRight data-icon="inline-end" className="size-6 sm:size-7" />
           </Button>
         </div>
       </AppHeader>
       <Section className="border-border py-6!">
         <div className="flex flex-row items-center justify-between gap-4">
           <Button variant="secondary" onClick={clearDraft}>
-            <RotateCcw strokeWidth={2.5} /> Clear
+            <RotateCcw data-icon="inline-start" strokeWidth={2.5} /> Clear
           </Button>
           <SaveSettlementDialog onSave={handleCreatSettlementFromDraft} />
         </div>

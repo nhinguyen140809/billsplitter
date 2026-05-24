@@ -39,7 +39,7 @@ function BanknoteIcon() {
 
 function CalculatorButton({ handleClick }: { handleClick: () => void }) {
   return (
-    <Button className="rounded-full" variant="ghost" size="icon-lg" onClick={handleClick}>
+    <Button variant="ghost" size="icon-lg" onClick={handleClick}>
       <CalculatorIcon className="size-5" />
     </Button>
   )
@@ -134,7 +134,7 @@ function EqualBillParticipants() {
           {participantCount} / {members.length} selected
         </p>
       </div>
-      <ScrollArea className="">
+      <ScrollArea>
         <div className="flex max-h-[30vh] min-h-0 flex-1 flex-col gap-3">
           <SelectAllCheckbox
             checked={selectAll}

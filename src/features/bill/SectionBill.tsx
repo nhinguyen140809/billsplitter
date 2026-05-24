@@ -29,7 +29,7 @@ function SectionBill() {
               setSelectedBill(null)
             }}
           >
-            <Plus />
+            <Plus data-icon="inline-start" />
             New bill
           </Button>
         </div>

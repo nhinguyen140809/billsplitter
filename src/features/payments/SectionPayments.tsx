@@ -35,7 +35,7 @@ function SectionPayments() {
               className="ml-auto"
               disabled={isCalculating || members.length === 0 || bills.length === 0}
             >
-              <Calculator />
+              <Calculator data-icon="inline-start" />
               Calculate payments
             </Button>
           </div>

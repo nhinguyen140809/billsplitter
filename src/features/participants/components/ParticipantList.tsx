@@ -13,7 +13,7 @@ function ParticipantItem({
   return (
     <div className="bg-primary text-primary-foreground shadow-primary/40 flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition hover:scale-105 hover:shadow-md has-[button]:py-1.5 has-[button]:pr-2 has-[button]:pl-4 sm:text-base sm:has-[button]:py-2 [&>svg]:size-4">
       <span className="break-all">{member.name}</span>
-      <Button onClick={() => onRemove(member.id)} variant="ghost" size="icon-xs" className="rounded-full">
+      <Button onClick={() => onRemove(member.id)} variant="ghost" size="icon-xs">
         <X />
       </Button>
     </div>

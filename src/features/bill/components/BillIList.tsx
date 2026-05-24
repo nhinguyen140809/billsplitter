@@ -50,7 +50,8 @@ function BillItemButtons({
         <Button
           key={index}
           variant="ghost"
-          className="size-9 rounded-full sm:size-10"
+          size="icon"
+          className="sm:size-10"
           onClick={button.onClick}
         >
           {button.icon}
