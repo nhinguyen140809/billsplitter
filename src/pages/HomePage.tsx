@@ -4,6 +4,7 @@ import { SectionPayments } from '@/features/payments'
 import AppHeader from '@/components/shared/AppHeader'
 import AppFooter from '@/components/shared/AppFooter'
 import { useDraftSettlement } from '@/hooks/useDraftSettlement'
+import { DraftSettlementProvider } from '@/context/SettlementContext'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, RotateCcw, Save } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -102,9 +103,11 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <SectionParticipant />
-      <SectionBill />
-      <SectionPayments />
+      <DraftSettlementProvider>
+        <SectionParticipant />
+        <SectionBill />
+        <SectionPayments />
+      </DraftSettlementProvider>
 
       <AppFooter />
     </>

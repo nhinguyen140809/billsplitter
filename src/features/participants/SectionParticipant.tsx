@@ -3,11 +3,9 @@ import Section from '@/components/shared/Section'
 import NameInput from './components/NameInput'
 import ParticipantList from './components/ParticipantList'
 import { useMembers } from './hooks/useMembers'
-import { useParams } from 'react-router-dom'
 
 function SectionParticipant() {
-  const { id: settlementId } = useParams()
-  const { members, addMember, removeMember } = useMembers(settlementId)
+  const { members, addMember, removeMember } = useMembers()
 
   const [name, setName] = useState<string>('')
   const [inputNameError, setInputNameError] = useState<string>('')

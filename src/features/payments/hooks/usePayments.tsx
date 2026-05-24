@@ -1,27 +1,16 @@
-import { useSettlement } from '@/hooks/useSettlement'
-import { useDraftSettlement } from '@/hooks/useDraftSettlement'
+import { useSettlementContext } from '@/context/SettlementContext'
 import type { PaymentData } from '@/types'
 
-export function usePayments(settlementId?: string) {
-  const { settlement, updateSettlementPartial } = useSettlement(settlementId ?? '')
-  const { draft, updateDraft } = useDraftSettlement()
-  const sendPayments = settlement ? settlement.sendPayments : draft.sendPayments
-  const receivePayments = settlement ? settlement.receivePayments : draft.receivePayments
+export function usePayments() {
+  const { data, update } = useSettlementContext()
 
   const updatePayments = (newSendPayments: PaymentData, newReceivePayments: PaymentData) => {
-    if (settlement) {
-      updateSettlementPartial({
-        sendPayments: newSendPayments,
-        receivePayments: newReceivePayments,
-      })
-    } else {
-      updateDraft({ sendPayments: newSendPayments, receivePayments: newReceivePayments })
-    }
+    update({ sendPayments: newSendPayments, receivePayments: newReceivePayments })
   }
 
   return {
-    sendPayments,
-    receivePayments,
+    sendPayments: data.sendPayments,
+    receivePayments: data.receivePayments,
     updatePayments,
   }
 }

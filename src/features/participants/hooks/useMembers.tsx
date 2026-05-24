@@ -1,12 +1,9 @@
-import { useDraftSettlement } from '@/hooks/useDraftSettlement'
-import { useSettlement } from '@/hooks/useSettlement'
+import { useSettlementContext } from '@/context/SettlementContext'
 import type { StoredMember } from '@/types'
 
-export function useMembers(settlementId?: string) {
-  const { draft, updateDraft } = useDraftSettlement()
-  const { settlement, updateSettlementPartial } = useSettlement(settlementId ?? '')
-
-  const members = settlement ? settlement.members : draft.members
+export function useMembers() {
+  const { data, update } = useSettlementContext()
+  const members = data.members
 
   const addMember = (name: string) => {
     if (!name) {
@@ -15,24 +12,12 @@ export function useMembers(settlementId?: string) {
     if (members.some((member) => member.name === name)) {
       throw new Error('Name already exists')
     }
-    const newMembers: StoredMember[] = [
-      ...members,
-      { id: crypto.randomUUID(), name },
-    ]
-    if (settlement) {
-      updateSettlementPartial({ members: newMembers })
-    } else {
-      updateDraft({ members: newMembers })
-    }
+    const newMembers: StoredMember[] = [...members, { id: crypto.randomUUID(), name }]
+    update({ members: newMembers })
   }
 
   const removeMember = (id: string) => {
-    const newMembers = members.filter((member) => member.id !== id)
-    if (settlement) {
-      updateSettlementPartial({ members: newMembers })
-    } else {
-      updateDraft({ members: newMembers })
-    }
+    update({ members: members.filter((member) => member.id !== id) })
   }
 
   return { members, addMember, removeMember }

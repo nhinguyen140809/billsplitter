@@ -44,6 +44,7 @@ export default defineConfig([
       'src/components/ui/**/*.{ts,tsx}',
       'src/components/theme-provider.tsx',
       'src/features/**/context/**/*.{ts,tsx}',
+      'src/context/**/*.{ts,tsx}',
     ],
     rules: {
       'react-refresh/only-export-components': 'off',

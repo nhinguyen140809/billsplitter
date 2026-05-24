@@ -5,7 +5,6 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
 import { useMembers } from '@/features/participants'
 import type { StoredMember } from '@/types'
-import { useParams } from 'react-router-dom'
 
 function UnequalShareInput({
   member,
@@ -46,10 +45,8 @@ function UnequalShareInput({
 }
 
 function UnequalBillShares() {
-  const { id: settlementId } = useParams()
   const { formData, updateFormFieldWrapper } = useBillFormContext()
-
-  const { members } = useMembers(settlementId)
+  const { members } = useMembers()
 
   const participantCount = members.filter(
     (m) => (parseFloat(formData.shares[m.name]) || 0) > 0

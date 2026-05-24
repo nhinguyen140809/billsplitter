@@ -4,6 +4,7 @@ import { SectionPayments } from '@/features/payments'
 import AppHeader from '@/components/shared/AppHeader'
 import AppFooter from '@/components/shared/AppFooter'
 import { useSettlement } from '@/hooks/useSettlement'
+import { SavedSettlementProvider, useSettlementContext } from '@/context/SettlementContext'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, RotateCcw, Copy, Trash, Home } from 'lucide-react'
@@ -74,8 +75,7 @@ function ButtonsSection({
 }
 
 function NameSection() {
-  const { id: settlementId = '' } = useParams()
-  const { settlement, updateSettlementPartial } = useSettlement(settlementId)
+  const { data, update } = useSettlementContext()
 
   return (
     <Section>
@@ -86,8 +86,8 @@ function NameSection() {
             type="text"
             placeholder="Untitled settlement"
             id="input-settlement-name"
-            value={settlement?.name || ''}
-            onChange={(e) => updateSettlementPartial({ name: e.target.value })}
+            value={data.name}
+            onChange={(e) => update({ name: e.target.value })}
             className="text-primary focus:border-b-primary border-b-accent w-full border-b-2 p-2 text-lg font-bold transition duration-200 outline-none md:text-xl"
           />
         </Field>
@@ -134,34 +134,36 @@ export default function SettlementDetailPage() {
         </div>
       </AppHeader>
       {settlement && (
-        <>
-          <ButtonsSection
-            onDelete={async () => {
-              await deleteSettlement()
-              navigate('/')
-            }}
-            onClear={clearSettlement}
-            onDuplicate={handleDuplication}
-          />
-          <NameSection />
-          <SectionParticipant />
-          <SectionBill />
-          <SectionPayments />
-        </>
+        <ButtonsSection
+          onDelete={async () => {
+            await deleteSettlement()
+            navigate('/')
+          }}
+          onClear={clearSettlement}
+          onDuplicate={handleDuplication}
+        />
       )}
 
-      {isLoading && (
-        <Overlay className="flex-col gap-4">
-          <Spinner className="size-12" />
-          Loading ...
-        </Overlay>
-      )}
-
-      {settlement === null && (
-        <Section className="border-border py-6! text-center">
-          <p className="text-muted-foreground text-base">Settlement not found</p>
-        </Section>
-      )}
+      <SavedSettlementProvider
+        settlementId={settlementId ?? ''}
+        fallback={
+          isLoading ? (
+            <Overlay className="flex-col gap-4">
+              <Spinner className="size-12" />
+              Loading ...
+            </Overlay>
+          ) : (
+            <Section className="border-border py-6! text-center">
+              <p className="text-muted-foreground text-base">Settlement not found</p>
+            </Section>
+          )
+        }
+      >
+        <NameSection />
+        <SectionParticipant />
+        <SectionBill />
+        <SectionPayments />
+      </SavedSettlementProvider>
 
       <AppFooter />
     </>

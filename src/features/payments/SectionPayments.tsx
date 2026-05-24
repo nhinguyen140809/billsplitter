@@ -8,13 +8,11 @@ import Overlay from '@/components/shared/Overlay'
 import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Calculator } from 'lucide-react'
-import { useParams } from 'react-router-dom'
 
 function SectionPayments() {
-  const { id: settlementId } = useParams()
-  const { sendPayments, receivePayments, updatePayments } = usePayments(settlementId)
-  const { members } = useMembers(settlementId)
-  const { bills } = useBills(settlementId)
+  const { sendPayments, receivePayments, updatePayments } = usePayments()
+  const { members } = useMembers()
+  const { bills } = useBills()
 
   const { calculate, isCalculating, calculationError } = useCalculationWorker(updatePayments)
 

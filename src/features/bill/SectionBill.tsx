@@ -6,11 +6,9 @@ import Section from '@/components/shared/Section'
 import { Button } from '@/components/ui/button'
 import { useBills } from './hooks/useBills'
 import type { Bill } from '@/types'
-import { useParams } from 'react-router-dom'
 
 function SectionBill() {
-  const { id: settlementId } = useParams()
-  const { bills, onSubmitBillForm, removeBill, duplicateBill } = useBills(settlementId)
+  const { bills, onSubmitBillForm, removeBill, duplicateBill } = useBills()
 
   const [showForm, setShowForm] = useState<boolean>(false)
   const [selectedBill, setSelectedBill] = useState<Bill | null>(null)

@@ -6,7 +6,6 @@ import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useMembers } from '@/features/participants'
-import { useParams } from 'react-router-dom'
 
 function AmountInput({
   value,
@@ -114,8 +113,7 @@ function EqualBillAmount() {
 
 function EqualBillParticipants() {
   const { formData, updateFormField, updateFormFieldWrapper, selectAll } = useBillFormContext()
-  const { id: settlementId } = useParams()
-  const { members } = useMembers(settlementId)
+  const { members } = useMembers()
 
   const participantCount = members.filter(
     (m) => (parseFloat(formData.shares[m.name]) || 0) > 0
