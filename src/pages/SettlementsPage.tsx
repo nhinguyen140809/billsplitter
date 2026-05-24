@@ -37,19 +37,21 @@ function SettlementItemButtons({
   onDelete: () => void
   onDuplicate: () => void
 }) {
-  const buttonList: { icon: React.ReactNode; onClick: () => void }[] = [
-    { icon: <X />, onClick: onDelete },
-    { icon: <Copy />, onClick: onDuplicate },
-    { icon: <Pencil />, onClick: onEdit },
+  const buttonList: { icon: React.ReactNode; onClick: () => void; testId: string }[] = [
+    { icon: <X />, onClick: onDelete, testId: 'settlement-delete-btn' },
+    { icon: <Copy />, onClick: onDuplicate, testId: 'settlement-duplicate-btn' },
+    { icon: <Pencil />, onClick: onEdit, testId: 'settlement-edit-btn' },
   ]
   return (
     <div className="justify-top mb-4 flex flex-col items-center gap-1">
-      {buttonList.map((button, index) => (
+      {buttonList.map((button) => (
         <Button
-          key={index}
+          key={button.testId}
           variant="ghost"
-          className="size-9 rounded-full sm:size-10"
+          size="icon"
+          className="sm:size-10"
           onClick={button.onClick}
+          data-testid={button.testId}
         >
           {button.icon}
         </Button>
@@ -70,7 +72,10 @@ function SettlementItem({
   onDuplicate: () => void
 }) {
   return (
-    <div className="border-primary hover:shadow-primary/40 flex h-full flex-row rounded-2xl border p-4 pl-6 transition duration-400 hover:scale-102 hover:shadow-lg">
+    <div
+      data-testid={`settlement-${settlement.name}`}
+      className="border-primary hover:shadow-primary/40 flex h-full flex-row rounded-2xl border p-4 pl-6 transition duration-400 hover:scale-102 hover:shadow-lg"
+    >
       <div className="w-auto flex-1">
         <SettlementItemHeader settlement={settlement} />
         <SettlementItemContent settlement={settlement} />
@@ -90,10 +95,11 @@ export default function SettlementsPage() {
         <div className="flex flex-col items-start justify-start gap-4 sm:flex-row">
           <Button
             variant="ghost"
-            className="pr-6! pl-2! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
+            data-testid="nav-home"
             onClick={() => navigate('/')}
           >
-            <ChevronLeft className="size-6 sm:size-7" />
+            <ChevronLeft data-icon="inline-start" className="size-6 sm:size-7" />
             <span className="hidden sm:inline">Home</span>
             <Home className="size-5 sm:hidden" />
           </Button>

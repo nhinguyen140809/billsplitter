@@ -4,10 +4,10 @@ import { SectionPayments } from '@/features/payments'
 import AppHeader from '@/components/shared/AppHeader'
 import AppFooter from '@/components/shared/AppFooter'
 import { useSettlement } from '@/hooks/useSettlement'
+import { SavedSettlementProvider, useSettlementContext } from '@/context/SettlementContext'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, RotateCcw, Copy, Trash, Home } from 'lucide-react'
-import { useState } from 'react'
 import Section from '@/components/shared/Section'
 import { Field, FieldLabel } from '@/components/ui/field'
 import Overlay from '@/components/shared/Overlay'
@@ -27,43 +27,59 @@ function ButtonsSection({
     label: string
     onClick: () => void
     variant: 'outline' | 'ghost' | 'destructive' | 'secondary'
+    testId: string
   }
   const buttonLeft: ButtonInfo[] = [
     {
-      icon: <RotateCcw />,
+      icon: <RotateCcw data-icon="inline-start" />,
       label: 'Clear',
       onClick: onClear,
       variant: 'secondary',
+      testId: 'settlement-clear-detail-btn',
     },
     {
-      icon: <Copy />,
+      icon: <Copy data-icon="inline-start" />,
       label: 'Duplicate',
       onClick: onDuplicate,
       variant: 'secondary',
+      testId: 'settlement-duplicate-detail-btn',
     },
   ]
   const buttonRight: ButtonInfo[] = [
     {
-      icon: <Trash />,
+      icon: <Trash data-icon="inline-start" />,
       label: 'Delete',
       onClick: onDelete,
       variant: 'destructive',
+      testId: 'settlement-delete-detail-btn',
     },
   ]
   return (
     <Section className="border-border py-6!">
       <div className="flex justify-between">
         <div className="flex items-start gap-2">
-          {buttonLeft.map((button, index) => (
-            <Button key={index} variant={button.variant} onClick={button.onClick} size="sm">
+          {buttonLeft.map((button) => (
+            <Button
+              key={button.testId}
+              variant={button.variant}
+              onClick={button.onClick}
+              size="sm"
+              data-testid={button.testId}
+            >
               {button.icon}
               {button.label}
             </Button>
           ))}
         </div>
         <div className="flex items-end gap-2">
-          {buttonRight.map((button, index) => (
-            <Button key={index} variant={button.variant} onClick={button.onClick} size="sm">
+          {buttonRight.map((button) => (
+            <Button
+              key={button.testId}
+              variant={button.variant}
+              onClick={button.onClick}
+              size="sm"
+              data-testid={button.testId}
+            >
               {button.icon}
               {button.label}
             </Button>
@@ -75,8 +91,7 @@ function ButtonsSection({
 }
 
 function NameSection() {
-  const { id: settlementId = '' } = useParams()
-  const { settlement, updateSettlementPartial } = useSettlement(settlementId)
+  const { data, update } = useSettlementContext()
 
   return (
     <Section>
@@ -87,8 +102,9 @@ function NameSection() {
             type="text"
             placeholder="Untitled settlement"
             id="input-settlement-name"
-            value={settlement?.name || ''}
-            onChange={(e) => updateSettlementPartial({ name: e.target.value })}
+            data-testid="settlement-detail-name"
+            value={data.name}
+            onChange={(e) => update({ name: e.target.value })}
             className="text-primary focus:border-b-primary border-b-accent w-full border-b-2 p-2 text-lg font-bold transition duration-200 outline-none md:text-xl"
           />
         </Field>
@@ -101,15 +117,9 @@ export default function SettlementDetailPage() {
   const navigate = useNavigate()
   const { id: settlementId } = useParams()
 
-  const {
-    settlement,
-    updateSettlementPartial,
-    deleteSettlement,
-    duplicateSettlement,
-    clearSettlement,
-  } = useSettlement(settlementId ?? '')
-
-  const [calculationState, setCalculationState] = useState<number>(0)
+  const { settlement, deleteSettlement, duplicateSettlement, clearSettlement } = useSettlement(
+    settlementId ?? ''
+  )
 
   const handleDuplication = async () => {
     const newSettlementId = await duplicateSettlement()
@@ -124,69 +134,55 @@ export default function SettlementDetailPage() {
         <div className="flex items-start justify-between">
           <Button
             variant="ghost"
-            className="pr-6! pl-2! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
+            data-testid="nav-home"
             onClick={() => navigate('/')}
           >
-            <ChevronLeft className="size-6 sm:size-7" />
+            <ChevronLeft data-icon="inline-start" className="size-6 sm:size-7" />
             <span className="hidden sm:inline">Home</span>
             <Home className="size-5 sm:hidden" />
           </Button>
           <Button
             variant="ghost"
-            className="pr-2! pl-6! transition-all duration-200 hover:gap-3"
+            className="transition-all duration-200 hover:gap-3"
             onClick={() => navigate('/settlements')}
           >
             Settlements
-            <ChevronRight className="size-6 sm:size-7" />
+            <ChevronRight data-icon="inline-end" className="size-6 sm:size-7" />
           </Button>
         </div>
       </AppHeader>
       {settlement && (
-        <>
-          <ButtonsSection
-            onDelete={async () => {
-              await deleteSettlement()
-              navigate('/')
-            }}
-            onClear={clearSettlement}
-            onDuplicate={handleDuplication}
-          />
-          <NameSection />
-
-          <SectionParticipant
-            onDone={async () => await updateSettlementPartial({ status: 'bill' })}
-            status={settlement.status === 'member' ? 'enabled' : 'disabled'}
-          />
-
-          <SectionBill
-            onDone={async () => {
-              await updateSettlementPartial({
-                status: 'payment',
-              })
-              setCalculationState((prev) => prev + 1)
-            }}
-            status={settlement.status !== 'member' ? 'enabled' : 'disabled'}
-          />
-
-          <SectionPayments
-            status={settlement.status === 'payment' ? 'enabled' : 'disabled'}
-            calculationState={calculationState}
-          />
-        </>
+        <ButtonsSection
+          onDelete={async () => {
+            await deleteSettlement()
+            navigate('/')
+          }}
+          onClear={clearSettlement}
+          onDuplicate={handleDuplication}
+        />
       )}
 
-      {isLoading && (
-        <Overlay className="flex-col gap-4">
-          <Spinner className="size-12" />
-          Loading ...
-        </Overlay>
-      )}
-
-      {settlement === null && (
-        <Section className="border-border py-6! text-center">
-          <p className="text-muted-foreground text-base">Settlement not found</p>
-        </Section>
-      )}
+      <SavedSettlementProvider
+        settlementId={settlementId ?? ''}
+        fallback={
+          isLoading ? (
+            <Overlay className="flex-col gap-4">
+              <Spinner className="size-12" />
+              Loading ...
+            </Overlay>
+          ) : (
+            <Section className="border-border py-6! text-center">
+              <p className="text-muted-foreground text-base">Settlement not found</p>
+            </Section>
+          )
+        }
+      >
+        <NameSection />
+        <SectionParticipant />
+        <SectionBill />
+        <SectionPayments />
+      </SavedSettlementProvider>
 
       <AppFooter />
     </>

@@ -38,20 +38,22 @@ function BillItemButtons({
   onDelete: () => void
   onDuplicate: () => void
 }) {
-  const buttonList: { icon: React.ReactNode; onClick: () => void }[] = [
-    { icon: <Pencil />, onClick: onEdit },
-    { icon: <Copy />, onClick: onDuplicate },
-    { icon: <X />, onClick: onDelete },
+  const buttonList: { icon: React.ReactNode; onClick: () => void; testId: string }[] = [
+    { icon: <Pencil />, onClick: onEdit, testId: 'bill-edit-btn' },
+    { icon: <Copy />, onClick: onDuplicate, testId: 'bill-duplicate-btn' },
+    { icon: <X />, onClick: onDelete, testId: 'bill-delete-btn' },
   ]
 
   return (
     <div className="justify-top mb-4 flex flex-col-reverse items-center gap-1 @[300px]:flex-row">
-      {buttonList.map((button, index) => (
+      {buttonList.map((button) => (
         <Button
-          key={index}
+          key={button.testId}
           variant="ghost"
-          className="size-9 rounded-full sm:size-10"
+          size="icon"
+          className="sm:size-10"
           onClick={button.onClick}
+          data-testid={button.testId}
         >
           {button.icon}
         </Button>
@@ -130,9 +132,12 @@ function UnequalBillContent({ bill }: { bill: Bill }) {
   )
 }
 
-function BillItemContainer({ children }: { children: React.ReactNode }) {
+function BillItemContainer({ children, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div className="border-primary hover:shadow-primary/40 @container relative flex h-full flex-col rounded-2xl border p-4 pl-6 transition duration-400 hover:scale-102 hover:shadow-lg">
+    <div
+      className="border-primary hover:shadow-primary/40 @container relative flex h-full flex-col rounded-2xl border p-4 pl-6 transition duration-400 hover:scale-102 hover:shadow-lg"
+      {...props}
+    >
       {children}
     </div>
   )
@@ -150,7 +155,7 @@ function BillItem({
   onDuplicate: () => void
 }) {
   return (
-    <BillItemContainer>
+    <BillItemContainer data-testid={`bill-item-${bill.name}`}>
       <div className="flex flex-col items-start justify-between gap-2">
         <BillItemHeader bill={bill} />
         <div className="flex flex-col text-sm">

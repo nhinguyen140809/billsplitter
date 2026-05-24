@@ -1,6 +1,10 @@
-export interface Member {
+export interface StoredMember {
   id: string
   name: string
+}
+
+// Runtime-only type produced by calculateSettlement — not persisted to DB
+export type Member = StoredMember & {
   paid: number
   spent: number
 }
@@ -29,8 +33,7 @@ export type PaymentItemData = {
 export interface Settlement {
   id: string
   name: string
-  status: SettlementStatus
-  members: Member[]
+  members: StoredMember[]
   bills: Bill[]
   sendPayments: PaymentData
   receivePayments: PaymentData
@@ -46,11 +49,7 @@ export type BillFormData = {
   shares: Record<string, string>
 }
 
-export type SettlementStatus = 'member' | 'bill' | 'payment'
-
 export type BillType = 'equal' | 'unequal'
-
-export type SectionStatus = 'enabled' | 'disabled'
 
 export type DebtPartyType = 'sender' | 'receiver'
 

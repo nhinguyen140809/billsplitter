@@ -12,7 +12,7 @@ export default function CalculatorDisplay({
     <Field className={`mb-2 flex flex-col gap-1 pt-2 pb-2 ${errorMessage ? 'data-invalid' : ''}`}>
       <Input
         type="text"
-        className="rounded-full p-5 text-right text-base font-medium"
+        className="p-5 text-right text-base font-medium"
         value={expression}
         aria-invalid={!!errorMessage}
         aria-describedby={errorMessage ? 'expression-error' : undefined}
