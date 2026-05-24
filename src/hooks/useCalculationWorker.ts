@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { StoredMember, Bill, PaymentData } from '@/types'
 
 type WorkerOutput =
@@ -56,12 +56,12 @@ export function useCalculationWorker(
    * Sends members and bills to the worker to begin an async calculation.
    * Sets `isCalculating` to `true` until the worker responds.
    */
-  const calculate = (members: StoredMember[], bills: Bill[]) => {
+  const calculate = useCallback((members: StoredMember[], bills: Bill[]) => {
     if (!workerRef.current) return
     setIsCalculating(true)
     setCalculationError('')
     workerRef.current.postMessage({ members, bills })
-  }
+  }, [])
 
   return { calculate, isCalculating, calculationError }
 }

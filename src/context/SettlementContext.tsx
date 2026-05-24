@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import { useDraftSettlement } from '@/hooks/useDraftSettlement'
 import { useSettlement } from '@/hooks/useSettlement'
 import type { Settlement } from '@/types'
@@ -13,13 +13,11 @@ const SettlementContext = createContext<SettlementContextValue | null>(null)
 
 export function DraftSettlementProvider({ children }: { children: React.ReactNode }) {
   const { draft, updateDraft } = useDraftSettlement()
-  return (
-    <SettlementContext.Provider
-      value={{ data: draft, update: updateDraft, settlementId: undefined }}
-    >
-      {children}
-    </SettlementContext.Provider>
+  const value = useMemo(
+    () => ({ data: draft, update: updateDraft, settlementId: undefined }),
+    [draft, updateDraft]
   )
+  return <SettlementContext.Provider value={value}>{children}</SettlementContext.Provider>
 }
 
 export function SavedSettlementProvider({
@@ -32,14 +30,13 @@ export function SavedSettlementProvider({
   fallback?: React.ReactNode
 }) {
   const { settlement, updateSettlementPartial } = useSettlement(settlementId)
-  if (!settlement) return <>{fallback}</>
-  return (
-    <SettlementContext.Provider
-      value={{ data: settlement, update: updateSettlementPartial, settlementId }}
-    >
-      {children}
-    </SettlementContext.Provider>
+  const value = useMemo(
+    () =>
+      settlement ? { data: settlement, update: updateSettlementPartial, settlementId } : null,
+    [settlement, updateSettlementPartial, settlementId]
   )
+  if (!value) return <>{fallback}</>
+  return <SettlementContext.Provider value={value}>{children}</SettlementContext.Provider>
 }
 
 export function useSettlementContext() {

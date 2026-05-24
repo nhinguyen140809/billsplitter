@@ -1,5 +1,5 @@
 import { CalculatorIcon } from 'lucide-react'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Button } from '@/components/ui/button'
@@ -32,7 +32,6 @@ function UnequalShareInput({
         />
         <Button
           tabIndex={-1}
-          className="rounded-full"
           variant="ghost"
           size="icon-lg"
           onClick={() => openCalculator(inputRef.current)}
@@ -48,9 +47,10 @@ function UnequalBillShares() {
   const { formData, updateFormFieldWrapper } = useBillFormContext()
   const { members } = useMembers()
 
-  const participantCount = members.filter(
-    (m) => (parseFloat(formData.shares[m.name]) || 0) > 0
-  ).length
+  const participantCount = useMemo(
+    () => members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length,
+    [formData.shares, members]
+  )
 
   return (
     <div className="mt-2 mb-2">

@@ -1,5 +1,5 @@
 import { Banknote, CalculatorIcon } from 'lucide-react'
-import { useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -114,17 +114,21 @@ function EqualBillParticipants() {
   const { formData, updateFormField, updateFormFieldWrapper, selectAll } = useBillFormContext()
   const { members } = useMembers()
 
-  const participantCount = members.filter(
-    (m) => (parseFloat(formData.shares[m.name]) || 0) > 0
-  ).length
+  const participantCount = useMemo(
+    () => members.filter((m) => (parseFloat(formData.shares[m.name]) || 0) > 0).length,
+    [formData.shares, members]
+  )
 
-  const toggleAllShares = (checked: boolean) => {
-    const newShares: Record<string, string> = {}
-    members.forEach((member) => {
-      newShares[member.name] = checked ? '1' : '0'
-    })
-    updateFormField('shares', newShares)
-  }
+  const toggleAllShares = useCallback(
+    (checked: boolean) => {
+      const newShares: Record<string, string> = {}
+      members.forEach((member) => {
+        newShares[member.name] = checked ? '1' : '0'
+      })
+      updateFormField('shares', newShares)
+    },
+    [members, updateFormField]
+  )
 
   return (
     <div className="mb-2">
