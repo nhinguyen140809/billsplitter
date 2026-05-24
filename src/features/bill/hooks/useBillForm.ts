@@ -14,7 +14,7 @@ const DEFAULT_VALUES: BillFormValues = {
 }
 
 export function useBillForm(
-  _members: StoredMember[],
+  members: StoredMember[],
   onSubmitBillForm: (bill: Bill) => void,
   onClose: () => void
 ) {
@@ -89,10 +89,10 @@ export function useBillForm(
     })
   }
 
-  // Derived: all visible shares have a value > 0
+  // Derived: every current member has a share > 0
   const shares = form.watch('shares')
   const selectAll =
-    Object.keys(shares).length > 0 && Object.values(shares).every((v) => (parseFloat(v) || 0) > 0)
+    members.length > 0 && members.every((m) => (parseFloat(shares[m.name]) || 0) > 0)
 
   // Surface first validation error for display
   const errors = form.formState.errors
