@@ -10,6 +10,10 @@ type WorkerOutput =
   | { sendPayments: PaymentData; receivePayments: PaymentData; error?: never }
   | { error: string; sendPayments?: never; receivePayments?: never }
 
+/**
+ * Worker message handler — runs `calculateSettlement` off the main thread.
+ * Posts `{ sendPayments, receivePayments }` on success, or `{ error }` on failure.
+ */
 self.onmessage = ({ data }: MessageEvent<WorkerInput>) => {
   try {
     const result = calculateSettlement(data.members, data.bills)

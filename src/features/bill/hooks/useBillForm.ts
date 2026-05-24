@@ -13,6 +13,20 @@ const DEFAULT_VALUES: BillFormValues = {
   shares: {},
 }
 
+/**
+ * Manages all state for the bill add/edit form using react-hook-form and Zod.
+ *
+ * Responsibilities:
+ * - Validation via `billFormSchema` (payer, amount, shares cross-field rules).
+ * - Calculator overlay integration: tracks which input is active and writes
+ *   the result back via `form.setValue`.
+ * - `setSelectedBillForm` resets the form with an existing bill's data for editing.
+ * - `selectAll` reflects whether every current member has a share > 0.
+ *
+ * @param members         - Current member list; used to compute `selectAll`.
+ * @param onSubmitBillForm - Called with the validated `Bill` on successful submit.
+ * @param onClose          - Called after submit or cancel to close the form.
+ */
 export function useBillForm(
   members: StoredMember[],
   onSubmitBillForm: (bill: Bill) => void,
