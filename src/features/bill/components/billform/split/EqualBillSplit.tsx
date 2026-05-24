@@ -1,5 +1,4 @@
 import { Banknote, CalculatorIcon } from 'lucide-react'
-import type { BillShareValue } from '@/types'
 import { useRef } from 'react'
 import { useBillFormContext } from '../../../context/BillFormContext'
 import { Check } from 'lucide-react'
@@ -120,9 +119,9 @@ function EqualBillParticipants() {
   ).length
 
   const toggleAllShares = (checked: boolean) => {
-    const newShares: BillShareValue = {}
+    const newShares: Record<string, string> = {}
     members.forEach((member) => {
-      newShares[member.name] = checked ? 1 : 0
+      newShares[member.name] = checked ? '1' : '0'
     })
     updateFormField('shares', newShares)
   }

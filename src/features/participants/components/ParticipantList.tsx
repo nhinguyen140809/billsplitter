@@ -1,13 +1,13 @@
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import type { Member } from '@/types'
+import type { StoredMember } from '@/types'
 import { motion } from 'framer-motion'
 
 function ParticipantItem({
   member,
   onRemove,
 }: {
-  member: Member
+  member: StoredMember
   onRemove: (id: string) => void
 }) {
   return (
@@ -24,7 +24,7 @@ export default function ParticipantList({
   members,
   onRemove,
 }: {
-  members: Member[]
+  members: StoredMember[]
   onRemove: (id: string) => void
 }) {
   return (

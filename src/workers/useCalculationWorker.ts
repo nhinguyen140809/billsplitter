@@ -32,7 +32,7 @@ export function useCalculationWorker(
         return
       }
       setCalculationError('')
-      onResultRef.current(data.sendPayments, data.receivePayments)
+      onResultRef.current(data.sendPayments!, data.receivePayments!)
     }
 
     workerRef.current.onerror = (e) => {
