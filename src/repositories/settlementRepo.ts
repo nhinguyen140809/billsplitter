@@ -1,5 +1,6 @@
 import { db } from '@/db/dexie'
 import type { Settlement } from '@/types'
+import { DEFAULT_SETTLEMENT } from '@/constants'
 
 export const settlementRepo = {
   async getDraft() {
@@ -15,15 +16,12 @@ export const settlementRepo = {
     await db.draftSettlement.delete('draft')
   },
 
-  async updateDraft(settlement: Partial<Settlement>) {
-    const currentDraft = await db.draftSettlement.get('draft')
-
-    await db.draftSettlement.update('draft', {
-      data: {
-        ...currentDraft?.data,
-        ...settlement,
-        updatedAt: new Date(),
-      } as Settlement,
+  async updateDraft(partial: Partial<Settlement>) {
+    const existing = await db.draftSettlement.get('draft')
+    const base = existing?.data ?? DEFAULT_SETTLEMENT
+    await db.draftSettlement.put({
+      id: 'draft',
+      data: { ...base, ...partial, updatedAt: new Date() },
     })
   },
 
